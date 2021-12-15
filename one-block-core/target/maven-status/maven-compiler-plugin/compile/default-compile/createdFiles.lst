@@ -1,0 +1,11 @@
+es\noobcraft\oneblock\API.class
+es\noobcraft\oneblock\logger\LoggerType.class
+es\noobcraft\oneblock\world\OneBlockLoader.class
+es\noobcraft\oneblock\logger\Logger.class
+es\noobcraft\oneblock\player\SetOneBlockPlayerCache.class
+es\noobcraft\oneblock\inventory\BukkitInventorySerializer.class
+es\noobcraft\oneblock\player\OneBlockPlayerImpl.class
+es\noobcraft\oneblock\OneBlockPlugin.class
+es\noobcraft\oneblock\profile\MapProfileCache.class
+es\noobcraft\oneblock\logger\Logger$1.class
+es\noobcraft\oneblock\world\OneBlockWorldManager.class
