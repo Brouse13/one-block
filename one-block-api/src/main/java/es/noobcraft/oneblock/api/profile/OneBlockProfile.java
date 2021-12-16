@@ -22,6 +22,12 @@ public interface OneBlockProfile {
     String getProfileName();
 
     /**
+     * Get the name of the player who owns the island
+     * @return island owner name
+     */
+    String getIslandOwner();
+
+    /**
      * Get the player inventory encoded in a base64 string.
      * First element is player inventory, second its inventory
      * @return serialized inventory
@@ -31,9 +37,10 @@ public interface OneBlockProfile {
     /**
      * Return all the settings to this profile
      * all of these are global settings.
+     * The value -1 is all perms
      * @return profile settings
      */
-    Set<OneBlockProfileSettings> getIslandSettings();
+    int getIslandSettings();
 
     /**
      * Get the Material that appears on the menu

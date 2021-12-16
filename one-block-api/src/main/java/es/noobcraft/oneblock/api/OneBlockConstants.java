@@ -13,4 +13,6 @@ public class OneBlockConstants {
      */
     public static final Material DEF_PROFILE_MATERIAL = Material.GRASS;
 
+    public static int DEF_ISLAND_PERMISSION = 0x00;
+
 }

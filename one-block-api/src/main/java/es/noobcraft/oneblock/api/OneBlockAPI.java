@@ -1,6 +1,7 @@
 package es.noobcraft.oneblock.api;
 
 import es.noobcraft.oneblock.api.player.PlayerCache;
+import es.noobcraft.oneblock.api.world.WorldManager;
 import lombok.NonNull;
 
 public class OneBlockAPI {
@@ -16,4 +17,7 @@ public class OneBlockAPI {
         return oneblock.getPlayerCache();
     }
 
+    public static WorldManager getWorldManager() {
+        return oneblock.getWorldManager();
+    }
 }

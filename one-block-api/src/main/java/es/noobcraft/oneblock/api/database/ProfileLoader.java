@@ -29,6 +29,14 @@ public interface ProfileLoader {
     OneBlockProfile createCoop(OneBlockProfile profile, OneBlockPlayer target);
 
     /**
+     * Get an existing OneBlockProfile from the database
+     * @param player player to lock for profiles
+     * @param name profile name
+     * @return the player profile
+     */
+    OneBlockProfile getProfile(OneBlockPlayer player, String name);
+
+    /**
      * Delete a specific profile from the database
      * @param player player to
      * @param name profile name
