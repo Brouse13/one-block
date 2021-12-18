@@ -6,9 +6,7 @@ import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.api.profile.OneBlockProfile;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.SneakyThrows;
 import org.bukkit.Material;
-import org.junit.runners.model.InitializationError;
 
 import java.sql.Blob;
 import java.sql.ResultSet;
@@ -16,12 +14,12 @@ import java.sql.SQLException;
 
 @AllArgsConstructor
 public class BaseOneBlockProfile implements OneBlockProfile {
-    @Getter private final OneBlockPlayer owner;
-    @Getter private final String profileName;
-    @Getter private final String islandOwner;
-    @Getter private final byte[] inventory;
-    @Getter private final int islandPermissions;
-    @Getter private final Material profileItem;
+    @Getter private OneBlockPlayer owner;
+    @Getter private String profileName;
+    @Getter private String islandOwner;
+    @Getter private byte[] inventory;
+    @Getter private int islandPermissions;
+    @Getter private Material profileItem;
 
     public BaseOneBlockProfile(OneBlockPlayer owner, String islandOwner, String profileName) {
         this.owner = owner;
@@ -36,7 +34,6 @@ public class BaseOneBlockProfile implements OneBlockProfile {
         this(owner, owner.getName(), profileName);
     }
 
-    @SneakyThrows
     public BaseOneBlockProfile(ResultSet resultSet) {
         try {
             final Blob inventory = resultSet.getBlob("inventory");
@@ -47,7 +44,7 @@ public class BaseOneBlockProfile implements OneBlockProfile {
             this.islandPermissions = resultSet.getInt("island_permissions");
             this.profileItem = Material.valueOf(resultSet.getString("itemstack"));
         }catch (SQLException exception) {
-            throw new InitializationError("Error reading profile");
+            //
         }
     }
 }

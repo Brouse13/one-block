@@ -12,6 +12,11 @@ public interface OneBlockPlayer {
     String getName();
 
     /**
+     * Initialize the player profiles.
+     */
+    void setProfiles(Set<OneBlockProfile> profiles);
+
+    /**
      * Get a Set that contains all the available
      * profiles for this player
      * @return all available profiles

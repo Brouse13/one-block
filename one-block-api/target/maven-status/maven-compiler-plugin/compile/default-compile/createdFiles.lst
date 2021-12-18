@@ -4,7 +4,6 @@ es\noobcraft\oneblock\api\database\ProfileLoader.class
 es\noobcraft\oneblock\api\player\OneBlockPlayer.class
 es\noobcraft\oneblock\api\inventory\InventorySerializer.class
 es\noobcraft\oneblock\api\OneBlock.class
-es\noobcraft\oneblock\api\profile\ProfileCache.class
 es\noobcraft\oneblock\api\world\WorldManager.class
 es\noobcraft\oneblock\api\OneBlockAPI.class
 es\noobcraft\oneblock\api\profile\OneBlockProfile.class

@@ -4,13 +4,9 @@ import es.noobcraft.core.api.event.AsyncNoobPlayerPreLoginEvent;
 import es.noobcraft.core.api.event.NoobPlayerQuitEvent;
 import es.noobcraft.oneblock.api.OneBlockAPI;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
-import es.noobcraft.oneblock.api.profile.OneBlockProfile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
-
-import java.util.Set;
-
 
 public class PlayerListeners implements Listener {
 
@@ -20,9 +16,8 @@ public class PlayerListeners implements Listener {
             OneBlockAPI.getPlayerCache().addPlayer(event.getPlayer().getUsername());
 
         final OneBlockPlayer player = OneBlockAPI.getPlayerCache().getPlayer(event.getPlayer().getUsername());
-        final Set<OneBlockProfile> profiles = OneBlockAPI.getProfileLoader().getProfiles(player);
-        profiles.forEach(profile -> OneBlockAPI.getProfileCache().addProfile(profile));
-        System.out.println("Loaded profiles from "+ event.getPlayer().getUsername());
+        player.setProfiles(OneBlockAPI.getProfileLoader().getProfiles(player));
+        System.out.println("Loaded "+  player.getProfiles().size()+ " profiles from "+ event.getPlayer().getUsername());
     }
 
     @EventHandler(ignoreCancelled = true)

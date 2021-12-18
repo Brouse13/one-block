@@ -11,6 +11,7 @@ import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.api.profile.OneBlockProfile;
 import es.noobcraft.oneblock.profile.BaseOneBlockProfile;
 import lombok.NonNull;
+import org.bukkit.Material;
 
 import java.io.IOException;
 import java.sql.*;
@@ -110,8 +111,15 @@ public class SqlProfileLoader implements ProfileLoader {
                 statement.setString(2, name);
 
                 try(ResultSet resultSet = statement.executeQuery()) {
-
-                    return new BaseOneBlockProfile(resultSet);
+                    final Blob inventory = resultSet.getBlob("inventory");
+                    return new BaseOneBlockProfile(
+                            OneBlockAPI.getPlayerCache().getPlayer(resultSet.getString("username")),
+                            resultSet.getString("name"),
+                            resultSet.getString("island_owner"),
+                            inventory == null ? null : inventory.getBytes(0, (int) inventory.length()),
+                            resultSet.getInt("island_permissions"),
+                            Material.valueOf(resultSet.getString("itemstack"))
+                    );
                 }
             }
         }catch (SQLException e) {
