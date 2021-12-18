@@ -1,5 +1,6 @@
 package es.noobcraft.oneblock.api;
 
+import es.noobcraft.oneblock.api.database.ProfileLoader;
 import es.noobcraft.oneblock.api.player.PlayerCache;
 import es.noobcraft.oneblock.api.profile.ProfileCache;
 import es.noobcraft.oneblock.api.world.WorldManager;
@@ -16,6 +17,12 @@ public interface OneBlock {
      * @return OneBlock ProfileCache
      */
     ProfileCache getProfileCache();
+
+    /**
+     * Return the correct instance of ProfileLoader
+     * @return OneBlock ProfileLoader
+     */
+    ProfileLoader getProfileLoader();
 
     /**
      * Return the correct instance of WorldManager

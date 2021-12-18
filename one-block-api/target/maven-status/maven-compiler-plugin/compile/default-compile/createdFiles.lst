@@ -1,7 +1,6 @@
 es\noobcraft\oneblock\api\player\PlayerCache.class
 es\noobcraft\oneblock\api\OneBlockConstants.class
 es\noobcraft\oneblock\api\database\ProfileLoader.class
-es\noobcraft\oneblock\api\database\PlayerLoader.class
 es\noobcraft\oneblock\api\player\OneBlockPlayer.class
 es\noobcraft\oneblock\api\inventory\InventorySerializer.class
 es\noobcraft\oneblock\api\OneBlock.class

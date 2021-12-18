@@ -1,5 +1,6 @@
 package es.noobcraft.oneblock.database;
 
+import com.google.common.collect.Sets;
 import com.grinderwolf.swm.api.exceptions.WorldAlreadyExistsException;
 import es.noobcraft.core.api.Core;
 import es.noobcraft.core.api.database.SQLClient;
@@ -10,17 +11,22 @@ import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.api.profile.OneBlockProfile;
 import es.noobcraft.oneblock.profile.BaseOneBlockProfile;
 import lombok.NonNull;
-import org.bukkit.Material;
 
 import java.io.IOException;
 import java.sql.*;
+import java.util.Set;
 
 public class SqlProfileLoader implements ProfileLoader {
     private final String EXIST_PROFILE = "SELECT * FROM one_block_profiles WHERE username=? AND name=?";
+
     private final String CREATE_PROFILE = "INSERT INTO one_block_profiles VALUES(?, ?, ?, ?, ?, null, ?)";
+
     private final String GET_PROFILE = "SELECT * FROM one_block_profiles WHERE username=? AND name=?";
+    private final String GET_PROFILES = "SELECT * FROM one_block_profiles WHERE username=?";
+
     private final String DELETE_PROFILE = "DELETE FROM one_block_profiles WHERE name=?";
     private final String DELETE_COOP = "DELETE FROM one_block_profiles WHERE username=? AND name=?";
+
     private final String UPDATE_PROFILE = "UPDATE one_block_profiles SET " +
             "username=?, name=?, world=?, island_owner=?, island_permissions=?, inventory=?, itemstack=?";
 
@@ -104,21 +110,33 @@ public class SqlProfileLoader implements ProfileLoader {
                 statement.setString(2, name);
 
                 try(ResultSet resultSet = statement.executeQuery()) {
-                    final Blob inventory = resultSet.getBlob("inventory");
-                    return new BaseOneBlockProfile(
-                            OneBlockAPI.getPlayerCache().getPlayer(resultSet.getString("username")),
-                            resultSet.getString("name"),
-                            resultSet.getString("island_owner"),
-                            inventory == null ? null : inventory.getBytes(0, (int) inventory.length()),
-                            resultSet.getInt("island_permissions"),
-                            Material.valueOf(resultSet.getString("itemstack"))
-                    );
+
+                    return new BaseOneBlockProfile(resultSet);
                 }
             }
         }catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public Set<OneBlockProfile> getProfiles(OneBlockPlayer player) {
+        Set<OneBlockProfile> profiles = Sets.newHashSet();
+
+        try(Connection connection = sqlClient.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(GET_PROFILES)) {
+                statement.setString(1, player.getName());
+
+                try(final ResultSet resultSet = statement.executeQuery()) {
+                    while (resultSet.next())
+                        profiles.add(new BaseOneBlockProfile(resultSet));
+                }
+            }
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        return profiles;
     }
 
     @Override
@@ -162,7 +180,7 @@ public class SqlProfileLoader implements ProfileLoader {
                 statement.setString(2, profile.getProfileName());
                 statement.setString(3, profile.getProfileName());
                 statement.setString(4, profile.getIslandOwner());
-                statement.setInt(5, profile.getIslandSettings());
+                statement.setInt(5, profile.getIslandPermissions());
                 statement.setString(6, profile.getProfileItem().toString());
 
                 statement.executeUpdate();

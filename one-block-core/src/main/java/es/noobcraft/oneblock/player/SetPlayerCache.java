@@ -7,7 +7,7 @@ import es.noobcraft.oneblock.api.player.PlayerCache;
 import java.util.Collections;
 import java.util.Set;
 
-public class SetOneBlockPlayerCache implements PlayerCache {
+public class SetPlayerCache implements PlayerCache {
     private final Set<OneBlockPlayer> players = Sets.newHashSet();
 
     @Override
@@ -17,7 +17,7 @@ public class SetOneBlockPlayerCache implements PlayerCache {
 
     @Override
     public OneBlockPlayer getPlayer(String name) {
-        return players.stream().filter(oneblockPlayer -> oneblockPlayer.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
+        return players.stream().filter(oneBlockPlayer -> oneBlockPlayer.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
     }
 
     @Override

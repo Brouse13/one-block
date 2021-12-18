@@ -3,6 +3,8 @@ package es.noobcraft.oneblock.api.database;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.api.profile.OneBlockProfile;
 
+import java.util.Set;
+
 public interface ProfileLoader {
     /**
      * Return if the database has any profile with the given name
@@ -35,6 +37,13 @@ public interface ProfileLoader {
      * @return the player profile
      */
     OneBlockProfile getProfile(OneBlockPlayer player, String name);
+
+    /**
+     * Load all the players profiles from the database
+     * @param player player to load profiles
+     * @return all the player profiles
+     */
+    Set<OneBlockProfile> getProfiles(OneBlockPlayer player);
 
     /**
      * Delete a specific profile from the database

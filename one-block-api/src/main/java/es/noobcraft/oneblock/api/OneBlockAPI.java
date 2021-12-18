@@ -1,6 +1,8 @@
 package es.noobcraft.oneblock.api;
 
+import es.noobcraft.oneblock.api.database.ProfileLoader;
 import es.noobcraft.oneblock.api.player.PlayerCache;
+import es.noobcraft.oneblock.api.profile.ProfileCache;
 import es.noobcraft.oneblock.api.world.WorldManager;
 import lombok.NonNull;
 
@@ -11,6 +13,14 @@ public class OneBlockAPI {
         if (OneBlockAPI.oneblock != null)
             throw new IllegalStateException("Cannot redefine singleton");
         OneBlockAPI.oneblock = oneBlock;
+    }
+
+    public static ProfileCache getProfileCache() {
+        return oneblock.getProfileCache();
+    }
+
+    public static ProfileLoader getProfileLoader() {
+        return oneblock.getProfileLoader();
     }
 
     public static PlayerCache getPlayerCache() {

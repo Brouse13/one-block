@@ -40,7 +40,7 @@ public interface OneBlockProfile {
      * The value -1 is all perms
      * @return profile settings
      */
-    int getIslandSettings();
+    int getIslandPermissions();
 
     /**
      * Get the Material that appears on the menu
