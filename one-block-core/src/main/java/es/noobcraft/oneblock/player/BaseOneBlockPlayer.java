@@ -1,6 +1,7 @@
 package es.noobcraft.oneblock.player;
 
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 import es.noobcraft.oneblock.api.OneBlockConstants;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.api.profile.OneBlockProfile;
@@ -12,8 +13,8 @@ import java.util.Set;
 
 @AllArgsConstructor
 public class BaseOneBlockPlayer implements OneBlockPlayer {
-    @Getter private final String name;
-    @Setter private Set<OneBlockProfile> profiles = null;
+    @Getter private  final String name;
+    @Setter private Set<OneBlockProfile> profiles = Sets.newHashSet();
     @Getter private final int maxProfiles;
     @Getter private final long lastPlayed;
 
@@ -30,8 +31,6 @@ public class BaseOneBlockPlayer implements OneBlockPlayer {
 
     @Override
     public boolean addProfile(OneBlockProfile profile) {
-        if (profiles.size() == maxProfiles)
-            return false;
         return profiles.add(profile);
     }
 

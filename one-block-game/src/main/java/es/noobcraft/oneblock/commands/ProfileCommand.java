@@ -30,6 +30,6 @@ public class ProfileCommand implements PlayerCommand {
         final NoobPlayer noobPlayer = Core.getPlayerCache().getPlayer(player.getName());
         final OneBlockPlayer oneBlockPlayer = OneBlockAPI.getPlayerCache().getPlayer(player.getUsername());
 
-        new ProfileGUI(noobPlayer, oneBlockPlayer.getProfiles()).openInventory();
+        new ProfileGUI(noobPlayer, oneBlockPlayer).openInventory();
     }
 }

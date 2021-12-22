@@ -2,6 +2,7 @@ package es.noobcraft.oneblock.world;
 
 import com.grinderwolf.swm.api.SlimePlugin;
 import com.grinderwolf.swm.api.exceptions.*;
+import com.grinderwolf.swm.api.world.SlimeWorld;
 import com.grinderwolf.swm.api.world.properties.SlimeProperties;
 import com.grinderwolf.swm.api.world.properties.SlimePropertyMap;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
@@ -21,7 +22,9 @@ public class OneBlockWorldManager implements WorldManager {
         if (player.getProfiles().size() >= player.getMaxProfiles()) return false;
 
         try {
-            slimePlugin.createEmptyWorld(slimePlugin.getLoader("one-block"), "", false, getProperties());
+            SlimeWorld emptyWorld = slimePlugin.createEmptyWorld(slimePlugin.getLoader("one-block"), name, false, getProperties());
+            slimePlugin.generateWorld(emptyWorld);
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -29,9 +32,9 @@ public class OneBlockWorldManager implements WorldManager {
     }
 
     @Override
-    public boolean loadWorld(String name) throws CorruptedWorldException, UnknownWorldException {
+    public boolean loadWorld(String name, boolean locked) throws CorruptedWorldException, UnknownWorldException {
         try {
-            slimePlugin.loadWorld(slimePlugin.getLoader("one-block"), name, false, getProperties());
+            slimePlugin.loadWorld(slimePlugin.getLoader("one-block"), name, locked, getProperties());
             return true;
         } catch (NewerFormatException | IOException | WorldInUseException  e) {
             e.printStackTrace();

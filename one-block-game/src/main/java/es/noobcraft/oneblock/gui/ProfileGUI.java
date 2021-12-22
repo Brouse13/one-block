@@ -1,62 +1,106 @@
 package es.noobcraft.oneblock.gui;
 
+import com.grinderwolf.swm.api.exceptions.CorruptedWorldException;
+import com.grinderwolf.swm.api.exceptions.UnknownWorldException;
 import es.noobcraft.core.api.Core;
 import es.noobcraft.core.api.SpigotCore;
 import es.noobcraft.core.api.inventory.NoobInventory;
 import es.noobcraft.core.api.item.ItemBuilder;
+import es.noobcraft.core.api.item.SkullBuilder;
 import es.noobcraft.core.api.lang.Translator;
 import es.noobcraft.core.api.player.NoobPlayer;
+import es.noobcraft.oneblock.api.OneBlockAPI;
+import es.noobcraft.oneblock.api.OneBlockConstants;
+import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.api.profile.OneBlockProfile;
+import es.noobcraft.oneblock.logger.Logger;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.event.inventory.InventoryType;
-
-import java.util.Set;
+import org.bukkit.util.Vector;
 
 public class ProfileGUI {
     private final Translator translator = Core.getTranslator();
     private final NoobInventory inventory;
     private final NoobPlayer noobPlayer;
-    private final Set<OneBlockProfile> profiles;
+    private final OneBlockPlayer oneBlockPlayer;
 
-    public ProfileGUI(NoobPlayer noobPlayer, Set<OneBlockProfile> profiles) {
+    public ProfileGUI(NoobPlayer noobPlayer, OneBlockPlayer oneBlockPlayer) {
         this.noobPlayer = noobPlayer;
-        this.profiles = profiles;
+        this.oneBlockPlayer = oneBlockPlayer;
         this.inventory = SpigotCore.getInventoryManager().createInventory(inventoryBuilder -> inventoryBuilder
                 .title(translator.getLegacyText(noobPlayer, "one-block.inventory.profiles.title", noobPlayer.getUsername()))
                 .closeable(true)
-                .rows(4)
+                .rows(oneBlockPlayer.getProfiles().size() > 9 ? 4 : 3)
                 .type(InventoryType.CHEST)
                 .initializer(this::initialize)
-                .updater(this::update)
-        );
+                .updater(this::update));
     }
 
     private void initialize(NoobInventory inventory) {
         for (int i = 0; i < inventory.getRows() * inventory.getColumns(); i++)
             inventory.set(i, ItemBuilder.from(Material.STAINED_GLASS_PANE).damage(8).build());
-        if (profiles.size() == 0)
+        if (oneBlockPlayer.getProfiles().size() == 0)
             inventory.set(10, ItemBuilder.from(Material.BARRIER)
                     .displayName(translator.getLegacyText(noobPlayer, "one-block.inventory.profiles.no-profiles.name"))
                     .lore(translator.getLegacyTextList(noobPlayer, "one-block.inventory.profiles.no-profiles.lore")).build());
         else {
-            for (int i = 0; i < profiles.size(); i++) {
-                OneBlockProfile[] oneBlockProfiles = profiles.toArray(new OneBlockProfile[0]);
+            for (int i = 0; i < oneBlockPlayer.getProfiles().size(); i++) {
+                OneBlockProfile[] oneBlockProfiles = oneBlockPlayer.getProfiles().toArray(new OneBlockProfile[0]);
                 inventory.set(10+ i*2, ItemBuilder.from(oneBlockProfiles[i].getProfileItem())
                         .displayName(translator.getLegacyText(noobPlayer, "one-block.inventory.profiles.profile-info.name", oneBlockProfiles[i].getProfileName()))
                         .lore(translator.getLegacyTextList(noobPlayer, "one-block.inventory.profiles.profile-info.name")).build());
             }
         }
+
         inventory.set(35, ItemBuilder.from(Material.ARROW)
                 .displayName(translator.getLegacyText(noobPlayer, "one-block.inventory.profiles.close.name"))
                 .lore(translator.getLegacyTextList(noobPlayer, "one-block.inventory.profiles.close.lore")).build(),
                 event -> event.getWhoClicked().getOpenInventory().close());
+
+        inventory.set(7, SkullBuilder.create().textures(OneBlockConstants.ADD_PROFILE_TEXTURE)
+                .displayName(translator.getLegacyText(noobPlayer, "one-block.inventory.profiles.add-profile.name"))
+                .lore(translator.getLegacyTextList(noobPlayer, "one-block.inventory.profiles.add-profile.lore")).build(),
+                event -> {
+                    if (oneBlockPlayer.getMaxProfiles() <= oneBlockPlayer.getProfiles().size()) {
+                        event.getWhoClicked().closeInventory();
+                        Logger.player(noobPlayer, "one-block.messages.max-profiles");
+                        return;
+                    }
+
+                    event.getWhoClicked().closeInventory();
+                    createProfile();
+                });
+
+        inventory.set(8, SkullBuilder.create().textures(OneBlockConstants.REMOVE_PROFILE_TEXTURE)
+                .displayName(translator.getLegacyText(noobPlayer, "one-block.inventory.profiles.remove-profile.name"))
+                .lore(translator.getLegacyTextList(noobPlayer, "one-block.inventory.profiles.remove-profile.lore")).build(),
+                event -> new RemoveProfileGUI(noobPlayer, oneBlockPlayer).openInventory());
     }
 
-    private void update(NoobInventory inventory) {
-
-    }
+    private void update(NoobInventory inventory) {}
 
     public void openInventory() {
         SpigotCore.getInventoryManager().openInventory(noobPlayer, inventory);
+    }
+
+    private void createProfile() {
+        final String worldName = System.currentTimeMillis() + "";
+        oneBlockPlayer.addProfile(OneBlockAPI.getProfileLoader().createProfile(oneBlockPlayer, oneBlockPlayer, -1, worldName));
+
+        try {
+            OneBlockAPI.getWorldManager().loadWorld(worldName, false);
+        } catch (CorruptedWorldException | UnknownWorldException e) {
+            e.printStackTrace();
+        }
+        Logger.player(noobPlayer, "one-block.messages.profile-created");
+
+        final World world = Bukkit.getWorld(worldName);
+        final Location location = new Location(world, 0, 30, 0);
+
+        world.getBlockAt(location).setType(Material.GRASS);
+        Bukkit.getPlayer(noobPlayer.getUsername()).teleport(location.add(new Vector(0, 1, 0)));
     }
 }

@@ -1,12 +1,9 @@
 package es.noobcraft.oneblock.world;
 
 import com.google.common.collect.Maps;
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.grinderwolf.swm.api.exceptions.*;
 import com.grinderwolf.swm.api.loaders.SlimeLoader;
 import es.noobcraft.core.api.Core;
-import es.noobcraft.oneblock.logger.Logger;
-import es.noobcraft.oneblock.logger.LoggerType;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -16,32 +13,21 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 public class OneBlockLoader implements SlimeLoader {
-    public static final long MAX_LOCK_TIME = 300000L; //Max time difference between current time millis and world lock
-    public static final long LOCK_INTERVAL = 60000L;
-
-    //World locking executor service
-    private static final ScheduledExecutorService SERVICE = Executors.newScheduledThreadPool(2, new ThreadFactoryBuilder()
-            .setNameFormat("SWM MySQL Lock Pool Thread #%1$d").build());
-
-
     //Create tables queries
     private static final String CREATE_VERSIONING_TABLE_QUERY = "CREATE TABLE IF NOT EXISTS `database_version` (`id` INT NOT NULL AUTO_INCREMENT, " +
             "`version` INT(11), PRIMARY KEY(id));";
-    private static final String CREATE_WORLDS_TABLE_QUERY = "CREATE TABLE IF NOT EXISTS `worlds` (`id` INT NOT NULL AUTO_INCREMENT, " +
+    private static final String CREATE_WORLDS_TABLE_QUERY = "CREATE TABLE IF NOT EXISTS `one_block_worlds` (`id` INT NOT NULL AUTO_INCREMENT, " +
             "`name` VARCHAR(255) UNIQUE, `world` MEDIUMBLOB, `locked` BIGINT, PRIMARY KEY(id));";
 
     //World queries
     private static final String SELECT_WORLD_QUERY = "SELECT `world`, `locked` FROM `one_block_worlds` WHERE `name` = ?;";
-    private static final String UPDATE_WORLD_QUERY = "INSERT INTO `one_block_worlds` (`name`, `world`, `locked`) VALUES (?, ?, 1) ON DUPLICATE KEY UPDATE `world` = ?;";
+    private static final String UPDATE_WORLD_QUERY = "INSERT INTO `one_block_worlds` (`name`, `world`, `locked`) VALUES (?, ?, 0) ON DUPLICATE KEY UPDATE `world` = ?;";
     private static final String UPDATE_LOCK_QUERY = "UPDATE `one_block_worlds` SET `locked` = ? WHERE `name` = ?;";
     private static final String DELETE_WORLD_QUERY = "DELETE FROM `one_block_worlds` WHERE `name` = ?;";
-    private static final String LIST_WORLDS_QUERY = "SELECT 'name' FROM 'one_block_worlds'";
+    private static final String LIST_WORLDS_QUERY = "SELECT 'name' FROM one_block_worlds";
 
     private final Map<String, ScheduledFuture> lockedWorlds = Maps.newHashMap();
 
@@ -67,36 +53,13 @@ public class OneBlockLoader implements SlimeLoader {
 
                 if (!resultSet.next()) throw new UnknownWorldException(worldName);
 
-                if (!readOnly) {
-                    long lockedMillis = resultSet.getLong("locked");
+                if (!readOnly && resultSet.getLong("locked") == 1) throw new WorldInUseException("World is in use");
 
-                    if (System.currentTimeMillis() - lockedMillis <= MAX_LOCK_TIME) throw new WorldInUseException(worldName);
-
-                    updateLock(worldName, true);
-                }
                 return resultSet.getBytes("world");
             }
         } catch (SQLException exception) {
             throw new IOException(exception);
         }
-    }
-
-    private void updateLock(String worldName, boolean forceSchedule) {
-        try (Connection connection = Core.getSQLClient().getConnection()) {
-            try(PreparedStatement statement = connection.prepareStatement(UPDATE_LOCK_QUERY)) {
-                statement.setLong(1, System.currentTimeMillis());
-                statement.setString(2, worldName);
-
-                statement.executeUpdate();
-            }
-        } catch (SQLException exception) {
-            Logger.log(LoggerType.ERROR, "Failed to update the lock for world " + worldName + ":");
-            exception.printStackTrace();
-        }
-
-        //Only schedule another update if the world is still on the map
-        if (forceSchedule || lockedWorlds.containsKey(worldName))
-            lockedWorlds.put(worldName, SERVICE.schedule(() -> updateLock(worldName, false), LOCK_INTERVAL, TimeUnit.MILLISECONDS));
     }
 
     @Override
@@ -137,8 +100,6 @@ public class OneBlockLoader implements SlimeLoader {
                 statement.setBytes(2, serializedWorld);
                 statement.setBytes(3, serializedWorld);
                 statement.executeUpdate();
-
-                if (lock) updateLock(worldName, true);
             }
         } catch (SQLException ex) {
             throw new IOException(ex);
@@ -177,7 +138,7 @@ public class OneBlockLoader implements SlimeLoader {
 
                 if (!resultSet.next()) throw new UnknownWorldException(worldName);
 
-                return System.currentTimeMillis() - resultSet.getLong("locked") <= MAX_LOCK_TIME;
+                return resultSet.getLong("locked") == 1;
             }
 
         } catch (SQLException ex) {

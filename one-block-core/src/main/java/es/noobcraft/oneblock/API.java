@@ -1,21 +1,30 @@
 package es.noobcraft.oneblock;
 
 import es.noobcraft.oneblock.api.OneBlock;
-import es.noobcraft.oneblock.api.database.ProfileLoader;
+import es.noobcraft.oneblock.api.profile.ProfileLoader;
 import es.noobcraft.oneblock.api.player.PlayerCache;
+import es.noobcraft.oneblock.api.profile.ProfileManager;
 import es.noobcraft.oneblock.api.world.WorldManager;
-import es.noobcraft.oneblock.database.SqlProfileLoader;
+import es.noobcraft.oneblock.profile.BaseProfileManager;
+import es.noobcraft.oneblock.profile.SqlProfileLoader;
 import es.noobcraft.oneblock.player.SetPlayerCache;
 import es.noobcraft.oneblock.world.OneBlockWorldManager;
 
 public class API implements OneBlock {
     private final PlayerCache playerCache = new SetPlayerCache();
     private final ProfileLoader profileLoader = new SqlProfileLoader();
+    private final ProfileManager profileManager = new BaseProfileManager();
+
     private final WorldManager worldManager = new OneBlockWorldManager();
 
     @Override
     public PlayerCache getPlayerCache() {
         return playerCache;
+    }
+
+    @Override
+    public ProfileManager getProfileManager() {
+        return profileManager;
     }
 
     @Override

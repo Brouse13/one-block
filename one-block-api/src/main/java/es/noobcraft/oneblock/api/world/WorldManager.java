@@ -11,7 +11,7 @@ public interface WorldManager {
 
     boolean createWorld(OneBlockPlayer player, String name) throws IOException, WorldAlreadyExistsException;
 
-    boolean loadWorld(String name) throws CorruptedWorldException, UnknownWorldException;
+    boolean loadWorld(String name, boolean readOnly) throws CorruptedWorldException, UnknownWorldException;
 
     boolean unloadWorld(String name);
 }

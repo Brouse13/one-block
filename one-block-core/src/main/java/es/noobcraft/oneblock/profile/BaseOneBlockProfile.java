@@ -21,17 +21,17 @@ public class BaseOneBlockProfile implements OneBlockProfile {
     @Getter private int islandPermissions;
     @Getter private Material profileItem;
 
-    public BaseOneBlockProfile(OneBlockPlayer owner, String islandOwner, String profileName) {
+    public BaseOneBlockProfile(OneBlockPlayer owner, String islandOwner, String profileName, int islandPermissions) {
         this.owner = owner;
         this.profileName = profileName;
         this.islandOwner = islandOwner;
         this.inventory = null;
-        this.islandPermissions = 0;
+        this.islandPermissions = islandPermissions;
         this.profileItem = OneBlockConstants.DEF_PROFILE_MATERIAL;
     }
 
     public BaseOneBlockProfile(OneBlockPlayer owner, String profileName) {
-        this(owner, owner.getName(), profileName);
+        this(owner, owner.getName(), profileName, -1);
     }
 
     public BaseOneBlockProfile(ResultSet resultSet) {
@@ -43,8 +43,6 @@ public class BaseOneBlockProfile implements OneBlockProfile {
             this.inventory = inventory == null ? null : inventory.getBytes(0, (int) inventory.length());
             this.islandPermissions = resultSet.getInt("island_permissions");
             this.profileItem = Material.valueOf(resultSet.getString("itemstack"));
-        }catch (SQLException exception) {
-            //
-        }
+        }catch (SQLException exception) {}
     }
 }
