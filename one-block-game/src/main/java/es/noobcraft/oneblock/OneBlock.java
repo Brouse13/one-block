@@ -1,23 +1,18 @@
 package es.noobcraft.oneblock;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.grinderwolf.swm.api.SlimePlugin;
-import es.noobcraft.core.api.Core;
 import es.noobcraft.core.api.command.PlayerCommand;
-import es.noobcraft.core.api.register.ConnectMode;
-import es.noobcraft.core.api.register.ConstantSupplier;
-import es.noobcraft.core.api.register.PropertyConstants;
+import es.noobcraft.oneblock.api.OneBlockAPI;
+import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.commands.ProfileCommand;
 import es.noobcraft.oneblock.listeners.PlayerListeners;
+import es.noobcraft.oneblock.loaders.PlayerLoader;
 import es.noobcraft.oneblock.logger.Logger;
 import es.noobcraft.oneblock.logger.LoggerType;
 import es.noobcraft.oneblock.world.OneBlockLoader;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.event.Listener;
 
 import java.util.Arrays;
@@ -35,7 +30,12 @@ public class OneBlock extends OneBlockPlugin {
 
     @Override
     public void disable() {
+        for (OneBlockPlayer oneBlockPlayer : OneBlockAPI.getPlayerCache().getPlayers()) {
+            if (oneBlockPlayer.getCurrentProfile() == null) return;
 
+            Logger.log(LoggerType.CONSOLE, "Forcing to unload player "+ oneBlockPlayer.getName());
+            PlayerLoader.unloadPlayer(oneBlockPlayer, oneBlockPlayer.getCurrentProfile());
+        }
     }
 
     @Override

@@ -1,7 +1,8 @@
 package es.noobcraft.oneblock.api;
 
-import es.noobcraft.oneblock.api.profile.ProfileLoader;
 import es.noobcraft.oneblock.api.player.PlayerCache;
+import es.noobcraft.oneblock.api.profile.ProfileCache;
+import es.noobcraft.oneblock.api.profile.ProfileLoader;
 import es.noobcraft.oneblock.api.profile.ProfileManager;
 import es.noobcraft.oneblock.api.world.WorldManager;
 import lombok.NonNull;
@@ -21,6 +22,10 @@ public class OneBlockAPI {
 
     public static ProfileLoader getProfileLoader() {
         return oneblock.getProfileLoader();
+    }
+
+    public static ProfileCache getProfileCache() {
+        return oneblock.getProfileCache();
     }
 
     public static PlayerCache getPlayerCache() {

@@ -16,12 +16,11 @@ public class BaseOneBlockPlayer implements OneBlockPlayer {
     @Getter private  final String name;
     @Setter private Set<OneBlockProfile> profiles = Sets.newHashSet();
     @Getter private final int maxProfiles;
-    @Getter private final long lastPlayed;
+    @Getter @Setter private OneBlockProfile currentProfile = null;
 
     public BaseOneBlockPlayer(String name) {
         this.name = name;
         this.maxProfiles = OneBlockConstants.DEF_PROFILES;
-        this.lastPlayed = System.currentTimeMillis();
     }
 
     @Override

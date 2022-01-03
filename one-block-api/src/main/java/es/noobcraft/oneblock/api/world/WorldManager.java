@@ -1,17 +1,28 @@
 package es.noobcraft.oneblock.api.world;
 
-import com.grinderwolf.swm.api.exceptions.CorruptedWorldException;
-import com.grinderwolf.swm.api.exceptions.UnknownWorldException;
-import com.grinderwolf.swm.api.exceptions.WorldAlreadyExistsException;
-import es.noobcraft.oneblock.api.player.OneBlockPlayer;
-
-import java.io.IOException;
-
 public interface WorldManager {
+    /**
+     * Create a new SlimeWorld into the database.
+     * If the world loading is set, it will be load
+     * in non read mode.
+     * @param name world name
+     * @param load if the world should be loaded
+     * @return the operation status
+     */
+    boolean createWorld(String name, boolean load);
 
-    boolean createWorld(OneBlockPlayer player, String name) throws IOException, WorldAlreadyExistsException;
+    /**
+     * Load a world from the database into Bukkit worlds
+     * @param name world name
+     * @param readOnly open in readOnly mode
+     * @return the operation status
+     */
+    boolean loadWorld(String name, boolean readOnly);
 
-    boolean loadWorld(String name, boolean readOnly) throws CorruptedWorldException, UnknownWorldException;
-
+    /**
+     * Unload a SlimeWorld from Bukkit worlds
+     * @param name SlimeWorld name
+     * @return the operation status
+     */
     boolean unloadWorld(String name);
 }

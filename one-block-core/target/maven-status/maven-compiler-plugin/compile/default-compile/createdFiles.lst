@@ -1,7 +1,7 @@
 es\noobcraft\oneblock\API.class
 es\noobcraft\oneblock\logger\LoggerType.class
+es\noobcraft\oneblock\profile\SetProfileCache.class
 es\noobcraft\oneblock\profile\BaseOneBlockProfile.class
-es\noobcraft\oneblock\inventory\BukkitInventorySerializer.class
 es\noobcraft\oneblock\profile\BaseProfileManager.class
 es\noobcraft\oneblock\profile\SqlProfileLoader.class
 es\noobcraft\oneblock\world\OneBlockWorldManager.class

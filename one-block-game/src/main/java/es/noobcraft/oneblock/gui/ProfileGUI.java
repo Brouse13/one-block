@@ -1,7 +1,5 @@
 package es.noobcraft.oneblock.gui;
 
-import com.grinderwolf.swm.api.exceptions.CorruptedWorldException;
-import com.grinderwolf.swm.api.exceptions.UnknownWorldException;
 import es.noobcraft.core.api.Core;
 import es.noobcraft.core.api.SpigotCore;
 import es.noobcraft.core.api.inventory.NoobInventory;
@@ -13,6 +11,8 @@ import es.noobcraft.oneblock.api.OneBlockAPI;
 import es.noobcraft.oneblock.api.OneBlockConstants;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.api.profile.OneBlockProfile;
+import es.noobcraft.oneblock.loaders.IslandLoad;
+import es.noobcraft.oneblock.loaders.PlayerLoader;
 import es.noobcraft.oneblock.logger.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -27,8 +27,8 @@ public class ProfileGUI {
     private final NoobPlayer noobPlayer;
     private final OneBlockPlayer oneBlockPlayer;
 
-    public ProfileGUI(NoobPlayer noobPlayer, OneBlockPlayer oneBlockPlayer) {
-        this.noobPlayer = noobPlayer;
+    public ProfileGUI(OneBlockPlayer oneBlockPlayer) {
+        this.noobPlayer = Core.getPlayerCache().getPlayer(oneBlockPlayer.getName());
         this.oneBlockPlayer = oneBlockPlayer;
         this.inventory = SpigotCore.getInventoryManager().createInventory(inventoryBuilder -> inventoryBuilder
                 .title(translator.getLegacyText(noobPlayer, "one-block.inventory.profiles.title", noobPlayer.getUsername()))
@@ -47,19 +47,19 @@ public class ProfileGUI {
                     .displayName(translator.getLegacyText(noobPlayer, "one-block.inventory.profiles.no-profiles.name"))
                     .lore(translator.getLegacyTextList(noobPlayer, "one-block.inventory.profiles.no-profiles.lore")).build());
         else {
-            for (int i = 0; i < oneBlockPlayer.getProfiles().size(); i++) {
-                OneBlockProfile[] oneBlockProfiles = oneBlockPlayer.getProfiles().toArray(new OneBlockProfile[0]);
-                inventory.set(10+ i*2, ItemBuilder.from(oneBlockProfiles[i].getProfileItem())
-                        .displayName(translator.getLegacyText(noobPlayer, "one-block.inventory.profiles.profile-info.name", oneBlockProfiles[i].getProfileName()))
-                        .lore(translator.getLegacyTextList(noobPlayer, "one-block.inventory.profiles.profile-info.name")).build());
+            int i = 0;
+            for (OneBlockProfile profile : oneBlockPlayer.getProfiles()) {
+                inventory.set(10+ i*2, ItemBuilder.from(profile.getProfileItem())
+                        .displayName(translator.getLegacyText(noobPlayer, "one-block.inventory.profiles.profile-info.name", profile.getProfileName()))
+                        .lore(translator.getLegacyTextList(noobPlayer, "one-block.inventory.profiles.profile-info.name")).build(),
+                        event -> {
+                            IslandLoad.loadIsland(oneBlockPlayer, profile);
+                            PlayerLoader.loadPlayer(oneBlockPlayer, profile);
+                            oneBlockPlayer.setCurrentProfile(profile);
+                        });
+                i++;
             }
         }
-
-        inventory.set(35, ItemBuilder.from(Material.ARROW)
-                .displayName(translator.getLegacyText(noobPlayer, "one-block.inventory.profiles.close.name"))
-                .lore(translator.getLegacyTextList(noobPlayer, "one-block.inventory.profiles.close.lore")).build(),
-                event -> event.getWhoClicked().getOpenInventory().close());
-
         inventory.set(7, SkullBuilder.create().textures(OneBlockConstants.ADD_PROFILE_TEXTURE)
                 .displayName(translator.getLegacyText(noobPlayer, "one-block.inventory.profiles.add-profile.name"))
                 .lore(translator.getLegacyTextList(noobPlayer, "one-block.inventory.profiles.add-profile.lore")).build(),
@@ -78,6 +78,10 @@ public class ProfileGUI {
                 .displayName(translator.getLegacyText(noobPlayer, "one-block.inventory.profiles.remove-profile.name"))
                 .lore(translator.getLegacyTextList(noobPlayer, "one-block.inventory.profiles.remove-profile.lore")).build(),
                 event -> new RemoveProfileGUI(noobPlayer, oneBlockPlayer).openInventory());
+        inventory.set(35, ItemBuilder.from(Material.ARROW)
+                        .displayName(translator.getLegacyText(noobPlayer, "one-block.inventory.profiles.close.name"))
+                        .lore(translator.getLegacyTextList(noobPlayer, "one-block.inventory.profiles.close.lore")).build(),
+                event -> event.getWhoClicked().getOpenInventory().close());
     }
 
     private void update(NoobInventory inventory) {}
@@ -90,11 +94,6 @@ public class ProfileGUI {
         final String worldName = System.currentTimeMillis() + "";
         oneBlockPlayer.addProfile(OneBlockAPI.getProfileLoader().createProfile(oneBlockPlayer, oneBlockPlayer, -1, worldName));
 
-        try {
-            OneBlockAPI.getWorldManager().loadWorld(worldName, false);
-        } catch (CorruptedWorldException | UnknownWorldException e) {
-            e.printStackTrace();
-        }
         Logger.player(noobPlayer, "one-block.messages.profile-created");
 
         final World world = Bukkit.getWorld(worldName);

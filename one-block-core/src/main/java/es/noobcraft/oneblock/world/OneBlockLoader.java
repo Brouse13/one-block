@@ -1,7 +1,8 @@
 package es.noobcraft.oneblock.world;
 
 import com.google.common.collect.Maps;
-import com.grinderwolf.swm.api.exceptions.*;
+import com.grinderwolf.swm.api.exceptions.UnknownWorldException;
+import com.grinderwolf.swm.api.exceptions.WorldInUseException;
 import com.grinderwolf.swm.api.loaders.SlimeLoader;
 import es.noobcraft.core.api.Core;
 

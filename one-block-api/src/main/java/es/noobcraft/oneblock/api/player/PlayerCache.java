@@ -4,34 +4,32 @@ import java.util.Set;
 
 public interface PlayerCache {
     /**
-     * Return a set of all the online players on
-     * cache.
-     * @return set with all the players
+     * Return a set of all the online players in cache.
+     * @return all the oline players
      */
     Set<OneBlockPlayer> getPlayers();
 
     /**
-     * Get the corresponding OneBlockPlayer with the
-     * given name
+     * Get the OneBlockPlayer loaded on the cache.
      * @param name player name
-     * @return OneBlock player
+     * @return the OneBlockPlayer
      */
     OneBlockPlayer getPlayer(String name);
 
     /**
-     * Add a player to the player cache and
+     * Add a new OneBlockPlayer to the cache and
      * return the status of the operation.
-     * @param name player username
-     * @return the status of the operation
+     * @param name OneBlockPlayer username
+     * @return the operation status
      */
     boolean addPlayer(String name);
 
     /**
-     * Remove a player from the player cache and
+     * Remove a OneBlockPlayer from the cache and
      * return the status of the operation.
      * This method is called on NoobPlayerQuitEvent.
-     * @param name player username
-     * @return the status of the operation
+     * @param name OneBlockPlayer username
+     * @return the operation status
      */
     boolean removePlayer(String name);
 }

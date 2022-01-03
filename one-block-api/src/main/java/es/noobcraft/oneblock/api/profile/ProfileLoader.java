@@ -7,29 +7,39 @@ import java.util.Set;
 
 public interface ProfileLoader {
     /**
-     * Return if the database has any profile with the given name
-     * @param player player to check profiles
+     * Get if the database has a profile with the given name
+     * @param player player to check from
      * @param name profile name
      * @return if the profile exists
      */
-    boolean existProfile(OneBlockPlayer player, String name);
+    boolean existProfile(@NonNull OneBlockPlayer player, @NonNull String name);
 
     /**
      * Create a new profile to the given player with a specific name.
-     * @param player profile owner
-     * @param owner island owner
+     * @param owner profile owner
+     * @param islandOwner island owner
      * @param perms profile owner permissions
      * @param name profile name
      * @return the created profile
      */
-    OneBlockProfile createProfile(@NonNull OneBlockPlayer player, @NonNull OneBlockPlayer owner, int perms, @NonNull String name);
+    OneBlockProfile createProfile(@NonNull OneBlockPlayer owner, @NonNull OneBlockPlayer islandOwner, int perms, @NonNull String name);
 
     /**
-     * Load all the players profiles from the database
+     * Get all the player profiles that are loaded on the database
      * @param player player to load profiles
      * @return all the player profiles
      */
-    Set<OneBlockProfile> getProfiles(OneBlockPlayer player);
+    Set<OneBlockProfile> getProfiles(@NonNull OneBlockPlayer player);
+
+    /**
+     * Get all the profiles that are stored for a specific world.
+     * Those profiles should not be stored on the ProfileCache due to
+     * they won't be removed on player leave. If they're added they must
+     * be removed manually.
+     * @param world world to query
+     * @return stored profiles
+     */
+    Set<OneBlockProfile> getProfiles(@NonNull String world);
 
     /**
      * Delete a specific profile from the database
@@ -43,5 +53,5 @@ public interface ProfileLoader {
      * @param profile profile to update
      * @return the operation status
      */
-    boolean updateProfile(OneBlockProfile profile);
+    boolean updateProfile(@NonNull OneBlockProfile profile);
 }

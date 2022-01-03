@@ -3,48 +3,56 @@ package es.noobcraft.oneblock.api.profile;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import org.bukkit.Material;
 
-import java.util.Set;
-
 public interface OneBlockProfile {
     /**
-     * Return the owner of this profile. If he
-     * removes the profile all the coop players will
-     * lose the access to the profile
-     * @return profile region
+     * Get the owner of this profile, it might be
+     * different from the island owner.
+     * @return profile owner
      */
     OneBlockPlayer getOwner();
 
     /**
-     * Get the profile name that is stored on the database
-     * it corresponds to the database world name
-     * @return the profile name
+     * Get the profile and world name.
+     * @return the profile and world name
      */
     String getProfileName();
 
     /**
-     * Get the name of the player who owns the island
+     * Get the name of the island owner.
      * @return island owner name
      */
     String getIslandOwner();
 
     /**
-     * Get the player inventory encoded in a base64 string.
-     * First element is player inventory, second its inventory
-     * @return serialized inventory
+     * Get the player inventory and armour content
+     * serialized in a byte array.
+     * @return the serialized inventory
      */
     byte[] getInventory();
 
     /**
-     * Return all the settings to this profile
-     * all of these are global settings.
-     * The value -1 is all perms
-     * @return profile settings
+     * Set a new InventoryContent
+     * @param content new content
+     */
+    void setInventory(byte[] content);
+
+    /**
+     * Get the player permissions on the island.
+     * Values:
+     * 0xFFFF - All permissions
+     * 0x0000 - No permissions
+     * @return the island permissions
      */
     int getIslandPermissions();
 
     /**
-     * Get the Material that appears on the menu
-     * to represent the profile.
+     * Set the island permissions
+     * @param permissions new permissions
+     */
+    void setIslandPermissions(int permissions);
+
+    /**
+     * Get the profile Material that will display on the menu.
      * @return profile Material
      */
     Material getProfileItem();

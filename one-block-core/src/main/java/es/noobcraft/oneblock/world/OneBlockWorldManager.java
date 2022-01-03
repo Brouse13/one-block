@@ -5,7 +5,6 @@ import com.grinderwolf.swm.api.exceptions.*;
 import com.grinderwolf.swm.api.world.SlimeWorld;
 import com.grinderwolf.swm.api.world.properties.SlimeProperties;
 import com.grinderwolf.swm.api.world.properties.SlimePropertyMap;
-import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.api.world.WorldManager;
 import es.noobcraft.oneblock.logger.Logger;
 import es.noobcraft.oneblock.logger.LoggerType;
@@ -18,36 +17,38 @@ public class OneBlockWorldManager implements WorldManager {
     private final SlimePlugin slimePlugin = ((SlimePlugin) Bukkit.getPluginManager().getPlugin("SlimeWorldManager"));
 
     @Override
-    public boolean createWorld(OneBlockPlayer player, String name) throws WorldAlreadyExistsException {
-        if (player.getProfiles().size() >= player.getMaxProfiles()) return false;
-
+    public boolean createWorld(String name, boolean load) {
         try {
             SlimeWorld emptyWorld = slimePlugin.createEmptyWorld(slimePlugin.getLoader("one-block"), name, false, getProperties());
             slimePlugin.generateWorld(emptyWorld);
+
+            if (load) loadWorld(name, false);
             return true;
-        } catch (IOException e) {
+        } catch (IOException | WorldAlreadyExistsException e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     @Override
-    public boolean loadWorld(String name, boolean locked) throws CorruptedWorldException, UnknownWorldException {
+    public boolean loadWorld(String name, boolean locked) {
         try {
-            slimePlugin.loadWorld(slimePlugin.getLoader("one-block"), name, locked, getProperties());
+            final SlimeWorld slimeWorld = slimePlugin.loadWorld(slimePlugin.getLoader("one-block"), name, locked, getProperties());
+            slimePlugin.generateWorld(slimeWorld);
             return true;
-        } catch (NewerFormatException | IOException | WorldInUseException  e) {
+
+        } catch (NewerFormatException | IOException | WorldInUseException | CorruptedWorldException | UnknownWorldException e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     @Override
     public boolean unloadWorld(String name) {
         final World world = Bukkit.getWorld(name);
 
-        if (world != null || world.getPlayers() == null || !world.getPlayers().isEmpty()) {
-            Logger.log(LoggerType.ERROR, "Error, world,couldn't be unloaded");
+        if (world == null) {
+            Logger.log(LoggerType.ERROR, "World is already unloaded");
             return false;
         }
 
@@ -61,9 +62,9 @@ public class OneBlockWorldManager implements WorldManager {
     private SlimePropertyMap getProperties() {
         SlimePropertyMap properties = new SlimePropertyMap();
         properties.setString(SlimeProperties.DIFFICULTY, "hard");
-        properties.setInt(SlimeProperties.SPAWN_X, 123);
-        properties.setInt(SlimeProperties.SPAWN_Y, 112);
-        properties.setInt(SlimeProperties.SPAWN_Z, 170);
+        properties.setInt(SlimeProperties.SPAWN_X, 0);
+        properties.setInt(SlimeProperties.SPAWN_Y, 30);
+        properties.setInt(SlimeProperties.SPAWN_Z, 0);
         return properties;
     }
 
