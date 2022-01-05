@@ -1,13 +1,14 @@
 package es.noobcraft.oneblock.listeners;
 
 import es.noobcraft.core.api.event.AsyncNoobPlayerPreLoginEvent;
+import es.noobcraft.core.api.event.NoobPlayerJoinEvent;
 import es.noobcraft.core.api.event.NoobPlayerQuitEvent;
 import es.noobcraft.oneblock.api.OneBlockAPI;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.loaders.PlayerLoader;
+import es.noobcraft.oneblock.scoreboard.LobbyScoreBoard;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
@@ -22,6 +23,12 @@ public class PlayerListeners implements Listener {
 
         final OneBlockPlayer player = OneBlockAPI.getPlayerCache().getPlayer(event.getPlayer().getUsername());
         player.setProfiles(OneBlockAPI.getProfileLoader().getProfiles(player));
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onNoobPlayerJoin(NoobPlayerJoinEvent event) {
+        final OneBlockPlayer player = OneBlockAPI.getPlayerCache().getPlayer(event.getNoobPlayer().getUsername());
+        OneBlockAPI.getScoreboardManager().createScoreboard(player, new LobbyScoreBoard(player));
     }
 
     @EventHandler(ignoreCancelled = true)

@@ -5,10 +5,12 @@ C:\Users\Brouse\IdeaProjects\nooobcraft\one-block\one-block-api\src\main\java\es
 C:\Users\Brouse\IdeaProjects\nooobcraft\one-block\one-block-api\src\main\java\es\noobcraft\oneblock\api\OneBlockConstants.java
 C:\Users\Brouse\IdeaProjects\nooobcraft\one-block\one-block-api\src\main\java\es\noobcraft\oneblock\api\player\PlayerCache.java
 C:\Users\Brouse\IdeaProjects\nooobcraft\one-block\one-block-api\src\main\java\es\noobcraft\oneblock\api\profile\ProfileManager.java
+C:\Users\Brouse\IdeaProjects\nooobcraft\one-block\one-block-api\src\main\java\es\noobcraft\oneblock\api\scoreboard\OneBlockScoreBoard.java
 C:\Users\Brouse\IdeaProjects\nooobcraft\one-block\one-block-api\src\main\java\es\noobcraft\oneblock\api\profile\ProfileLoader.java
 C:\Users\Brouse\IdeaProjects\nooobcraft\one-block\one-block-api\src\main\java\es\noobcraft\oneblock\api\events\OneBlockProfileDeleteEvent.java
 C:\Users\Brouse\IdeaProjects\nooobcraft\one-block\one-block-api\src\main\java\es\noobcraft\oneblock\api\events\OneBlockEvent.java
 C:\Users\Brouse\IdeaProjects\nooobcraft\one-block\one-block-api\src\main\java\es\noobcraft\oneblock\api\inventory\InventorySerializer.java
+C:\Users\Brouse\IdeaProjects\nooobcraft\one-block\one-block-api\src\main\java\es\noobcraft\oneblock\api\scoreboard\ScoreboardManager.java
 C:\Users\Brouse\IdeaProjects\nooobcraft\one-block\one-block-api\src\main\java\es\noobcraft\oneblock\api\world\WorldManager.java
 C:\Users\Brouse\IdeaProjects\nooobcraft\one-block\one-block-api\src\main\java\es\noobcraft\oneblock\api\events\OneBlockProfileCreateEvent.java
 C:\Users\Brouse\IdeaProjects\nooobcraft\one-block\one-block-api\src\main\java\es\noobcraft\oneblock\api\player\OneBlockPlayer.java

@@ -1,6 +1,7 @@
 es\noobcraft\oneblock\API.class
 es\noobcraft\oneblock\logger\LoggerType.class
 es\noobcraft\oneblock\profile\SetProfileCache.class
+es\noobcraft\oneblock\scoreboard\BaseScoreboardManager.class
 es\noobcraft\oneblock\profile\BaseOneBlockProfile.class
 es\noobcraft\oneblock\profile\BaseProfileManager.class
 es\noobcraft\oneblock\profile\SqlProfileLoader.class

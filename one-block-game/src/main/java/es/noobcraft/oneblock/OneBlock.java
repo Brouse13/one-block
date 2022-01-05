@@ -5,7 +5,9 @@ import com.grinderwolf.swm.api.SlimePlugin;
 import es.noobcraft.core.api.command.PlayerCommand;
 import es.noobcraft.oneblock.api.OneBlockAPI;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
+import es.noobcraft.oneblock.commands.CoopPermsCommand;
 import es.noobcraft.oneblock.commands.ProfileCommand;
+import es.noobcraft.oneblock.listeners.IslandListeners;
 import es.noobcraft.oneblock.listeners.PlayerListeners;
 import es.noobcraft.oneblock.loaders.PlayerLoader;
 import es.noobcraft.oneblock.logger.Logger;
@@ -24,7 +26,7 @@ public class OneBlock extends OneBlockPlugin {
     public void enable() {
         SlimePlugin slimePlugin = ((SlimePlugin) Bukkit.getPluginManager().getPlugin("SlimeWorldManager"));
         slimePlugin.registerLoader("one-block", new OneBlockLoader());
-        registerServer();
+        updateScoreboards();
         Logger.log(LoggerType.CONSOLE, "OneBlock enabled successfully");
     }
 
@@ -36,19 +38,20 @@ public class OneBlock extends OneBlockPlugin {
             Logger.log(LoggerType.CONSOLE, "Forcing to unload player "+ oneBlockPlayer.getName());
             PlayerLoader.unloadPlayer(oneBlockPlayer, oneBlockPlayer.getCurrentProfile());
         }
+        OneBlockAPI.getScoreboardManager().clearScoreBoards();
     }
 
     @Override
     public Set<PlayerCommand> loadCommand() {
-        return Sets.newHashSet(Arrays.asList(new ProfileCommand()));
+        return Sets.newHashSet(Arrays.asList(new ProfileCommand(), new CoopPermsCommand()));
     }
 
     @Override
     public Set<Listener> registerListeners() {
-        return Sets.newHashSet(Arrays.asList(new PlayerListeners()));
+        return Sets.newHashSet(Arrays.asList(new PlayerListeners(), new IslandListeners()));
     }
 
-    private void registerServer() {
-
+    private void updateScoreboards() {
+        this.getServer().getScheduler().scheduleSyncRepeatingTask(this, () -> OneBlockAPI.getScoreboardManager().update(),0L, 20L);
     }
 }

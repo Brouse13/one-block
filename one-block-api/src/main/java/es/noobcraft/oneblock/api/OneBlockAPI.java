@@ -4,6 +4,7 @@ import es.noobcraft.oneblock.api.player.PlayerCache;
 import es.noobcraft.oneblock.api.profile.ProfileCache;
 import es.noobcraft.oneblock.api.profile.ProfileLoader;
 import es.noobcraft.oneblock.api.profile.ProfileManager;
+import es.noobcraft.oneblock.api.scoreboard.ScoreboardManager;
 import es.noobcraft.oneblock.api.world.WorldManager;
 import lombok.NonNull;
 
@@ -34,5 +35,9 @@ public class OneBlockAPI {
 
     public static WorldManager getWorldManager() {
         return oneblock.getWorldManager();
+    }
+
+    public static ScoreboardManager getScoreboardManager() {
+        return oneblock.getScoreboardManager();
     }
 }

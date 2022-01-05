@@ -1,4 +1,5 @@
 es\noobcraft\oneblock\api\player\PlayerCache.class
+es\noobcraft\oneblock\api\scoreboard\OneBlockScoreBoard.class
 es\noobcraft\oneblock\api\OneBlockConstants.class
 es\noobcraft\oneblock\api\flags\FlagEncoder.class
 es\noobcraft\oneblock\api\events\OneBlockProfileCreateEvent.class
@@ -11,6 +12,7 @@ es\noobcraft\oneblock\api\profile\ProfileCache.class
 es\noobcraft\oneblock\api\events\OneBlockProfileDeleteEvent.class
 es\noobcraft\oneblock\api\OneBlockAPI.class
 es\noobcraft\oneblock\api\events\OneBlockCoopAddEvent.class
+es\noobcraft\oneblock\api\scoreboard\ScoreboardManager.class
 es\noobcraft\oneblock\api\player\OneBlockPlayer.class
 es\noobcraft\oneblock\api\exceptions\IslandFullException.class
 es\noobcraft\oneblock\api\profile\ProfileManager.class

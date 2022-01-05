@@ -14,6 +14,7 @@ import es.noobcraft.oneblock.api.profile.OneBlockProfile;
 import es.noobcraft.oneblock.loaders.IslandLoad;
 import es.noobcraft.oneblock.loaders.PlayerLoader;
 import es.noobcraft.oneblock.logger.Logger;
+import es.noobcraft.oneblock.scoreboard.IslandScoreBoard;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -56,6 +57,7 @@ public class ProfileGUI {
                             IslandLoad.loadIsland(oneBlockPlayer, profile);
                             PlayerLoader.loadPlayer(oneBlockPlayer, profile);
                             oneBlockPlayer.setCurrentProfile(profile);
+                            OneBlockAPI.getScoreboardManager().createScoreboard(oneBlockPlayer, new IslandScoreBoard(profile));
                         });
                 i++;
             }

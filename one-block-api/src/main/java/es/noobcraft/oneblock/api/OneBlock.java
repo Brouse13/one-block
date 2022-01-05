@@ -4,6 +4,7 @@ import es.noobcraft.oneblock.api.player.PlayerCache;
 import es.noobcraft.oneblock.api.profile.ProfileCache;
 import es.noobcraft.oneblock.api.profile.ProfileLoader;
 import es.noobcraft.oneblock.api.profile.ProfileManager;
+import es.noobcraft.oneblock.api.scoreboard.ScoreboardManager;
 import es.noobcraft.oneblock.api.world.WorldManager;
 
 public interface OneBlock {
@@ -41,4 +42,11 @@ public interface OneBlock {
      * @return OneBlock ProfileManager
      */
     ProfileManager getProfileManager();
+
+    /**
+     * Get the ScoreboardManager that will manage the creation
+     * and deletion of player scoreboards
+     * @return OneBlock ScoreboardManager
+     */
+    ScoreboardManager getScoreboardManager();
 }
