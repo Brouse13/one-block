@@ -40,8 +40,8 @@ public class RemoveProfileGUI {
             OneBlockProfile profile = oneBlockProfiles[i];
 
             inventory.set(10+ i*2, ItemBuilder.from(oneBlockProfiles[i].getProfileItem())
-                    .displayName(translator.getLegacyText(noobPlayer, "one-block.inventory.remove-profile.profile.name", profile))
-                    .lore(translator.getLegacyTextList(noobPlayer, "one-block.inventory.remove-profile.profile.lore")).build(),
+                    .displayName(translator.getLegacyText(noobPlayer, "one-block.inventory.remove-profiles.profile.name", profile.getProfileName()))
+                    .lore(translator.getLegacyTextList(noobPlayer, "one-block.inventory.remove-profiles.profile.lore")).build(),
                     event -> {
                         event.getWhoClicked().closeInventory();
                         OneBlockAPI.getProfileLoader().deleteProfile(profile);

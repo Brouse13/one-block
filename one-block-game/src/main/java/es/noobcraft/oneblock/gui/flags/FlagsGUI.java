@@ -16,6 +16,7 @@ import org.bukkit.event.inventory.InventoryType;
 
 public class FlagsGUI {
     private final Translator translator = Core.getTranslator();
+
     private final NoobInventory inventory;
     private final NoobPlayer noobPlayer;
     private final OneBlockPlayer oneBlockPlayer;
@@ -26,9 +27,9 @@ public class FlagsGUI {
         this.oneBlockPlayer = oneBlockPlayer;
         this.oneBlockProfile = profile;
         this.inventory = SpigotCore.getInventoryManager().createInventory(inventoryBuilder -> inventoryBuilder
-                .title(translator.getLegacyText(noobPlayer, "one-block.inventory.permissions.title"))
+                .title(translator.getLegacyText(noobPlayer, "one-block.inventory.permissions.title", profile.getProfileName()))
                 .closeable(true)
-                .rows((IslandFlags.values().length / 9)+ 1)
+                .rows((IslandFlags.values().length / 9)+ 2)
                 .type(InventoryType.CHEST)
                 .initializer(this::initialize)
                 .updater(this::update));
@@ -40,11 +41,11 @@ public class FlagsGUI {
 
         int i = 0;
         for (IslandFlags flag : IslandFlags.values()) {
-            String name = flag.name().toLowerCase();
+            String translatedFlag = translator.getLegacyText(noobPlayer, "one-block.island.flags. "+ flag.name().toLowerCase());
 
             inventory.set(i, ItemBuilder.from(flag.getMaterial())
-                    .displayName(translator.getLegacyText(noobPlayer, "one-block.inventory.permissions."+ name + ".name"))
-                    .lore(translator.getLegacyTextList(noobPlayer, "one-block.inventory.permissions."+ name + ".name")).build(),
+                    .displayName(translator.getLegacyText(noobPlayer, "one-block.inventory.permissions.flag.name", translatedFlag))
+                    .lore(translator.getLegacyTextList(noobPlayer, "one-block.inventory.permissions.flag.lore")).build(),
                         event -> new FlagStatusGUI(OneBlockAPI.getProfileLoader()
                                 .getProfiles(oneBlockProfile.getProfileName()), flag, oneBlockPlayer).openInventory());
             i++;

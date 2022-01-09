@@ -52,7 +52,7 @@ public class ProfileGUI {
             for (OneBlockProfile profile : oneBlockPlayer.getProfiles()) {
                 inventory.set(10+ i*2, ItemBuilder.from(profile.getProfileItem())
                         .displayName(translator.getLegacyText(noobPlayer, "one-block.inventory.profiles.profile-info.name", profile.getProfileName()))
-                        .lore(translator.getLegacyTextList(noobPlayer, "one-block.inventory.profiles.profile-info.name")).build(),
+                        .lore(translator.getLegacyTextList(noobPlayer, "one-block.inventory.profiles.profile-info.lore")).build(),
                         event -> {
                             IslandLoad.loadIsland(oneBlockPlayer, profile);
                             PlayerLoader.loadPlayer(oneBlockPlayer, profile);
