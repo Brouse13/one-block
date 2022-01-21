@@ -16,11 +16,8 @@ public class BaseProfileManager implements ProfileManager {
     }
 
     @Override
-    public boolean canBuild(Set<OneBlockProfile> profiles, OneBlockPlayer player) {
-        //TODO perms I don't know how to manage them
-        return profiles.stream()
-                .filter(profile -> profile.getOwner().getName().equals(player.getName()))
-                .anyMatch(profile -> profile.getIslandPermissions() == -1);
+    public OneBlockProfile getProfile(Set<OneBlockProfile> profiles, OneBlockPlayer player) {
+        return profiles.stream().filter(profile -> profile.getOwner().getName().equals(player.getName())).findFirst().orElse(null);
     }
 
     @Override

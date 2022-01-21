@@ -7,7 +7,7 @@ import java.util.Set;
 
 public interface ProfileManager {
     /**
-     * Get a specific profile from a set of profiles.
+     * Get from a set of profiles the one where the name matches
      * @param profiles set of profiles
      * @param name profile name to search
      * @return the profile found
@@ -15,12 +15,12 @@ public interface ProfileManager {
     OneBlockProfile getProfile(Set<OneBlockProfile> profiles, String name);
 
     /**
-     * Get if a player can build on one of the profiles given
+     * Get from a set of profiles the one where the owner matches
      * @param profiles set of profiles
-     * @param player if player can build
-     * @return if the player can build
+     * @param player profile owner
+     * @return the profile found
      */
-    boolean canBuild(Set<OneBlockProfile> profiles, OneBlockPlayer player);
+    OneBlockProfile getProfile(Set<OneBlockProfile> profiles, OneBlockPlayer player);
 
     /**
      * Create a new coop to te given player, if the island is full it will

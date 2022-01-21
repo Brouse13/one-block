@@ -1,6 +1,5 @@
 package es.noobcraft.oneblock.world;
 
-import com.google.common.collect.Maps;
 import com.grinderwolf.swm.api.exceptions.UnknownWorldException;
 import com.grinderwolf.swm.api.exceptions.WorldInUseException;
 import com.grinderwolf.swm.api.loaders.SlimeLoader;
@@ -13,37 +12,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ScheduledFuture;
 
 public class OneBlockLoader implements SlimeLoader {
-    //Create tables queries
-    private static final String CREATE_VERSIONING_TABLE_QUERY = "CREATE TABLE IF NOT EXISTS `database_version` (`id` INT NOT NULL AUTO_INCREMENT, " +
-            "`version` INT(11), PRIMARY KEY(id));";
-    private static final String CREATE_WORLDS_TABLE_QUERY = "CREATE TABLE IF NOT EXISTS `one_block_worlds` (`id` INT NOT NULL AUTO_INCREMENT, " +
-            "`name` VARCHAR(255) UNIQUE, `world` MEDIUMBLOB, `locked` BIGINT, PRIMARY KEY(id));";
-
-    //World queries
-    private static final String SELECT_WORLD_QUERY = "SELECT `world`, `locked` FROM `one_block_worlds` WHERE `name` = ?;";
-    private static final String UPDATE_WORLD_QUERY = "INSERT INTO `one_block_worlds` (`name`, `world`, `locked`) VALUES (?, ?, 0) ON DUPLICATE KEY UPDATE `world` = ?;";
-    private static final String UPDATE_LOCK_QUERY = "UPDATE `one_block_worlds` SET `locked` = ? WHERE `name` = ?;";
-    private static final String DELETE_WORLD_QUERY = "DELETE FROM `one_block_worlds` WHERE `name` = ?;";
-    private static final String LIST_WORLDS_QUERY = "SELECT 'name' FROM one_block_worlds";
-
-    private final Map<String, ScheduledFuture> lockedWorlds = Maps.newHashMap();
-
-    public OneBlockLoader() throws SQLException {
-        try (Connection connection = Core.getSQLClient().getConnection()) {
-            //Create worlds table
-            try (PreparedStatement statement = connection.prepareStatement(CREATE_WORLDS_TABLE_QUERY)) {
-                statement.execute();
-            }
-            //Create versioning table
-            try (PreparedStatement statement = connection.prepareStatement(CREATE_VERSIONING_TABLE_QUERY)) {
-                statement.execute();
-            }
-        }
-    }
+    private static final String SELECT_WORLD_QUERY = "SELECT world, locked FROM one_block_worlds WHERE name = ?";
+    private static final String UPDATE_WORLD_QUERY = "INSERT INTO one_block_worlds (name, world, world_permissions, locked) VALUES (?, ?, 0, 0) ON DUPLICATE KEY UPDATE world = ?";
+    private static final String UPDATE_LOCK_QUERY = "UPDATE one_block_worlds SET locked = ? WHERE name = ?";
+    private static final String DELETE_WORLD_QUERY = "DELETE FROM one_block_worlds WHERE name = ?";
+    private static final String LIST_WORLDS_QUERY = "SELECT name FROM one_block_worlds";
 
     @Override
     public byte[] loadWorld(String worldName, boolean readOnly) throws UnknownWorldException, IOException, WorldInUseException {
@@ -83,8 +58,7 @@ public class OneBlockLoader implements SlimeLoader {
         try (Connection con = Core.getSQLClient().getConnection()) {
             try( PreparedStatement statement = con.prepareStatement(LIST_WORLDS_QUERY)) {
                 try(ResultSet resultSet = statement.executeQuery()) {
-                    while (resultSet.next())
-                        worldList.add(resultSet.getString("name"));
+                    while (resultSet.next()) worldList.add(resultSet.getString("name"));
                 }
             }
         } catch (SQLException ex) {
@@ -109,12 +83,6 @@ public class OneBlockLoader implements SlimeLoader {
 
     @Override
     public void unlockWorld(String worldName) throws IOException, UnknownWorldException {
-        ScheduledFuture future = lockedWorlds.remove(worldName);
-
-        if (future != null) {
-            future.cancel(false);
-        }
-
         try (Connection connection = Core.getSQLClient().getConnection()) {
             try(PreparedStatement statement = connection.prepareStatement(UPDATE_LOCK_QUERY)) {
                 statement.setLong(1, 0L);
@@ -129,9 +97,6 @@ public class OneBlockLoader implements SlimeLoader {
 
     @Override
     public boolean isWorldLocked(String worldName) throws IOException, UnknownWorldException {
-        if (lockedWorlds.containsKey(worldName)) return true;
-
-
         try (Connection connection = Core.getSQLClient().getConnection()) {
             try(PreparedStatement statement = connection.prepareStatement(SELECT_WORLD_QUERY)) {
                 statement.setString(1, worldName);
@@ -149,10 +114,6 @@ public class OneBlockLoader implements SlimeLoader {
 
     @Override
     public void deleteWorld(String worldName) throws IOException, UnknownWorldException {
-        ScheduledFuture future = lockedWorlds.remove(worldName);
-
-        if (future != null) future.cancel(false);
-
         try (Connection connection = Core.getSQLClient().getConnection()) {
             try(PreparedStatement statement = connection.prepareStatement(DELETE_WORLD_QUERY)) {
                 statement.setString(1, worldName);

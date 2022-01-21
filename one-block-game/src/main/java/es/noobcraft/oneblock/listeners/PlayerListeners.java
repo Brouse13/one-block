@@ -1,19 +1,26 @@
 package es.noobcraft.oneblock.listeners;
 
+import es.noobcraft.core.api.Core;
+import es.noobcraft.core.api.SpigotCore;
 import es.noobcraft.core.api.event.AsyncNoobPlayerPreLoginEvent;
 import es.noobcraft.core.api.event.NoobPlayerJoinEvent;
 import es.noobcraft.core.api.event.NoobPlayerQuitEvent;
+import es.noobcraft.core.api.item.ItemBuilder;
+import es.noobcraft.core.api.lang.Translator;
 import es.noobcraft.oneblock.api.OneBlockAPI;
+import es.noobcraft.oneblock.api.OneBlockConstants;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.loaders.PlayerLoader;
 import es.noobcraft.oneblock.scoreboard.LobbyScoreBoard;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 
 public class PlayerListeners implements Listener {
+    private final Translator translator = Core.getTranslator();
 
     @EventHandler(ignoreCancelled = true)
     public void onAsyncNoobPlayerPreLogin(AsyncNoobPlayerPreLoginEvent event) {
@@ -23,12 +30,22 @@ public class PlayerListeners implements Listener {
 
         final OneBlockPlayer player = OneBlockAPI.getPlayerCache().getPlayer(event.getPlayer().getUsername());
         player.setProfiles(OneBlockAPI.getProfileLoader().getProfiles(player));
+        player.getProfiles().forEach(profile -> OneBlockAPI.getProfileCache().addProfile(profile));
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onNoobPlayerJoin(NoobPlayerJoinEvent event) {
         final OneBlockPlayer player = OneBlockAPI.getPlayerCache().getPlayer(event.getNoobPlayer().getUsername());
         OneBlockAPI.getScoreboardManager().createScoreboard(player, new LobbyScoreBoard(player));
+
+        event.getNoobPlayer().teleport(OneBlockConstants.SPAWN);
+
+        //SpigotCore.getChatManager().setPerWorld(true);
+        event.getNoobPlayer().getInventory().setItem(0, SpigotCore.getImmutableItemManager().makeImmutable(
+                ItemBuilder.from(Material.NETHER_STAR)
+                        .displayName(translator.getLegacyText(event.getNoobPlayer(), ""))
+                        .lore(translator.getLegacyTextList(event.getNoobPlayer(), ""))
+                        .metadata("event", "profile-list").build()));
     }
 
     @EventHandler(ignoreCancelled = true)

@@ -19,13 +19,13 @@ import java.util.Set;
 
 public class SqlProfileLoader implements ProfileLoader {
     private static final String EXIST_PROFILE = "SELECT * FROM one_block_profiles WHERE username=? AND name=?";
-    private static final String CREATE_PROFILE = "INSERT INTO one_block_profiles VALUES(?, ?, ?, ?, ?, null, ?)";
-    private static final String GET_PROFILES = "SELECT * FROM one_block_profiles WHERE username=?";
-    private static final String GET_PROFILES_WORLD = "SELECT * FROM one_block_profiles WHERE world=?";
+    private static final String CREATE_PROFILE = "INSERT INTO one_block_profiles VALUES(?, ?, ?, ?, null, ?)";
+    private static final String GET_PROFILE_NAME = "SELECT * FROM one_block_profiles profile JOIN one_block_worlds world ON profile.world = world.name WHERE username=?";
+    private static final String GET_PROFILE_WORLD = "SELECT * FROM one_block_profiles profile JOIN one_block_worlds world ON profile.world = world.name WHERE world.name=?";
     private static final String DELETE_PROFILE = "DELETE FROM one_block_profiles WHERE name=?";
     private static final String DELETE_COOP = "DELETE FROM one_block_profiles WHERE username=? AND name=?";
-    private static final String UPDATE_PROFILE = "UPDATE one_block_profiles SET " +
-            "name=?, world=?, island_permissions=?, inventory=?, itemstack=? WHERE username=? AND name=?";
+    private static final String UPDATE_PROFILE = "UPDATE one_block_profiles SET name=?, world=?, inventory=?, itemstack=? WHERE username=? AND name=?";
+    private static final String UPDATE_PERMS = "UPDATE one_block_worlds SET world_permissions=? WHERE name=? ";
 
     private final SQLClient sqlClient = Core.getSQLClient();
 
@@ -59,8 +59,7 @@ public class SqlProfileLoader implements ProfileLoader {
                     statement.setString(2, name);
                     statement.setString(3, name);
                     statement.setString(4, islandOwner.getName());
-                    statement.setInt(5,  perms);
-                    statement.setString(6, OneBlockConstants.DEF_PROFILE_MATERIAL.toString());
+                    statement.setString(5, OneBlockConstants.DEF_PROFILE_MATERIAL.toString());
                     statement.execute();
                 }
             }
@@ -75,12 +74,11 @@ public class SqlProfileLoader implements ProfileLoader {
         Set<OneBlockProfile> profiles = Sets.newHashSet();
 
         try(Connection connection = sqlClient.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement(GET_PROFILES)) {
+            try (PreparedStatement statement = connection.prepareStatement(GET_PROFILE_NAME)) {
                 statement.setString(1, player.getName());
 
                 try(final ResultSet resultSet = statement.executeQuery()) {
                     while (resultSet.next()) profiles.add(new BaseOneBlockProfile(resultSet));
-
                 }
             }
         } catch (SQLException exception) {
@@ -94,10 +92,11 @@ public class SqlProfileLoader implements ProfileLoader {
         Set<OneBlockProfile> profiles = Sets.newHashSet();
 
         try(Connection connection = sqlClient.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement(GET_PROFILES_WORLD)) {
+            try (PreparedStatement statement = connection.prepareStatement(GET_PROFILE_WORLD)) {
                 statement.setString(1, world);
 
                 try(final ResultSet resultSet = statement.executeQuery()) {
+
                     while (resultSet.next()) profiles.add(new BaseOneBlockProfile(resultSet));
                 }
             }
@@ -142,6 +141,22 @@ public class SqlProfileLoader implements ProfileLoader {
                 statement.setString(5, profile.getProfileItem().name());//ItemStack
                 statement.setString(6, profile.getOwner().getName());//Profile username
                 statement.setString(7, profile.getProfileName());//Profile name
+                statement.executeUpdate();
+                return true;
+            }
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean updatePermissions(String world, int perms) {
+        try(Connection connection = sqlClient.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(UPDATE_PERMS)) {
+                statement.setInt(1, perms);
+                statement.setString(2, world);
+
                 statement.executeUpdate();
                 return true;
             }

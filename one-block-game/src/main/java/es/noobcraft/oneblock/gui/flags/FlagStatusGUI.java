@@ -9,13 +9,12 @@ import es.noobcraft.core.api.lang.Translator;
 import es.noobcraft.core.api.player.NoobPlayer;
 import es.noobcraft.oneblock.api.OneBlockAPI;
 import es.noobcraft.oneblock.api.flags.FlagEncoder;
-import es.noobcraft.oneblock.api.flags.IslandFlags;
+import es.noobcraft.oneblock.api.flags.IslandFlag;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.api.profile.OneBlockProfile;
 import es.noobcraft.oneblock.logger.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 
 import java.util.Set;
@@ -28,10 +27,10 @@ public class FlagStatusGUI {
     private final OneBlockPlayer oneBlockPlayer;
     private final Set<OneBlockProfile> profiles;
 
-    private final IslandFlags flag;
+    private final IslandFlag flag;
     private final String transatedFlag;
 
-    public FlagStatusGUI(Set<OneBlockProfile> profiles, IslandFlags flag, OneBlockPlayer oneBlockPlayer) {
+    public FlagStatusGUI(Set<OneBlockProfile> profiles, IslandFlag flag, OneBlockPlayer oneBlockPlayer) {
         this.noobPlayer = Core.getPlayerCache().getPlayer(oneBlockPlayer.getName());
         this.oneBlockPlayer = oneBlockPlayer;
         this.profiles = profiles;

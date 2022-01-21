@@ -33,6 +33,8 @@ public class OneBlockWorldManager implements WorldManager {
     @Override
     public boolean loadWorld(String name, boolean locked) {
         try {
+            if (Bukkit.getWorld(name) != null) return true;
+
             final SlimeWorld slimeWorld = slimePlugin.loadWorld(slimePlugin.getLoader("one-block"), name, locked, getProperties());
             slimePlugin.generateWorld(slimeWorld);
             return true;

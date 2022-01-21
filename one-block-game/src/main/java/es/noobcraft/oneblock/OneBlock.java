@@ -8,6 +8,7 @@ import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.commands.CoopPermsCommand;
 import es.noobcraft.oneblock.commands.ProfileCommand;
 import es.noobcraft.oneblock.listeners.IslandListeners;
+import es.noobcraft.oneblock.listeners.ItemListeners;
 import es.noobcraft.oneblock.listeners.PlayerListeners;
 import es.noobcraft.oneblock.loaders.PlayerLoader;
 import es.noobcraft.oneblock.logger.Logger;
@@ -48,7 +49,7 @@ public class OneBlock extends OneBlockPlugin {
 
     @Override
     public Set<Listener> registerListeners() {
-        return Sets.newHashSet(Arrays.asList(new PlayerListeners(), new IslandListeners()));
+        return Sets.newHashSet(Arrays.asList(new PlayerListeners(), new IslandListeners(), new ItemListeners()));
     }
 
     private void updateScoreboards() {

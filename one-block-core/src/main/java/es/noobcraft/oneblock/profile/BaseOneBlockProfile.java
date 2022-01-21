@@ -39,7 +39,7 @@ public class BaseOneBlockProfile implements OneBlockProfile {
             this.profileName = resultSet.getString("name");
             this.islandOwner = resultSet.getString("island_owner");
             this.inventory = inventory == null ? null : inventory.getBytes(1, (int) inventory.length());
-            this.islandPermissions = resultSet.getInt("island_permissions");
+            this.islandPermissions = resultSet.getInt("world_permissions");
             this.profileItem = Material.valueOf(resultSet.getString("itemstack"));
         }catch (SQLException exception) {
             exception.printStackTrace();
