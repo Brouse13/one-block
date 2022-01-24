@@ -6,8 +6,8 @@ import com.grinderwolf.swm.api.world.SlimeWorld;
 import com.grinderwolf.swm.api.world.properties.SlimeProperties;
 import com.grinderwolf.swm.api.world.properties.SlimePropertyMap;
 import es.noobcraft.oneblock.api.world.WorldManager;
-import es.noobcraft.oneblock.logger.Logger;
-import es.noobcraft.oneblock.logger.LoggerType;
+import es.noobcraft.oneblock.api.logger.Logger;
+import es.noobcraft.oneblock.api.logger.LoggerType;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 

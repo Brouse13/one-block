@@ -20,7 +20,6 @@ public class BaseOneBlockProfile implements OneBlockProfile {
     @Getter private String profileName;
     @Getter private String islandOwner;
     @Getter @Setter private byte[] inventory;
-    @Getter @Setter private int islandPermissions;
     @Getter private Material profileItem;
 
     public BaseOneBlockProfile(OneBlockPlayer owner, String islandOwner, String profileName, int islandPermissions) {
@@ -28,7 +27,6 @@ public class BaseOneBlockProfile implements OneBlockProfile {
         this.profileName = profileName;
         this.islandOwner = islandOwner;
         this.inventory = InventorySerializer.serialize(new ItemStack[0]);
-        this.islandPermissions = islandPermissions;
         this.profileItem = OneBlockConstants.DEF_PROFILE_MATERIAL;
     }
 
@@ -39,7 +37,6 @@ public class BaseOneBlockProfile implements OneBlockProfile {
             this.profileName = resultSet.getString("name");
             this.islandOwner = resultSet.getString("island_owner");
             this.inventory = inventory == null ? null : inventory.getBytes(1, (int) inventory.length());
-            this.islandPermissions = resultSet.getInt("world_permissions");
             this.profileItem = Material.valueOf(resultSet.getString("itemstack"));
         }catch (SQLException exception) {
             exception.printStackTrace();

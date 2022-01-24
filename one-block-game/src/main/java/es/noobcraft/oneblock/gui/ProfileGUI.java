@@ -13,7 +13,7 @@ import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.api.profile.OneBlockProfile;
 import es.noobcraft.oneblock.loaders.IslandLoad;
 import es.noobcraft.oneblock.loaders.PlayerLoader;
-import es.noobcraft.oneblock.logger.Logger;
+import es.noobcraft.oneblock.api.logger.Logger;
 import es.noobcraft.oneblock.scoreboard.IslandScoreBoard;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

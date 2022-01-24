@@ -1,5 +1,6 @@
 package es.noobcraft.oneblock.api;
 
+import es.noobcraft.oneblock.api.flags.IslandPermissionManager;
 import es.noobcraft.oneblock.api.player.PlayerCache;
 import es.noobcraft.oneblock.api.profile.ProfileCache;
 import es.noobcraft.oneblock.api.profile.ProfileLoader;
@@ -9,18 +10,25 @@ import es.noobcraft.oneblock.api.world.WorldManager;
 
 public interface OneBlock {
     /**
-     * Get the PlayerCache instance that will storage
-     * the cache of all the online OneBlockPlayers.
-     * @return OneBlock PlayerCache
-     */
-    PlayerCache getPlayerCache();
-
-    /**
      * Get the ProfileLoader instance that will load all
      * the player profiles from the correct database.
      * @return OneBlock ProfileLoader
      */
     ProfileLoader getProfileLoader();
+
+    /**
+     * Get the IslandPermissionManager instance that will
+     * manage the perms cache and database update
+     * @return OneBlock IslandPermissionsLoader
+     */
+    IslandPermissionManager getIslandPermissionManager();
+
+    /**
+     * Get the PlayerCache instance that will storage
+     * the cache of all the online OneBlockPlayers.
+     * @return OneBlock PlayerCache
+     */
+    PlayerCache getPlayerCache();
 
     /**
      * Get the ProfileCache instance that store all the

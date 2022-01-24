@@ -12,7 +12,7 @@ import es.noobcraft.oneblock.api.flags.FlagEncoder;
 import es.noobcraft.oneblock.api.flags.IslandFlag;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.api.profile.OneBlockProfile;
-import es.noobcraft.oneblock.logger.Logger;
+import es.noobcraft.oneblock.api.logger.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
@@ -87,11 +87,14 @@ public class FlagStatusGUI {
                 OneBlockProfile updatableProfile = cacheProfile == null ? profile : cacheProfile;
 
                 //Decode the perms and update the flag value
+                //TODO modify perms modifying
+                /*
                 char[] decode = FlagEncoder.decode(updatableProfile.getIslandPermissions());
                 decode[flag.getPos()] = perms ? '1' : '0';
 
                 //Notice changes to database and cache
                 updatableProfile.setIslandPermissions(FlagEncoder.encode(decode));
+                 */
                 OneBlockAPI.getProfileLoader().updateProfile(updatableProfile);
                 Bukkit.getPlayer(oneBlockPlayer.getName()).closeInventory();
                 Logger.player(noobPlayer, "one-block.island.permissions-update");

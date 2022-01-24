@@ -30,7 +30,9 @@ public class PlayerListeners implements Listener {
 
         final OneBlockPlayer player = OneBlockAPI.getPlayerCache().getPlayer(event.getPlayer().getUsername());
         player.setProfiles(OneBlockAPI.getProfileLoader().getProfiles(player));
-        player.getProfiles().forEach(profile -> OneBlockAPI.getProfileCache().addProfile(profile));
+        player.getProfiles().forEach(profile -> {
+            OneBlockAPI.getProfileCache().addProfile(profile);
+        });
     }
 
     @EventHandler(ignoreCancelled = true)

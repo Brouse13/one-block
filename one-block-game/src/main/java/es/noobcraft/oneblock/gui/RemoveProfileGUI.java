@@ -9,7 +9,7 @@ import es.noobcraft.core.api.player.NoobPlayer;
 import es.noobcraft.oneblock.api.OneBlockAPI;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.api.profile.OneBlockProfile;
-import es.noobcraft.oneblock.logger.Logger;
+import es.noobcraft.oneblock.api.logger.Logger;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
 

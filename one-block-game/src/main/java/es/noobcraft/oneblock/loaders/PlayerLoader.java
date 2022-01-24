@@ -7,7 +7,7 @@ import es.noobcraft.oneblock.api.OneBlockAPI;
 import es.noobcraft.oneblock.api.inventory.InventorySerializer;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.api.profile.OneBlockProfile;
-import es.noobcraft.oneblock.logger.Logger;
+import es.noobcraft.oneblock.api.logger.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

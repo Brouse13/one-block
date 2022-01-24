@@ -4,8 +4,8 @@ import es.noobcraft.oneblock.api.OneBlockAPI;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.api.profile.OneBlockProfile;
 import es.noobcraft.oneblock.api.profile.ProfileManager;
-import es.noobcraft.oneblock.logger.Logger;
-import es.noobcraft.oneblock.logger.LoggerType;
+import es.noobcraft.oneblock.api.logger.Logger;
+import es.noobcraft.oneblock.api.logger.LoggerType;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 

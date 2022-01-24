@@ -37,21 +37,6 @@ public interface OneBlockProfile {
     void setInventory(byte[] content);
 
     /**
-     * Get the player permissions on the island.
-     * Values:
-     * 0xFFFF - All permissions
-     * 0x0000 - No permissions
-     * @return the island permissions
-     */
-    int getIslandPermissions();
-
-    /**
-     * Set the island permissions
-     * @param permissions new permissions
-     */
-    void setIslandPermissions(int permissions);
-
-    /**
      * Get the profile Material that will display on the menu.
      * @return profile Material
      */

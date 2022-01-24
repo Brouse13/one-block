@@ -1,4 +1,4 @@
-package es.noobcraft.oneblock.logger;
+package es.noobcraft.oneblock.api.logger;
 
 import es.noobcraft.core.api.Core;
 import es.noobcraft.core.api.lang.Translator;

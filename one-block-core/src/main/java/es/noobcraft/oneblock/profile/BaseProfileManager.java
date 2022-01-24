@@ -12,11 +12,13 @@ import java.util.Set;
 public class BaseProfileManager implements ProfileManager {
     @Override
     public OneBlockProfile getProfile(Set<OneBlockProfile> profiles, String name) {
+        if (profiles == null) return null;
         return profiles.stream().filter(profile -> profile.getProfileName().equalsIgnoreCase(name)).findFirst().orElse(null);
     }
 
     @Override
     public OneBlockProfile getProfile(Set<OneBlockProfile> profiles, OneBlockPlayer player) {
+        if (profiles == null) return null;
         return profiles.stream().filter(profile -> profile.getOwner().getName().equals(player.getName())).findFirst().orElse(null);
     }
 

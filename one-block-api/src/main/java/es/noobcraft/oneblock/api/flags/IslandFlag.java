@@ -8,7 +8,9 @@ public enum IslandFlag {
     SHEAR(Material.SHEARS, 1),
     BUILD(Material.GRASS, 2),
     BREAK(Material.DIAMOND_PICKAXE, 3),
-    BREAD(Material.WHEAT, 4);
+    BREAD(Material.WHEAT, 4),
+    DAMAGE(Material.ARROW, 5),
+    LAND_ITEMS(Material.CARPET, 6);
 
     @Getter private final Material material;
     @Getter private final int pos;

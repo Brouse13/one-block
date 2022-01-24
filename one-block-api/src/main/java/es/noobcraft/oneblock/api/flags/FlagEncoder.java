@@ -1,32 +1,56 @@
 package es.noobcraft.oneblock.api.flags;
 
+import es.noobcraft.oneblock.api.exceptions.FlagException;
+
 import java.util.Arrays;
 
 public final class FlagEncoder {
-
     public static int encode(char[] parts) {
-        return Integer.parseInt(String.valueOf(parts),2);
+        StringBuilder bin = new StringBuilder();
+        for (char part : parts)
+            bin.append(Integer.toBinaryString(Integer.parseInt(part+ "", 10)));
+
+        return Integer.parseInt(reverse(new StringBuilder(bin)), 2);
     }
 
-    public static char[] decode(int part) {
-        if (part == -1) return Integer.toBinaryString(IslandFlag.allPerms()).toCharArray();
-        return Integer.toBinaryString(part).toCharArray();
+    public static char[] decode(int perm) {
+        StringBuilder tempBin = new StringBuilder(Integer.toBinaryString(perm));
+        if (tempBin.length() % 2 != 0) tempBin.insert(0, "0");
+
+        char[] reverseChar = reverse(new StringBuilder(tempBin)).toCharArray();
+
+        char[] decoded = new char[(reverseChar.length / 2)];
+
+        for (int i = 0; i < (reverseChar.length / 2) ; i++)
+            decoded[i] = Character.forDigit(Integer.parseInt(reverseChar[i * 2]+ ""+ reverseChar[(i * 2) + 1], 2), 10);
+
+        return decoded;
     }
 
-    public static FlagType getType(IslandFlag flag, byte[] perms) {
-        String bytes = perms[(flag.getPos()  * 2)] + perms[(flag.getPos() * 2) + 1] + "";
+    public static FlagType getType(IslandFlag flag, char[] perms) throws FlagException {
+        if (perms.length < flag.getPos()) return FlagType.OWNER;
+        try {
+            char bytes = perms[flag.getPos()];
 
-        return Arrays.stream(FlagType.values())
-                .filter(flagType -> flagType.getValue() == Integer.parseInt(bytes, 2))
-                .findFirst().orElse(null);
+            return Arrays.stream(FlagType.values())
+                    .filter(flagType -> flagType.getValue() == Integer.parseInt(String.valueOf(bytes)))
+                    .findFirst().orElseThrow(FlagException::new);
+        }catch (IndexOutOfBoundsException exception) {
+            return FlagType.OWNER;
+        }
+
     }
 
-    public static boolean getBool(IslandFlag flag, byte[] perms) {
-        final FlagType flagType = getType(flag, perms);
+    private static String reverse(StringBuilder bin) {
+        if (bin.length() % 2 != 0) bin.insert(0, "0");
 
-        if (flagType == null) throw new NullPointerException("Can't get bytes perms from flag "+ flag.name());
-        if (flagType.getValue() != 0 && flagType.getValue() != 1) throw new IllegalStateException("Bool flag("+ flag.name()+ ") can't have "+ flagType+ " as value");
+        char[] binary = bin.toString().toCharArray();
+        StringBuilder reverse = new StringBuilder();
 
-        return flagType.getValue() != 0;
+        for (int i = (binary.length / 2) - 1; i >= 0; i--) {
+            reverse.append(binary[(i * 2)]);
+            reverse.append(binary[(i *2) + 1]);
+        }
+        return reverse.toString();
     }
 }

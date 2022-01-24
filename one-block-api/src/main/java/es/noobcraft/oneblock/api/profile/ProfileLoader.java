@@ -54,12 +54,4 @@ public interface ProfileLoader {
      * @return the operation status
      */
     boolean updateProfile(@NonNull OneBlockProfile profile);
-
-    /**
-     * Update the world permissions into the database
-     * @param world world naem
-     * @param perms new perms
-     * @return the operation status
-     */
-    boolean updatePermissions(String world, int perms);
 }

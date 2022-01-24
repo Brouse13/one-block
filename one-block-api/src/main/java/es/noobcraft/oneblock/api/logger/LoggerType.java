@@ -1,4 +1,4 @@
-package es.noobcraft.oneblock.logger;
+package es.noobcraft.oneblock.api.logger;
 
 public enum LoggerType {
     ERROR,
