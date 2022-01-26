@@ -9,6 +9,7 @@ import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.api.profile.OneBlockProfile;
 import es.noobcraft.oneblock.api.logger.Logger;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -42,7 +43,7 @@ public final class PlayerLoader {
             inventory.setContents(Arrays.copyOfRange(deserialize, 4, deserialize.length));
         }
 
-        //bukkitPlayer.teleport(new Location(Bukkit.getWorld(profile.getProfileName()), 0, 31, 0));
+        bukkitPlayer.teleport(new Location(Bukkit.getWorld(profile.getProfileName()), 0, 31, 0));
 
         Logger.player(noobPlayer, "one-block.island.teleport-island");
     }

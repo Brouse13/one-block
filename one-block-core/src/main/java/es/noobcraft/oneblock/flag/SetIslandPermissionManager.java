@@ -54,6 +54,7 @@ public class SetIslandPermissionManager implements IslandPermissionManager {
 
     @Override
     public void updatePermission(String world, int permission) {
+        permissions.put(world, permission);
         try(Connection connection = sqlClient.getConnection()) {
             try(PreparedStatement statement = connection.prepareStatement(UPDATE_PERMISSION)) {
                 statement.setInt(1, permission);

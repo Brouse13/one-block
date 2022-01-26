@@ -19,8 +19,9 @@ public final class FlagEncoder {
 
         char[] reverseChar = reverse(new StringBuilder(tempBin)).toCharArray();
 
-        char[] decoded = new char[(reverseChar.length / 2)];
-
+        char[] decoded = new char[15];
+        Arrays.fill(decoded, '0');
+        
         for (int i = 0; i < (reverseChar.length / 2) ; i++)
             decoded[i] = Character.forDigit(Integer.parseInt(reverseChar[i * 2]+ ""+ reverseChar[(i * 2) + 1], 2), 10);
 
@@ -38,7 +39,12 @@ public final class FlagEncoder {
         }catch (IndexOutOfBoundsException exception) {
             return FlagType.OWNER;
         }
+    }
 
+    public static int setType(IslandFlag flag, char[] perms, FlagType type) throws FlagException {
+        if (perms.length < flag.getPos()) throw new FlagException("Unable to set value on pair "+ flag.getPos());
+        perms[flag.getPos()] = Character.forDigit(Integer.parseInt(type.getValue()+ ""), 10);
+        return encode(perms);
     }
 
     private static String reverse(StringBuilder bin) {

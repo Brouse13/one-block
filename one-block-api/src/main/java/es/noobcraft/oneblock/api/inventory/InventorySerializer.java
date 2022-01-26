@@ -34,7 +34,7 @@ public final class InventorySerializer {
         //Bytes from NULL
         byte[] nullBytes = new byte[]{0x4e, 0x55, 0x4c, 0x4c};
 
-        if (Arrays.equals(bytes, nullBytes)) return new ItemStack[0];
+        if (Arrays.equals(bytes, nullBytes) || bytes == null) return new ItemStack[0];
 
         try {
             ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);

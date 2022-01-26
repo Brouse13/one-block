@@ -6,7 +6,6 @@ import es.noobcraft.core.api.inventory.NoobInventory;
 import es.noobcraft.core.api.item.ItemBuilder;
 import es.noobcraft.core.api.lang.Translator;
 import es.noobcraft.core.api.player.NoobPlayer;
-import es.noobcraft.oneblock.api.OneBlockAPI;
 import es.noobcraft.oneblock.api.flags.IslandFlag;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.api.profile.OneBlockProfile;
@@ -29,7 +28,7 @@ public class FlagsGUI {
         this.inventory = SpigotCore.getInventoryManager().createInventory(inventoryBuilder -> inventoryBuilder
                 .title(translator.getLegacyText(noobPlayer, "one-block.inventory.permissions.title", profile.getProfileName()))
                 .closeable(true)
-                .rows((IslandFlag.values().length / 9)+ 2)
+                .rows(2)
                 .type(InventoryType.CHEST)
                 .initializer(this::initialize)
                 .updater(this::update));
@@ -41,17 +40,16 @@ public class FlagsGUI {
 
         int i = 0;
         for (IslandFlag flag : IslandFlag.values()) {
-            String translatedFlag = translator.getLegacyText(noobPlayer, "one-block.island.flags. "+ flag.name().toLowerCase());
+            String translatedFlag = translator.getLegacyText(noobPlayer, "one-block.island.flags."+ flag.name().toLowerCase());
 
             inventory.set(i, ItemBuilder.from(flag.getMaterial())
                     .displayName(translator.getLegacyText(noobPlayer, "one-block.inventory.permissions.flag.name", translatedFlag))
                     .lore(translator.getLegacyTextList(noobPlayer, "one-block.inventory.permissions.flag.lore")).build(),
-                        event -> new FlagStatusGUI(OneBlockAPI.getProfileLoader()
-                                .getProfiles(oneBlockProfile.getProfileName()), flag, oneBlockPlayer).openInventory());
+                        event -> new FlagStatusGUI(oneBlockProfile.getProfileName(), flag, oneBlockPlayer).openInventory());
             i++;
         }
 
-        inventory.set((IslandFlag.values().length / 9) +8, ItemBuilder.from(Material.ARROW)
+        inventory.set(17, ItemBuilder.from(Material.ARROW)
                 .displayName(translator.getLegacyText(noobPlayer, "one-block.inventory.permissions.close.name"))
                 .lore(translator.getLegacyTextList(noobPlayer, "one-block.inventory.permissions.close.lore")).build(),
                 event -> Bukkit.getPlayer(oneBlockPlayer.getName()).closeInventory());
