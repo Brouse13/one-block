@@ -5,6 +5,7 @@ es\noobcraft\oneblock\gui\flags\FlagsGUI.class
 es\noobcraft\oneblock\gui\flags\FlagStatusGUI.class
 es\noobcraft\oneblock\gui\RemoveProfileGUI.class
 es\noobcraft\oneblock\loaders\IslandLoad.class
+es\noobcraft\oneblock\listeners\PhaseListeners.class
 es\noobcraft\oneblock\listeners\IslandListeners.class
 es\noobcraft\oneblock\scoreboard\LobbyScoreBoard.class
 es\noobcraft\oneblock\commands\ProfileCommand.class

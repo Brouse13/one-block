@@ -1,5 +1,6 @@
 package es.noobcraft.oneblock.api;
 
+import com.google.gson.Gson;
 import es.noobcraft.oneblock.api.flags.IslandPermissionManager;
 import es.noobcraft.oneblock.api.player.PlayerCache;
 import es.noobcraft.oneblock.api.profile.ProfileCache;
@@ -57,4 +58,11 @@ public interface OneBlock {
      * @return OneBlock ScoreboardManager
      */
     ScoreboardManager getScoreboardManager();
+
+    /**
+     * Get the default gson with all the TypeAdapters
+     * for the oneBlock
+     * @return the OneBlock Gson instance
+     */
+    Gson getGson();
 }

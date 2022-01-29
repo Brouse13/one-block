@@ -1,8 +1,10 @@
 C:\Users\Brouse\IdeaProjects\nooobcraft\one-block\one-block-api\src\main\java\es\noobcraft\oneblock\api\flags\FlagEncoder.java
+C:\Users\Brouse\IdeaProjects\nooobcraft\one-block\one-block-api\src\main\java\es\noobcraft\oneblock\api\phases\PhaseLoader.java
 C:\Users\Brouse\IdeaProjects\nooobcraft\one-block\one-block-api\src\main\java\es\noobcraft\oneblock\api\profile\ProfileManager.java
 C:\Users\Brouse\IdeaProjects\nooobcraft\one-block\one-block-api\src\main\java\es\noobcraft\oneblock\api\flags\IslandPermissionManager.java
 C:\Users\Brouse\IdeaProjects\nooobcraft\one-block\one-block-api\src\main\java\es\noobcraft\oneblock\api\logger\Logger.java
 C:\Users\Brouse\IdeaProjects\nooobcraft\one-block\one-block-api\src\main\java\es\noobcraft\oneblock\api\inventory\InventorySerializer.java
+C:\Users\Brouse\IdeaProjects\nooobcraft\one-block\one-block-api\src\main\java\es\noobcraft\oneblock\api\phases\LootTable.java
 C:\Users\Brouse\IdeaProjects\nooobcraft\one-block\one-block-api\src\main\java\es\noobcraft\oneblock\api\events\OneBlockProfileCreateEvent.java
 C:\Users\Brouse\IdeaProjects\nooobcraft\one-block\one-block-api\src\main\java\es\noobcraft\oneblock\api\flags\IslandFlag.java
 C:\Users\Brouse\IdeaProjects\nooobcraft\one-block\one-block-api\src\main\java\es\noobcraft\oneblock\api\player\OneBlockPlayer.java
@@ -21,6 +23,7 @@ C:\Users\Brouse\IdeaProjects\nooobcraft\one-block\one-block-api\src\main\java\es
 C:\Users\Brouse\IdeaProjects\nooobcraft\one-block\one-block-api\src\main\java\es\noobcraft\oneblock\api\scoreboard\ScoreboardManager.java
 C:\Users\Brouse\IdeaProjects\nooobcraft\one-block\one-block-api\src\main\java\es\noobcraft\oneblock\api\world\WorldManager.java
 C:\Users\Brouse\IdeaProjects\nooobcraft\one-block\one-block-api\src\main\java\es\noobcraft\oneblock\api\exceptions\FlagException.java
+C:\Users\Brouse\IdeaProjects\nooobcraft\one-block\one-block-api\src\main\java\es\noobcraft\oneblock\api\phases\Phase.java
 C:\Users\Brouse\IdeaProjects\nooobcraft\one-block\one-block-api\src\main\java\es\noobcraft\oneblock\api\OneBlockAPI.java
 C:\Users\Brouse\IdeaProjects\nooobcraft\one-block\one-block-api\src\main\java\es\noobcraft\oneblock\api\profile\ProfileCache.java
 C:\Users\Brouse\IdeaProjects\nooobcraft\one-block\one-block-api\src\main\java\es\noobcraft\oneblock\api\events\OneBlockCoopRemoveEvent.java

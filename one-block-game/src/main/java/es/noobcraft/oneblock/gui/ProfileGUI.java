@@ -94,7 +94,9 @@ public class ProfileGUI {
 
     private void createProfile() {
         final String worldName = System.currentTimeMillis() + "";
-        oneBlockPlayer.addProfile(OneBlockAPI.getProfileLoader().createProfile(oneBlockPlayer, oneBlockPlayer, -1, worldName));
+        final OneBlockProfile profile = OneBlockAPI.getProfileLoader().createProfile(oneBlockPlayer, oneBlockPlayer, -1, worldName);
+        oneBlockPlayer.addProfile(profile);
+        oneBlockPlayer.setCurrentProfile(profile);
 
         Logger.player(noobPlayer, "one-block.messages.profile-created");
 

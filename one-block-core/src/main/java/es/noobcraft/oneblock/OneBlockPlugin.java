@@ -9,6 +9,7 @@ import es.noobcraft.core.api.register.PropertyConstants;
 import es.noobcraft.oneblock.api.OneBlockAPI;
 import es.noobcraft.oneblock.api.logger.Logger;
 import es.noobcraft.oneblock.api.logger.LoggerType;
+import es.noobcraft.oneblock.phase.JSONPhaseLoader;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.Listener;
@@ -20,9 +21,10 @@ public abstract class OneBlockPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         OneBlockAPI.setOneBlock(new API());
+        new JSONPhaseLoader().loadPhases();
+        loadCommand().forEach(command -> SpigotCore.getCommandManager().add(command));
         Logger.log(LoggerType.CONSOLE, "Api loaded successfully");
         enable();
-        loadCommand().forEach(command -> SpigotCore.getCommandManager().add(command));
         registerListeners().forEach(listener -> this.getServer().getPluginManager().registerEvents(listener, this));
         registerServer();
     }

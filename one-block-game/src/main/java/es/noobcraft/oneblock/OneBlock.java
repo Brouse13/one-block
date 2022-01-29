@@ -9,12 +9,12 @@ import es.noobcraft.oneblock.commands.CoopPermsCommand;
 import es.noobcraft.oneblock.commands.ProfileCommand;
 import es.noobcraft.oneblock.listeners.IslandListeners;
 import es.noobcraft.oneblock.listeners.ItemListeners;
+import es.noobcraft.oneblock.listeners.PhaseListeners;
 import es.noobcraft.oneblock.listeners.PlayerListeners;
 import es.noobcraft.oneblock.loaders.PlayerLoader;
 import es.noobcraft.oneblock.api.logger.Logger;
 import es.noobcraft.oneblock.api.logger.LoggerType;
 import es.noobcraft.oneblock.world.OneBlockLoader;
-import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.Set;
 
 public class OneBlock extends OneBlockPlugin {
-    @SneakyThrows
+
     @Override
     public void enable() {
         SlimePlugin slimePlugin = ((SlimePlugin) Bukkit.getPluginManager().getPlugin("SlimeWorldManager"));
@@ -49,7 +49,7 @@ public class OneBlock extends OneBlockPlugin {
 
     @Override
     public Set<Listener> registerListeners() {
-        return Sets.newHashSet(Arrays.asList(new PlayerListeners(), new IslandListeners(), new ItemListeners()));
+        return Sets.newHashSet(Arrays.asList(new PlayerListeners(), new IslandListeners(), new ItemListeners(), new PhaseListeners()));
     }
 
     private void updateScoreboards() {

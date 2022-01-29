@@ -1,5 +1,9 @@
 package es.noobcraft.oneblock;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import es.noobcraft.oneblock.adapters.LootTableAdapter;
+import es.noobcraft.oneblock.adapters.PhaseAdapter;
 import es.noobcraft.oneblock.api.OneBlock;
 import es.noobcraft.oneblock.api.flags.IslandPermissionManager;
 import es.noobcraft.oneblock.api.player.PlayerCache;
@@ -9,6 +13,8 @@ import es.noobcraft.oneblock.api.profile.ProfileManager;
 import es.noobcraft.oneblock.api.scoreboard.ScoreboardManager;
 import es.noobcraft.oneblock.api.world.WorldManager;
 import es.noobcraft.oneblock.flag.SetIslandPermissionManager;
+import es.noobcraft.oneblock.phase.BaseLootTable;
+import es.noobcraft.oneblock.phase.BasePhase;
 import es.noobcraft.oneblock.player.SetPlayerCache;
 import es.noobcraft.oneblock.profile.BaseProfileManager;
 import es.noobcraft.oneblock.profile.SetProfileCache;
@@ -58,5 +64,13 @@ public class API implements OneBlock {
     @Override
     public ScoreboardManager getScoreboardManager() {
         return scoreboardManager;
+    }
+
+    @Override
+    public Gson getGson() {
+        return new GsonBuilder()
+                .registerTypeAdapter(BasePhase.class, new PhaseAdapter())
+                .registerTypeAdapter(BaseLootTable.class, new LootTableAdapter())
+                .serializeNulls().create();
     }
 }

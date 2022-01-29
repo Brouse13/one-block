@@ -30,7 +30,6 @@ public class SetIslandPermissionManager implements IslandPermissionManager {
                 try(final ResultSet resultSet = statement.executeQuery()) {
                     while (resultSet.next()) {
                         int permission = resultSet.getInt("world_permissions");
-                        System.out.println(name+ " "+ permission);
                         return addCache(name, permission);
                     }
                 }

@@ -15,9 +15,11 @@ import es.noobcraft.oneblock.scoreboard.LobbyScoreBoard;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 public class PlayerListeners implements Listener {
     private final Translator translator = Core.getTranslator();
@@ -42,7 +44,7 @@ public class PlayerListeners implements Listener {
 
         event.getNoobPlayer().teleport(OneBlockConstants.SPAWN);
 
-        //SpigotCore.getChatManager().setPerWorld(true);
+        SpigotCore.getChatManager().setPerWorld(true);
         event.getNoobPlayer().getInventory().setItem(0, SpigotCore.getImmutableItemManager().makeImmutable(
                 ItemBuilder.from(Material.NETHER_STAR)
                         .displayName(translator.getLegacyText(event.getNoobPlayer(), ""))
@@ -63,6 +65,17 @@ public class PlayerListeners implements Listener {
             OneBlockAPI.getWorldManager().unloadWorld(profile.getProfileName());
         });
         OneBlockAPI.getPlayerCache().removePlayer(oneBlockPlayer.getName());
+    }
 
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerRespawn(PlayerRespawnEvent event) {
+        OneBlockPlayer player = OneBlockAPI.getPlayerCache().getPlayer(event.getPlayer().getName());
+        if (player.getCurrentProfile() != null) {
+            final World world = Bukkit.getWorld(player.getCurrentProfile().getProfileName());
+            if (world.getBlockAt(new Location(world, 0, 30, 0)).getType() == Material.AIR)
+                world.getBlockAt(new Location(world, 0, 30, 0)).setType(Material.GRASS);
+            event.setRespawnLocation(new Location(world, 0, 30, 0));
+        }
+        event.getPlayer().teleport(OneBlockConstants.SPAWN);
     }
 }

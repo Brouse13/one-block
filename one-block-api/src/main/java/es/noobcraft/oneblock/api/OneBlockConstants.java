@@ -18,7 +18,7 @@ public final class OneBlockConstants {
     /**
      * Default island permission to all the coops
      */
-    public static int DEF_ISLAND_PERMISSION = 0x00;
+    public static int DEF_ISLAND_PERMISSION = 262143;
 
     /**
      * Texture applied to ADD_PROFILE skull
