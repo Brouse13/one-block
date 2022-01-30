@@ -43,7 +43,7 @@ public final class PlayerLoader {
             inventory.setContents(Arrays.copyOfRange(deserialize, 4, deserialize.length));
         }
 
-        bukkitPlayer.teleport(new Location(Bukkit.getWorld(profile.getProfileName()), 0, 31, 0));
+        bukkitPlayer.teleport(new Location(Bukkit.getWorld(profile.getWorldName()), 0, 31, 0));
 
         Logger.player(noobPlayer, "one-block.island.teleport-island");
     }

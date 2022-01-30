@@ -14,15 +14,15 @@ public final class IslandLoad {
 
     public static void loadIsland(OneBlockPlayer player, OneBlockProfile profile) {
         //Check if the player is still on the profile
-        if (profileManager.getProfile(player.getProfiles(), profile.getProfileName()) == null) return;
+        if (profileManager.getProfile(player.getProfiles(), profile.getWorldName()) == null) return;
 
         //Check if world is loaded
-        if(Bukkit.getWorlds().stream().map(World::getName).noneMatch(profile.getProfileName()::equals))
-            OneBlockAPI.getWorldManager().loadWorld(profile.getProfileName(), false);
+        if(Bukkit.getWorlds().stream().map(World::getName).noneMatch(profile.getWorldName()::equals))
+            OneBlockAPI.getWorldManager().loadWorld(profile.getWorldName(), false);
     }
 
     public static void unloadIsland(OneBlockProfile profile) {
-        World world = Bukkit.getWorld(profile.getProfileName());
+        World world = Bukkit.getWorld(profile.getWorldName());
 
         if (world == null)return;
 

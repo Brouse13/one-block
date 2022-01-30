@@ -11,9 +11,9 @@ import java.util.Set;
 
 public class BaseProfileManager implements ProfileManager {
     @Override
-    public OneBlockProfile getProfile(Set<OneBlockProfile> profiles, String name) {
+    public OneBlockProfile getProfile(Set<OneBlockProfile> profiles, String worldName) {
         if (profiles == null) return null;
-        return profiles.stream().filter(profile -> profile.getProfileName().equalsIgnoreCase(name)).findFirst().orElse(null);
+        return profiles.stream().filter(profile -> profile.getWorldName().equalsIgnoreCase(worldName)).findFirst().orElse(null);
     }
 
     @Override
@@ -27,7 +27,6 @@ public class BaseProfileManager implements ProfileManager {
         if (owner.getMaxProfiles() >= owner.getProfiles().size()) throw new IslandFullException();
 
         OneBlockPlayer islandOwner = OneBlockAPI.getPlayerCache().getPlayer(masterProfile.getIslandOwner());
-        return OneBlockAPI.getProfileLoader().createProfile(owner, islandOwner,
-                OneBlockConstants.DEF_ISLAND_PERMISSION, masterProfile.getProfileName());
+        return OneBlockAPI.getProfileLoader().createProfile(owner, islandOwner, masterProfile.getWorldName());
     }
 }

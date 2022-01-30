@@ -15,7 +15,7 @@ import java.util.List;
 
 public class OneBlockLoader implements SlimeLoader {
     private static final String SELECT_WORLD_QUERY = "SELECT world, locked FROM one_block_worlds WHERE name = ?";
-    private static final String UPDATE_WORLD_QUERY = "INSERT INTO one_block_worlds (name, world, world_permissions, locked) VALUES (?, ?, 0, 0) ON DUPLICATE KEY UPDATE world = ?";
+    private static final String UPDATE_WORLD_QUERY = "INSERT INTO one_block_worlds (name, world, locked) VALUES (?, ?, 0) ON DUPLICATE KEY UPDATE world = ?";
     private static final String UPDATE_LOCK_QUERY = "UPDATE one_block_worlds SET locked = ? WHERE name = ?";
     private static final String DELETE_WORLD_QUERY = "DELETE FROM one_block_worlds WHERE name = ?";
     private static final String LIST_WORLDS_QUERY = "SELECT name FROM one_block_worlds";

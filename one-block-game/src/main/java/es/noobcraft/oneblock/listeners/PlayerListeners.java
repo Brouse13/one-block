@@ -44,7 +44,7 @@ public class PlayerListeners implements Listener {
 
         event.getNoobPlayer().teleport(OneBlockConstants.SPAWN);
 
-        SpigotCore.getChatManager().setPerWorld(true);
+        //SpigotCore.getChatManager().setPerWorld(true);
         event.getNoobPlayer().getInventory().setItem(0, SpigotCore.getImmutableItemManager().makeImmutable(
                 ItemBuilder.from(Material.NETHER_STAR)
                         .displayName(translator.getLegacyText(event.getNoobPlayer(), ""))
@@ -62,7 +62,7 @@ public class PlayerListeners implements Listener {
         oneBlockPlayer.getProfiles().forEach(profile -> {
             PlayerLoader.unloadPlayer(oneBlockPlayer, profile);
             OneBlockAPI.getProfileCache().removeProfile(profile);
-            OneBlockAPI.getWorldManager().unloadWorld(profile.getProfileName());
+            OneBlockAPI.getWorldManager().unloadWorld(profile.getWorldName());
         });
         OneBlockAPI.getPlayerCache().removePlayer(oneBlockPlayer.getName());
     }
@@ -71,7 +71,7 @@ public class PlayerListeners implements Listener {
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         OneBlockPlayer player = OneBlockAPI.getPlayerCache().getPlayer(event.getPlayer().getName());
         if (player.getCurrentProfile() != null) {
-            final World world = Bukkit.getWorld(player.getCurrentProfile().getProfileName());
+            final World world = Bukkit.getWorld(player.getCurrentProfile().getWorldName());
             if (world.getBlockAt(new Location(world, 0, 30, 0)).getType() == Material.AIR)
                 world.getBlockAt(new Location(world, 0, 30, 0)).setType(Material.GRASS);
             event.setRespawnLocation(new Location(world, 0, 30, 0));

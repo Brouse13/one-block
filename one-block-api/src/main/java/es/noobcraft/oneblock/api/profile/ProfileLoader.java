@@ -9,20 +9,19 @@ public interface ProfileLoader {
     /**
      * Get if the database has a profile with the given name
      * @param player player to check from
-     * @param name profile name
+     * @param worldName world name
      * @return if the profile exists
      */
-    boolean existProfile(@NonNull OneBlockPlayer player, @NonNull String name);
+    boolean existProfile(@NonNull OneBlockPlayer player, @NonNull String worldName);
 
     /**
      * Create a new profile to the given player with a specific name.
      * @param owner profile owner
      * @param islandOwner island owner
-     * @param perms profile owner permissions
-     * @param name profile name
+     * @param worldName name of the world
      * @return the created profile
      */
-    OneBlockProfile createProfile(@NonNull OneBlockPlayer owner, @NonNull OneBlockPlayer islandOwner, int perms, @NonNull String name);
+    OneBlockProfile createProfile(@NonNull OneBlockPlayer owner, @NonNull OneBlockPlayer islandOwner, @NonNull String worldName);
 
     /**
      * Get all the player profiles that are loaded on the database
@@ -30,16 +29,6 @@ public interface ProfileLoader {
      * @return all the player profiles
      */
     Set<OneBlockProfile> getProfiles(@NonNull OneBlockPlayer player);
-
-    /**
-     * Get all the profiles that are stored for a specific world.
-     * Those profiles should not be stored on the ProfileCache due to
-     * they won't be removed on player leave. If they're added they must
-     * be removed manually.
-     * @param world world to query
-     * @return stored profiles
-     */
-    Set<OneBlockProfile> getProfiles(@NonNull String world);
 
     /**
      * Delete a specific profile from the database

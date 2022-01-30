@@ -9,10 +9,10 @@ public interface ProfileManager {
     /**
      * Get from a set of profiles the one where the name matches
      * @param profiles set of profiles
-     * @param name profile name to search
+     * @param worldName profile name to search
      * @return the profile found
      */
-    OneBlockProfile getProfile(Set<OneBlockProfile> profiles, String name);
+    OneBlockProfile getProfile(Set<OneBlockProfile> profiles, String worldName);
 
     /**
      * Get from a set of profiles the one where the owner matches

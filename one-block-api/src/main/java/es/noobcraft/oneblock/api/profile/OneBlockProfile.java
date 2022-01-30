@@ -18,6 +18,12 @@ public interface OneBlockProfile {
     String getProfileName();
 
     /**
+     *
+     * @return
+     */
+    String getWorldName();
+
+    /**
      * Get the name of the island owner.
      * @return island owner name
      */

@@ -14,55 +14,34 @@ import java.util.Map;
 
 public class SetIslandPermissionManager implements IslandPermissionManager {
     private final SQLClient sqlClient = Core.getSQLClient();
-    private final Map<String, Integer> permissions = Maps.newHashMap();
+    //Map<WorldName, Map<Username, Permsissions>>
+    private final Map<String, Map<String, Integer>> permissions = Maps.newHashMap();
 
     private final String GET_PERMISSION = "SELECT world_permissions FROM one_block_worlds WHERE name=?";
     private final String UPDATE_PERMISSION = "UPDATE one_block_worlds SET world_permissions=? WHERE name=?";
 
     @Override
-    public int getPermission(String name) {
-       if(permissions.containsKey(name)) return permissions.get(name);
-
-       try(Connection connection = sqlClient.getConnection()) {
-           try(final PreparedStatement statement = connection.prepareStatement(GET_PERMISSION)) {
-                statement.setString(1, name);
-
-                try(final ResultSet resultSet = statement.executeQuery()) {
-                    while (resultSet.next()) {
-                        int permission = resultSet.getInt("world_permissions");
-                        return addCache(name, permission);
-                    }
-                }
-           }
-       }catch (SQLException exception) {
-           exception.printStackTrace();
-       }
-        throw new NotFoundException("Not found permissions for world "+ name);
+    public int getPermission(String worldName, String username) {
+        return 0;
     }
 
     @Override
-    public int addCache(String world, int permission) {
-        permissions.put(world, permission);
-        return permission;
+    public int addCache(String worldName, String username, int permission) {
+        return 0;
     }
 
     @Override
-    public int removeCache(String world) {
-        return permissions.remove(world);
+    public int removeCache(String world, String username) {
+        return 0;
     }
 
     @Override
-    public void updatePermission(String world, int permission) {
-        permissions.put(world, permission);
-        try(Connection connection = sqlClient.getConnection()) {
-            try(PreparedStatement statement = connection.prepareStatement(UPDATE_PERMISSION)) {
-                statement.setInt(1, permission);
-                statement.setString(2, world);
+    public int createPerms(String worldName, String username, boolean owner) {
+        return 0;
+    }
 
-                statement.executeUpdate();
-            }
-        }catch (SQLException exception) {
-            exception.printStackTrace();
-        }
+    @Override
+    public void updatePermission(String worldName, String username, int permission) {
+
     }
 }

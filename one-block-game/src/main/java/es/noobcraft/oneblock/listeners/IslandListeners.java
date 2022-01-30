@@ -93,7 +93,7 @@ public class IslandListeners implements Listener {
                 return true;
             }
         }else {
-            if (playerProfile.getProfileName().equals(player.getName()) && type == FlagType.OWNER) {
+            if (playerProfile.getIslandOwner().equals(player.getName()) && type == FlagType.OWNER) {
                 if (announce) Logger.player(noobPlayer, "one-block.island.no-perms."+ islandFlag.name().toLowerCase());
                 return true;
             }

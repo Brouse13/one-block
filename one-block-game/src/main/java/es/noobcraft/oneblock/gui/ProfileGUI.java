@@ -66,14 +66,11 @@ public class ProfileGUI {
                 .displayName(translator.getLegacyText(noobPlayer, "one-block.inventory.profiles.add-profile.name"))
                 .lore(translator.getLegacyTextList(noobPlayer, "one-block.inventory.profiles.add-profile.lore")).build(),
                 event -> {
-                    if (oneBlockPlayer.getMaxProfiles() <= oneBlockPlayer.getProfiles().size()) {
-                        event.getWhoClicked().closeInventory();
+                    if (oneBlockPlayer.getMaxProfiles() <= oneBlockPlayer.getProfiles().size())
                         Logger.player(noobPlayer, "one-block.messages.max-profiles");
-                        return;
-                    }
-
+                    else
+                        createProfile();
                     event.getWhoClicked().closeInventory();
-                    createProfile();
                 });
 
         inventory.set(8, SkullBuilder.create().textures(OneBlockConstants.REMOVE_PROFILE_TEXTURE)
@@ -94,7 +91,7 @@ public class ProfileGUI {
 
     private void createProfile() {
         final String worldName = System.currentTimeMillis() + "";
-        final OneBlockProfile profile = OneBlockAPI.getProfileLoader().createProfile(oneBlockPlayer, oneBlockPlayer, -1, worldName);
+        final OneBlockProfile profile = OneBlockAPI.getProfileLoader().createProfile(oneBlockPlayer, oneBlockPlayer, worldName);
         oneBlockPlayer.addProfile(profile);
         oneBlockPlayer.setCurrentProfile(profile);
 
