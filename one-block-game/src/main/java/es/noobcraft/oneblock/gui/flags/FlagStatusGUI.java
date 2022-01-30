@@ -79,7 +79,7 @@ public class FlagStatusGUI {
     private ClickableItem getItemEvent(FlagType type) {
         return (event) -> {
             //Decode perms
-            char[] perms = FlagEncoder.decode(OneBlockAPI.getIslandPermissionLoader().getPermission(world));
+            char[] perms = FlagEncoder.decode(OneBlockAPI.getIslandPermissionLoader().getPermission(world, noobPlayer.getUsername()));
             //Update char[] perms
             try {
                 FlagEncoder.setType(flag, perms, type);
@@ -89,7 +89,7 @@ public class FlagStatusGUI {
                 return;
             }
             //Update perms and notify player
-            OneBlockAPI.getIslandPermissionLoader().updatePermission(world, FlagEncoder.encode(perms));
+            OneBlockAPI.getIslandPermissionLoader().updatePermission(world, noobPlayer.getUsername() ,FlagEncoder.encode(perms));
             Bukkit.getPlayer(oneBlockPlayer.getName()).closeInventory();
             Logger.player(noobPlayer, "one-block.island.permissions-update");
         };

@@ -83,7 +83,7 @@ public class IslandListeners implements Listener {
 
         OneBlockProfile playerProfile = OneBlockAPI.getProfileManager().getProfile(
                 OneBlockAPI.getProfileCache().getProfiles(world), player);
-        char[] perms = FlagEncoder.decode(OneBlockAPI.getIslandPermissionLoader().getPermission(world.getName()));
+        char[] perms = FlagEncoder.decode(OneBlockAPI.getIslandPermissionLoader().getPermission(world.getName(), player.getName()));
 
         FlagType type = FlagEncoder.getType(islandFlag, perms);
 

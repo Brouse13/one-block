@@ -8,6 +8,7 @@ import es.noobcraft.oneblock.api.OneBlockConstants;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.api.profile.OneBlockProfile;
 import es.noobcraft.oneblock.api.profile.ProfileLoader;
+import es.noobcraft.oneblock.api.profile.ProfileName;
 import lombok.NonNull;
 
 import javax.sql.rowset.serial.SerialBlob;
@@ -53,10 +54,11 @@ public class SqlProfileLoader implements ProfileLoader {
             try(PreparedStatement statement = connection.prepareStatement(CREATE_PROFILE)) {
                 if (OneBlockAPI.getWorldManager().createWorld(worldName, true)) {
                     int id = OneBlockAPI.getIslandPermissionLoader().createPerms(worldName, owner.getName(), true);
+                    final String name = ProfileName.randomName(owner.getProfiles()).name();
                     //private static final String CREATE_PROFILE = "INSERT INTO one_block_profiles VALUES(?, ?, ?, ?, ?, null, ?)";
-                    profile = new BaseOneBlockProfile(owner, islandOwner.getName(), worldName, owner.getName()+ id);
+                    profile = new BaseOneBlockProfile(owner, islandOwner.getName(), worldName, name);
                     statement.setString(1, owner.getName());
-                    statement.setString(2, owner.getName()+ id);//TODO method to generate worldNames
+                    statement.setString(2, name);//TODO method to generate worldNames
                     statement.setString(3, worldName);
                     statement.setInt(4, id);
                     statement.setString(5, islandOwner.getName());
