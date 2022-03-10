@@ -1,7 +1,6 @@
 package es.noobcraft.oneblock.profile;
 
 import es.noobcraft.oneblock.api.OneBlockAPI;
-import es.noobcraft.oneblock.api.OneBlockConstants;
 import es.noobcraft.oneblock.api.exceptions.IslandFullException;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.api.profile.OneBlockProfile;

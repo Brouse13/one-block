@@ -20,7 +20,7 @@ import java.util.Set;
 
 public class SqlProfileLoader implements ProfileLoader {
     private static final String EXIST_PROFILE = "SELECT * FROM one_block_profiles WHERE username=? AND world=?";
-    private static final String CREATE_PROFILE = "INSERT INTO one_block_profiles VALUES(?, ?, ?, ?, ?, null, ?)";
+    private static final String CREATE_PROFILE = "INSERT INTO one_block_profiles VALUES(?, ?, ?, ?, null, ?)";
     private static final String GET_PROFILE_NAME = "SELECT * FROM one_block_profiles profile WHERE username=?";
     private static final String DELETE_PROFILE = "DELETE FROM one_block_profiles WHERE world=?";
     private static final String DELETE_COOP = "DELETE FROM one_block_profiles WHERE username=? AND world=?";
@@ -53,19 +53,18 @@ public class SqlProfileLoader implements ProfileLoader {
         try(Connection connection = sqlClient.getConnection()) {
             try(PreparedStatement statement = connection.prepareStatement(CREATE_PROFILE)) {
                 if (OneBlockAPI.getWorldManager().createWorld(worldName, true)) {
-                    int id = OneBlockAPI.getIslandPermissionLoader().createPerms(worldName, owner.getName(), true);
                     final String name = ProfileName.randomName(owner.getProfiles()).name();
                     //private static final String CREATE_PROFILE = "INSERT INTO one_block_profiles VALUES(?, ?, ?, ?, ?, null, ?)";
                     profile = new BaseOneBlockProfile(owner, islandOwner.getName(), worldName, name);
                     statement.setString(1, owner.getName());
                     statement.setString(2, name);//TODO method to generate worldNames
                     statement.setString(3, worldName);
-                    statement.setInt(4, id);
                     statement.setString(5, islandOwner.getName());
                     statement.setString(6, OneBlockConstants.DEF_PROFILE_MATERIAL.toString());
                     statement.execute();
                 }
             }
+            OneBlockAPI.getIslandPermissionLoader().createPerms(worldName, true);
         }catch (SQLException e) {
             e.printStackTrace();
         }

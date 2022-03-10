@@ -1,11 +1,11 @@
 package es.noobcraft.oneblock.scoreboard;
 
 import com.google.common.collect.Maps;
+import es.noobcraft.oneblock.api.logger.Logger;
+import es.noobcraft.oneblock.api.logger.LoggerType;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.api.scoreboard.OneBlockScoreBoard;
 import es.noobcraft.oneblock.api.scoreboard.ScoreboardManager;
-import es.noobcraft.oneblock.api.logger.Logger;
-import es.noobcraft.oneblock.api.logger.LoggerType;
 
 import java.util.Map;
 

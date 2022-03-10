@@ -22,7 +22,6 @@ es\noobcraft\oneblock\api\inventory\InventorySerializer.class
 es\noobcraft\oneblock\api\events\OneBlockEvent.class
 es\noobcraft\oneblock\api\OneBlock.class
 es\noobcraft\oneblock\api\logger\Logger.class
-es\noobcraft\oneblock\api\flags\FlagType.class
 es\noobcraft\oneblock\api\phases\PhaseLoader.class
 es\noobcraft\oneblock\api\scoreboard\ScoreboardManager.class
 es\noobcraft\oneblock\api\phases\Phase.class

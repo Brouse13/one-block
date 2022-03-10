@@ -15,62 +15,51 @@ import java.util.Map;
 
 public class SetIslandPermissionManager implements IslandPermissionManager {
     private final SQLClient sqlClient = Core.getSQLClient();
-    //Map<WorldName, Map<Username, Permissions>>
-    private final Map<String, Map<String, Integer>> permissions = Maps.newHashMap();
+    //Map<WorldName, Permission>
+    private final Map<String, Integer> permissions = Maps.newHashMap();
 
-    private static final String GET_PERMISSION = "SELECT * FROM one_block_perms WHERE id=? AND username=?";
-    private static final String CREATE_PERMISSIONS = "INSERT INTO one_block_perms VALUES(?, ?, ?)";
-    private static final String UPDATE_PERMISSION = "UPDATE one_block_perms SET perms=? WHERE id=? AND username=?";
+    private static final String GET_PERMISSION = "SELECT permissions FROM one_block_worlds WHERE name=?";
+    private static final String UPDATE_PERMISSIONS = "UPDATE one_block_worlds SET permissions=? WHERE world=?";
 
     @Override
-    public int getPermission(String worldName, String username) {
-        if (permissions.containsKey(worldName) && permissions.get(worldName).containsKey(username))
-            return permissions.get(worldName).get(username);
+    public int getPermission(String worldName) {
+        if (permissions.containsKey(worldName)) return permissions.get(worldName);
 
         try(Connection connection = sqlClient.getConnection()) {
             try(PreparedStatement statement = connection.prepareStatement(GET_PERMISSION)) {
                 statement.setString(1, worldName);
-                statement.setString(2, username);
                 try(ResultSet resultSet = statement.executeQuery()) {
-                    if (resultSet.next()) {
-                        addCache(worldName, username, resultSet.getInt("perms"));
-                        return resultSet.getInt("perms");
-                    }
+                    if (resultSet.next())
+                        return addCache(worldName, resultSet.getInt("permissions"));
                 }
             }
         }catch (SQLException exception) {
-            throw new NotFoundException("Not found perms for username: "+ username+ " and world: "+ worldName, exception);
+            throw new NotFoundException("Not found perms for world: "+ worldName, exception);
         }
         return 0;
     }
 
     @Override
-    public int addCache(String worldName, String username, int permission) {
-        Map<String, Integer> stored;
-        if (permissions.containsKey(worldName)) stored = permissions.get(worldName);
-        else stored = Maps.newHashMap();
-        stored.put(username, permission);
-        permissions.put(worldName, stored);
+    public int addCache(String worldName, int permission) {
+        permissions.put(worldName, permission);
         return permission;
     }
 
     @Override
-    public int removeCache(String world, String username) {
-        final Integer perm = permissions.get(world).get(username);
-        permissions.get(world).remove(username);
-        return perm;
+    public void removeCache(String world) {
+        permissions.remove(world);
     }
 
     @Override
-    public int createPerms(String worldName, String username, boolean owner) {
-        final int pemrs = owner ? OneBlockConstants.DEF_ISLAND_PERMISSION : 0;
+    public int createPerms(String worldName, boolean owner) {
+        final int perms = owner ? OneBlockConstants.DEF_ISLAND_PERMISSION : 0;
+
         try(Connection connection = sqlClient.getConnection()) {
-            try(PreparedStatement statement = connection.prepareStatement(CREATE_PERMISSIONS)) {
-                statement.setString(1, worldName);
-                statement.setString(2, username);
-                statement.setInt(3, pemrs);
+            try(PreparedStatement statement = connection.prepareStatement(UPDATE_PERMISSIONS)) {
+                statement.setInt(1, perms);
+                statement.setString(2, worldName);
                 statement.executeQuery();
-                return pemrs;
+                return perms;
             }
         }catch (SQLException exception) {
             exception.printStackTrace();
@@ -79,12 +68,11 @@ public class SetIslandPermissionManager implements IslandPermissionManager {
     }
 
     @Override
-    public void updatePermission(String worldName, String username, int permission) {
+    public void updatePermission(String worldName, int permission) {
         try(Connection connection = sqlClient.getConnection()) {
-            try(PreparedStatement statement = connection.prepareStatement(UPDATE_PERMISSION)) {
+            try(PreparedStatement statement = connection.prepareStatement(UPDATE_PERMISSIONS)) {
                 statement.setInt(1, permission);
                 statement.setString(2, worldName);
-                statement.setString(3, username);
                 statement.executeUpdate();
             }
         }catch (SQLException exception) {

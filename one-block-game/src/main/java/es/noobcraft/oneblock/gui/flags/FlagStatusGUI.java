@@ -8,15 +8,15 @@ import es.noobcraft.core.api.item.ItemBuilder;
 import es.noobcraft.core.api.lang.Translator;
 import es.noobcraft.core.api.player.NoobPlayer;
 import es.noobcraft.oneblock.api.OneBlockAPI;
-import es.noobcraft.oneblock.api.exceptions.FlagException;
 import es.noobcraft.oneblock.api.flags.FlagEncoder;
-import es.noobcraft.oneblock.api.flags.FlagType;
 import es.noobcraft.oneblock.api.flags.IslandFlag;
-import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.api.logger.Logger;
+import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
+
+import java.util.BitSet;
 
 public class FlagStatusGUI {
     private final Translator translator = Core.getTranslator();
@@ -51,18 +51,12 @@ public class FlagStatusGUI {
         inventory.set(2, ItemBuilder.from(Material.STAINED_GLASS_PANE).damage(5)
                         .displayName(translator.getLegacyText(noobPlayer, "one-block.inventory.flag-status.owner.name"))
                         .lore(translator.getLegacyTextList(noobPlayer, "one-block.inventory.flag-status.owner.lore", translatedFlag)).build(),
-                getItemEvent(FlagType.OWNER));
+                getItemEvent(false));
 
         inventory.set(4, ItemBuilder.from(Material.STAINED_GLASS_PANE).damage(4)
                         .displayName(translator.getLegacyText(noobPlayer, "one-block.inventory.flag-status.coop.name"))
                         .lore(translator.getLegacyTextList(noobPlayer, "one-block.inventory.flag-status.coop.lore", translatedFlag)).build(),
-                getItemEvent(FlagType.COOP));
-
-
-        inventory.set(6, ItemBuilder.from(Material.STAINED_GLASS_PANE).damage(3)
-                        .displayName(translator.getLegacyText(noobPlayer, "one-block.inventory.flag-status.all.name"))
-                        .lore(translator.getLegacyTextList(noobPlayer, "one-block.inventory.flag-status.all.lore", translatedFlag)).build(),
-                getItemEvent(FlagType.ALL));
+                getItemEvent(true));
 
         inventory.set(8, ItemBuilder.from(Material.ARROW)
                         .displayName(translator.getLegacyText(noobPlayer, "one-block.inventory.flag-status.close.name"))
@@ -76,20 +70,15 @@ public class FlagStatusGUI {
         SpigotCore.getInventoryManager().openInventory(noobPlayer, inventory);
     }
 
-    private ClickableItem getItemEvent(FlagType type) {
+    private ClickableItem getItemEvent(boolean status) {
         return (event) -> {
             //Decode perms
-            char[] perms = FlagEncoder.decode(OneBlockAPI.getIslandPermissionLoader().getPermission(world, noobPlayer.getUsername()));
+            BitSet bits = FlagEncoder.decode(OneBlockAPI.getIslandPermissionLoader().getPermission(world));
             //Update char[] perms
-            try {
-                FlagEncoder.setType(flag, perms, type);
-            } catch (FlagException e) {
-                e.printStackTrace();
-                Logger.player(noobPlayer, "one-block.island.error.flag-deserialize");
-                return;
-            }
+            bits.set(flag.getPos(), status);
+
             //Update perms and notify player
-            OneBlockAPI.getIslandPermissionLoader().updatePermission(world, noobPlayer.getUsername() ,FlagEncoder.encode(perms));
+            OneBlockAPI.getIslandPermissionLoader().updatePermission(world ,FlagEncoder.encode(bits));
             Bukkit.getPlayer(oneBlockPlayer.getName()).closeInventory();
             Logger.player(noobPlayer, "one-block.island.permissions-update");
         };

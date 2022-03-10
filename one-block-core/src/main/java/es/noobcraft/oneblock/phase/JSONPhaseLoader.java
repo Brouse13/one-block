@@ -9,7 +9,9 @@ import es.noobcraft.oneblock.api.logger.LoggerType;
 import es.noobcraft.oneblock.api.phases.Phase;
 import es.noobcraft.oneblock.api.phases.PhaseLoader;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

@@ -2,7 +2,10 @@ package es.noobcraft.oneblock.phase;
 
 import es.noobcraft.oneblock.api.phases.LootTable;
 import es.noobcraft.oneblock.api.phases.Phase;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 

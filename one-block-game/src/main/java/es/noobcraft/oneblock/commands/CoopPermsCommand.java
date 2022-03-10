@@ -5,10 +5,10 @@ import es.noobcraft.core.api.command.PlayerCommand;
 import es.noobcraft.core.api.permission.Group;
 import es.noobcraft.core.api.player.BukkitNoobPlayer;
 import es.noobcraft.oneblock.api.OneBlockAPI;
+import es.noobcraft.oneblock.api.logger.Logger;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.api.profile.OneBlockProfile;
 import es.noobcraft.oneblock.gui.flags.FlagsGUI;
-import es.noobcraft.oneblock.api.logger.Logger;
 import lombok.NonNull;
 
 import java.util.Arrays;

@@ -19,10 +19,4 @@ public enum IslandFlag {
         this.material = material;
         this.pos = pos;
     }
-
-    static int allPerms() {
-        StringBuilder perms = new StringBuilder();
-        for (int i = 0; i < IslandFlag.values().length; i++) perms.append("1");
-        return Integer.parseInt(perms.toString());
-    }
 }

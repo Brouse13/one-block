@@ -1,62 +1,35 @@
 package es.noobcraft.oneblock.api.flags;
 
-import es.noobcraft.oneblock.api.exceptions.FlagException;
-
-import java.util.Arrays;
+import java.util.BitSet;
 
 public final class FlagEncoder {
-    public static int encode(char[] parts) {
-        StringBuilder bin = new StringBuilder();
-        for (char part : parts)
-            bin.append(Integer.toBinaryString(Integer.parseInt(part+ "", 10)));
-
-        return Integer.parseInt(reverse(new StringBuilder(bin)), 2);
-    }
-
-    public static char[] decode(int perm) {
-        StringBuilder tempBin = new StringBuilder(Integer.toBinaryString(perm));
-        if (tempBin.length() % 2 != 0) tempBin.insert(0, "0");
-
-        char[] reverseChar = reverse(new StringBuilder(tempBin)).toCharArray();
-
-        char[] decoded = new char[15];
-        Arrays.fill(decoded, '0');
-        
-        for (int i = 0; i < (reverseChar.length / 2) ; i++)
-            decoded[i] = Character.forDigit(Integer.parseInt(reverseChar[i * 2]+ ""+ reverseChar[(i * 2) + 1], 2), 10);
-
-        return decoded;
-    }
-
-    public static FlagType getType(IslandFlag flag, char[] perms) throws FlagException {
-        if (perms.length < flag.getPos()) return FlagType.OWNER;
-        try {
-            char bytes = perms[flag.getPos()];
-
-            return Arrays.stream(FlagType.values())
-                    .filter(flagType -> flagType.getValue() == Integer.parseInt(String.valueOf(bytes)))
-                    .findFirst().orElseThrow(FlagException::new);
-        }catch (IndexOutOfBoundsException exception) {
-            return FlagType.OWNER;
+    /**
+     * Decode the int perm value into a BitSet
+     * to represent all the perms ins a binary form.
+     * @param value permission value
+     * @return the BitSet perm
+     */
+    public static BitSet decode(int value) {
+        BitSet bits = new BitSet(IslandFlag.values().length - 1);
+        int index = 0;
+        while (value != 0) {
+            if (value % 2 != 0) bits.set(index);
+            ++index;
+            value = value >>> 1;
         }
+        return bits;
     }
 
-    public static int setType(IslandFlag flag, char[] perms, FlagType type) throws FlagException {
-        if (perms.length < flag.getPos()) throw new FlagException("Unable to set value on pair "+ flag.getPos());
-        perms[flag.getPos()] = Character.forDigit(Integer.parseInt(type.getValue()+ ""), 10);
-        return encode(perms);
-    }
-
-    private static String reverse(StringBuilder bin) {
-        if (bin.length() % 2 != 0) bin.insert(0, "0");
-
-        char[] binary = bin.toString().toCharArray();
-        StringBuilder reverse = new StringBuilder();
-
-        for (int i = (binary.length / 2) - 1; i >= 0; i--) {
-            reverse.append(binary[(i * 2)]);
-            reverse.append(binary[(i *2) + 1]);
-        }
-        return reverse.toString();
+    /**
+     * Encode a BitSet into a int to store the permission
+     * into the database.
+     * @param bits bits from the permission
+     * @return the int perm
+     */
+    public static int encode(BitSet bits) {
+        int value = 0;
+        for (int i = 0; i < bits.length(); ++i)
+            value += bits.get(i) ? (1L << i) : 0L;
+        return value;
     }
 }
