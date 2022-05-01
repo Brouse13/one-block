@@ -1,0 +1,26 @@
+{
+  "id": "desolate_land",
+  "min": 4657,
+  "max": 5445,
+  "items": [],
+  "mobs": [{"entity": "SILVERFISH"},{"entity": "CREEPER"},{"entity": "CAVE_SPIDER"},{"entity": "SKELETON"}],
+  "lootTable": [
+    {
+      "name": "one-block.messages.tootTable.special_chest",
+      "rolls": 3,
+      "items": [
+        {"item": "WEB", "weigh": 6},
+        {"item": "ROTTEN_FLESH ","weigh": 6},
+        {"item": "BONE", "weigh": 6},
+        {"item": "DEAD_BUSH", "weigh": 6},
+        {"item": "FERMENTED_SPIDER_EYE", "weigh": 5},
+        {"item": "POISONOUS_POTATO", "weigh": 4},
+        {"item": "GUNPOWDER", "weigh": 3},
+        {"item": "EMERALD", "weigh": 2},
+        {"item": "IRON_BARDING", "weigh": 1},
+        {"item": "GOLD_BARDING", "weigh": 1},
+        {"item": "DIAMOND_BARDING", "weigh": 1}
+      ]
+    }],
+  "specialActions": [{"block": 5445,"action": "UPGRADE","value": "the_end"}]
+}

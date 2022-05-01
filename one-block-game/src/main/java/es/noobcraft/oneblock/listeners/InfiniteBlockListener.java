@@ -1,19 +1,20 @@
 package es.noobcraft.oneblock.listeners;
 
 import com.google.common.collect.Sets;
-import es.noobcraft.core.api.item.ItemBuilder;
 import es.noobcraft.oneblock.api.OneBlockAPI;
 import es.noobcraft.oneblock.api.events.InfiniteBlockBreakEvent;
 import es.noobcraft.oneblock.api.events.PhaseUpgradeEvent;
 import es.noobcraft.oneblock.api.phases.Phase;
 import es.noobcraft.oneblock.api.phases.PhaseBlocks;
+import es.noobcraft.oneblock.api.phases.PhaseGenerators;
 import es.noobcraft.oneblock.api.phases.SpecialActions;
-import es.noobcraft.oneblock.api.phases.generators.PhaseGenerators;
+import es.noobcraft.oneblock.phase.BaseBlockType;
 import es.noobcraft.oneblock.phase.BaseLootTable;
+import es.noobcraft.oneblock.phase.BaseMobType;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,19 +22,21 @@ import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 
 public class InfiniteBlockListener implements Listener {
     private final Set<SpecialActions.Actions> locked = Sets.newHashSet(SpecialActions.Actions.BLOCK, SpecialActions.Actions.LOOT_TABLE, SpecialActions.Actions.UPGRADE);
+    private final Function<List<?>, Integer> random = list -> ((int) (Math.random() * list.size()));
 
     @EventHandler(ignoreCancelled = true)
     public void onInfiniteBlockBreak(InfiniteBlockBreakEvent event) {
         Block block = event.getBlock();
         PhaseBlocks phaseblocks = event.getPhaseblocks();
         boolean generate = true;
+        World world = event.getBlock().getWorld();
 
         //Spawn the block drops
         final Collection<ItemStack> drops = block.getDrops(event.getPlayer().getBukkitPlayer().getItemInHand());
@@ -45,24 +48,26 @@ public class InfiniteBlockListener implements Listener {
         if (phaseblocks.getPhase().getSpecialActions().containsKey(phaseblocks.getBlocks())) {
             for (SpecialActions action : phaseblocks.getPhase().getSpecialActions().get(phaseblocks.getBlocks())) {
                 switch (action.getAction()) {
-                    case MOB: PhaseGenerators.generateEntity(block,
-                            Collections.singletonList(EntityType.valueOf(action.getValue()))).generate();
+                    case MOB:
+                        OneBlockAPI.getGson().fromJson(action.getValue(), BaseMobType.class).summon(event.getPlayer());
                     break;
-                    case BLOCK: PhaseGenerators.generateBlock(block,
-                            Collections.singletonList(itemBuilder(action.getValue().split(":")))).generate();
+                    case BLOCK:
+                        OneBlockAPI.getGson().fromJson(action.getValue(), BaseBlockType.class).spawn(world);
                     break;
-                    case MESSAGE: PhaseGenerators.generateMessage(event.getPlayer(), action.getValue()).generate();
+                    case MESSAGE:
+                        PhaseGenerators.generateMessage(event.getPlayer(), action.getValue());
                     break;
-                    case ACTIONBAR: PhaseGenerators.generateActionBar(event.getPlayer(), action.getValue()).generate();
+                    case ACTIONBAR:
+                        PhaseGenerators.generateActionBar(event.getPlayer(), action.getValue());
                     break;
                     case LOOT_TABLE:
-                        PhaseGenerators.generateLootTable(event.getBlock(), Collections.singletonList(Arrays.asList(
-                                    OneBlockAPI.getGson().fromJson(action.getValue(), BaseLootTable[].class)))).generate();
+                        OneBlockAPI.getGson().fromJson(action.getValue(), BaseLootTable.class).summon(world);
                     break;
-                    case TITLE: PhaseGenerators.generateTitle(event.getPlayer(), action.getValue()).generate();
+                    case TITLE:
+                        PhaseGenerators.generateTitle(event.getPlayer(), action.getValue());
                     break;
                     case UPGRADE:
-                        PhaseUpgradeEvent phaseUpgradeEvent = new PhaseUpgradeEvent(event.getWorld(), phaseblocks.getPhase());
+                        PhaseUpgradeEvent phaseUpgradeEvent = new PhaseUpgradeEvent(event.getWorld(), action.getValue());
                         Bukkit.getServer().getPluginManager().callEvent(phaseUpgradeEvent);
                         break;
                 }
@@ -76,17 +81,20 @@ public class InfiniteBlockListener implements Listener {
 
             double type = Math.random();
             if (type < .05) { //LootTable generation
-                if (phase.getLootTables().size() != 0)
-                    PhaseGenerators.generateLootTable(block, phase.getLootTables()).generate();
-                else
-                    PhaseGenerators.generateBlock(block, phase.getItems()).generate();
+                if (phase.getLootTables().size() != 0) {
+                    phase.getLootTables().get(random.apply(phase.getLootTables())).summon(world);
+                }else {
+                    phase.getItems().get(random.apply(phase.getItems())).spawn(world);
+                }
             }else if (type < .15) {//Entities generation
-                if (phase.getEntities().size() != 0)
-                    PhaseGenerators.generateEntity(block, phase.getEntities()).generate();
-                PhaseGenerators.generateBlock(block, phase.getItems()).generate();
+                if (phase.getEntities().size() != 0) {
+                    phase.getEntities().get(random.apply(phase.getEntities())).summon(event.getPlayer());
+                }else {
+                    phase.getItems().get(random.apply(phase.getItems())).spawn(world);
+                }
+            }else {//Generate a random block
+                phase.getItems().get(random.apply(phase.getItems())).spawn(world);
             }
-            else //Generate a random block
-                PhaseGenerators.generateBlock(block, phase.getItems()).generate();
         }
 
         //Add one block to the phase and set the block to grass
@@ -102,14 +110,8 @@ public class InfiniteBlockListener implements Listener {
 
         //Generate a new block
         event.setCancelled(true);
-        PhaseGenerators.generateBlock(event.getBlock(),
-                OneBlockAPI.getPhaseLoader().getPhaseBlocks(event.getBlock().getWorld().getName()).getPhase().getItems()).generate();
-    }
 
-    private ItemStack itemBuilder(String[] item) {
-        ItemBuilder itemBuilder = ItemBuilder.from(Material.valueOf(item[0]));
-        if (item.length > 1) itemBuilder.damage(Integer.parseInt(item[1]));
-
-        return itemBuilder.build();
+        Phase phase = OneBlockAPI.getPhaseLoader().getPhaseBlocks(event.getBlock().getWorld().getName()).getPhase();
+        phase.getItems().get(random.apply(phase.getItems())).spawn(event.getBlock().getWorld());
     }
 }

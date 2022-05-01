@@ -1,0 +1,20 @@
+{
+  "id": "ocean",
+  "min": 1154,
+  "max": 1725,
+  "items": [],
+  "mobs": [{"entity": "SQUID"},{"entity": "GUARDIAN"},{"entity": "ELDER_GUARDIAN"}],
+  "lootTable": [
+    {
+      "name": "one-block.messages.tootTable.special_chest",
+      "rolls": 3,
+      "items": [
+        {"item": "PRISMARINE_SHARD", "weigh": 5},
+        {"item": "PRISMARINE_CRYSTALS","weigh": 4},
+        {"item": "INK_SAC", "weigh": 4},
+        {"item": "WATER_LILY", "weigh": 3},
+        {"item": "WATER_BUCKET", "weigh": 1}
+      ]
+    }],
+  "specialActions": [{"block": 1725,"action": "UPGRADE","value": "jungle_dungeon"}]
+}

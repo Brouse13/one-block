@@ -1,0 +1,26 @@
+{
+  "id": "idyll",
+  "min": 3925,
+  "max": 4657,
+  "items": [],
+  "mobs": [{"entity": "CAT"},{"entity": "SLIME"},{"entity": "MULE"},{"entity": "SKELETON"},{"entity": "ZOMBIE"}],
+  "lootTable": [
+    {
+      "name": "one-block.messages.tootTable.special_chest",
+      "rolls": 3,
+      "items": [
+        {"item": "SLIME_BALL", "weigh": 3},
+        {"item": "SPECKLED_MELON ","weigh": 3},
+        {"item": "GOLDEN_CARROT", "weigh": 5},
+        {"item": "EXP_BOTTLE", "weigh": 3},
+        {"item": "FIREBALL", "weigh": 3},
+        {"item": "CAKE_BLOCK", "weigh": 1},
+        {"item": "SADDLE", "weigh": 1},
+        {"item": "NAME_TAG", "weigh": 1},
+        {"item": "IRON_BARDING", "weigh": 1},
+        {"item": "GOLD_BARDING", "weigh": 1},
+        {"item": "DIAMOND_BARDING", "weigh": 1}
+      ]
+    }],
+  "specialActions": [{"block": 4657,"action": "UPGRADE","value": "desolate_land"}]
+}

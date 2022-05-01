@@ -1,8 +1,5 @@
 package es.noobcraft.oneblock.api.phases;
 
-import org.bukkit.entity.EntityType;
-import org.bukkit.inventory.ItemStack;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -33,21 +30,21 @@ public interface Phase {
      * during that phase
      * @return the available materials
      */
-    List<ItemStack> getItems();
+    List<BlockType> getItems();
 
     /**
      * Get all the available entities that can spawn
      * during that phase
      * @return the available entities
      */
-    List<EntityType> getEntities();
+    List<MobType> getEntities();
 
     /**
      * Get all the available LooTables that can spawn
      * during that phase
      * @return the available LootTables
      */
-    List<List<LootTable>> getLootTables();
+    List<LootTable> getLootTables();
 
     /**
      * Get all the SpecialAction that will happen on the OneBlock

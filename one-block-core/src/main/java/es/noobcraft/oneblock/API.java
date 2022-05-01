@@ -2,10 +2,7 @@ package es.noobcraft.oneblock;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import es.noobcraft.oneblock.adapters.LocationAdapter;
-import es.noobcraft.oneblock.adapters.LootTableAdapter;
-import es.noobcraft.oneblock.adapters.PhaseAdapter;
-import es.noobcraft.oneblock.adapters.SpecialActionsAdapter;
+import es.noobcraft.oneblock.adapters.*;
 import es.noobcraft.oneblock.api.OneBlock;
 import es.noobcraft.oneblock.api.loaders.PhaseLoader;
 import es.noobcraft.oneblock.api.loaders.ProfileLoader;
@@ -22,9 +19,7 @@ import es.noobcraft.oneblock.loaders.JSONPhaseLoader;
 import es.noobcraft.oneblock.loaders.SQLProfileLoader;
 import es.noobcraft.oneblock.loaders.SlimeWorldLoader;
 import es.noobcraft.oneblock.permission.SetPermissionManager;
-import es.noobcraft.oneblock.phase.BaseLootTable;
-import es.noobcraft.oneblock.phase.BasePhase;
-import es.noobcraft.oneblock.phase.BaseSpecialActions;
+import es.noobcraft.oneblock.phase.*;
 import es.noobcraft.oneblock.player.BasePlayerSupplier;
 import es.noobcraft.oneblock.player.SetPlayerCache;
 import es.noobcraft.oneblock.profile.SetProfileCache;
@@ -100,6 +95,8 @@ public class API implements OneBlock {
                 .registerTypeAdapter(BaseLootTable.class, new LootTableAdapter())
                 .registerTypeAdapter(Location.class, new LocationAdapter())
                 .registerTypeAdapter(BaseSpecialActions.class, new SpecialActionsAdapter())
+                .registerTypeAdapter(BaseMobType.class, new MobTypeAdapter())
+                .registerTypeAdapter(BaseBlockType.class, new BlockTypeAdapter())
                 .serializeNulls().create();
     }
 }

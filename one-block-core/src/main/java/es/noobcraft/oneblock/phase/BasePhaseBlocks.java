@@ -1,6 +1,5 @@
 package es.noobcraft.oneblock.phase;
 
-import com.google.common.collect.Lists;
 import es.noobcraft.core.api.Core;
 import es.noobcraft.oneblock.api.OneBlockAPI;
 import es.noobcraft.oneblock.api.logger.Logger;
@@ -13,14 +12,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Set;
 
 public class BasePhaseBlocks implements PhaseBlocks {
     private static final String GET_BLOCKS = "SELECT blocks FROM one_block_worlds WHERE name=?";
     private static final String SYNC_BLOCKS = "UPDATE one_block_worlds SET blocks=? WHERE name=?";
 
     @Getter private int blocks = 0;
-    private final String world;
+    @Getter private final String world;
+    @Getter private Phase phase;
 
     public BasePhaseBlocks(String world) {
         this.world = world;
@@ -33,6 +32,14 @@ public class BasePhaseBlocks implements PhaseBlocks {
                 try(ResultSet resultSet = statement.executeQuery()) {
                     resultSet.next();
                     blocks = resultSet.getInt("blocks");
+
+                    for (Phase phase : OneBlockAPI.getPhaseLoader().getPhases()) {
+                        if (blocks > phase.getMinScore() && blocks <= phase.getMaxScore()) {
+                            this.phase = phase;
+                            break;
+                        }
+                    }
+                    if (phase == null) phase = OneBlockAPI.getPhaseLoader().getPhases().stream().findFirst().orElseThrow(NullPointerException::new);
                 }
             }
         }catch (SQLException exception) {
@@ -41,16 +48,9 @@ public class BasePhaseBlocks implements PhaseBlocks {
     }
 
     @Override
-    public String getWorld() {
-        return world;
-    }
-
-    @Override
-    public Phase getPhase() {
-        final Set<Phase> phases = OneBlockAPI.getPhaseLoader().getPhases();
-        return phases.stream()
-                .filter(phase -> blocks >= phase.getMinScore() && blocks < phase.getMaxScore())
-                .findFirst().orElse(Lists.newArrayList(phases).get(phases.size() - 1));
+    public void setPhase(Phase phase) {
+        Logger.log(LoggerType.CONSOLE, "World "+ world+ " has upgraded to "+ phase.getIdentifier());
+        this.phase = phase;
     }
 
     @Override

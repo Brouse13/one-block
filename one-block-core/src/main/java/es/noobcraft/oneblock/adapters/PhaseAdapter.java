@@ -8,12 +8,9 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import es.noobcraft.core.api.item.ItemBuilder;
-import es.noobcraft.oneblock.api.phases.LootTable;
-import es.noobcraft.oneblock.api.phases.Phase;
-import es.noobcraft.oneblock.api.phases.SpecialActions;
+import es.noobcraft.oneblock.api.phases.*;
 import es.noobcraft.oneblock.phase.BasePhase;
 import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;
@@ -29,7 +26,8 @@ public class PhaseAdapter extends TypeAdapter<Phase> {
         reader.beginObject();
         String fieldName = null;
 
-        while (reader.hasNext()) {//Loop throw main json obj
+        //Loop throw main json obj
+        while (reader.hasNext()) {
             if (reader.peek().equals(JsonToken.NAME)) fieldName = reader.nextName();
 
             if ("id".equals(fieldName)) basePhaseBuilder.identifier(reader.nextString());
@@ -39,40 +37,42 @@ public class PhaseAdapter extends TypeAdapter<Phase> {
             if ("max".equals(fieldName)) basePhaseBuilder.maxScore(reader.nextInt());
 
             if ("items".equals(fieldName)) {
+                /*
                 reader.beginArray();
-                List<ItemStack> items = Lists.newArrayList();
+                List<BlockType> items = Lists.newArrayList();
 
-                while (reader.hasNext()) items.add(itemLoader(reader.nextString().split(":")));
+                while (reader.hasNext()) items.add(new BlockTypeAdapter().read(reader));
 
                 reader.endArray();
                 basePhaseBuilder.items(items);
+                 */
             }
 
             if ("mobs".equals(fieldName)) {
+                /*
                 reader.beginArray();
-                List<EntityType> entities = Lists.newArrayList();
+                List<MobType> entities = Lists.newArrayList();
 
-                while (reader.hasNext()) entities.add(EntityType.valueOf(reader.nextString()));
+                while (reader.hasNext())
+                    entities.add(new MobTypeAdapter().read(reader));
 
                 reader.endArray();
                 basePhaseBuilder.entities(entities);
+                 */
             }
 
             if ("lootTable".equals(fieldName)) {
+                /*
+                List<LootTable> lootTables = Lists.newArrayList();
                 reader.beginArray();
-                List<List<LootTable>> setLootTables = Lists.newArrayList();
 
-                while (reader.hasNext()) {//Loop throw all the possible lootTables array
-                    reader.beginArray();
-                    List<LootTable> lootTables = Lists.newArrayList();
+                //Loop throw all the possible lootTables array
+                while (reader.hasNext())
+                    lootTables.add(new LootTableAdapter().read(reader));
 
-                    while (reader.hasNext()) //Loop throw lootTables array
-                        lootTables.add(new LootTableAdapter().read(reader));
-                    setLootTables.add(lootTables);
-                    reader.endArray();
-                }
                 reader.endArray();
-                basePhaseBuilder.lootTables(setLootTables);
+                basePhaseBuilder.lootTables(lootTables);
+                 */
             }
 
             if ("specialActions".equals(fieldName)) {
@@ -80,7 +80,6 @@ public class PhaseAdapter extends TypeAdapter<Phase> {
                 Map<Integer, Set<SpecialActions>> actions = Maps.newHashMap();
 
                 while (reader.hasNext()) {
-                    //Create a new SpecialAction
                     SpecialActions action = new SpecialActionsAdapter().read(reader);
 
                     //If the block isn't on the map add it
@@ -107,27 +106,17 @@ public class PhaseAdapter extends TypeAdapter<Phase> {
         writer.name("max").value(phase.getMaxScore());
 
         writer.name("items").beginArray();
-        for (ItemStack itemStack : phase.getItems())
-            writer.value(itemStack.getType().name()+ ":"+ itemStack.getDurability());
+        for (BlockType blockType : phase.getItems()) new BlockTypeAdapter().write(writer, blockType);
         writer.endArray();
 
         writer.name("mobs").beginArray();
-        for (EntityType entity : phase.getEntities())
-            writer.value(entity.name());
+        for (MobType entity : phase.getEntities())
+            new MobTypeAdapter().write(writer, entity);
         writer.endArray();
 
         writer.name("lootTable").beginArray();
-        for (List<LootTable> lootTables : phase.getLootTables()) {
-            writer.beginArray();
-            for (LootTable lootTable : lootTables) {
-                writer.beginObject();
-                writer.name("item").value(lootTable.getItem().getType().name()+ ":"+ lootTable.getItem().getDurability());
-                writer.name("probability").value(lootTable.getProbability());
-                writer.name("maxAmount").value(lootTable.getMaxAmount());
-                writer.endObject();
-            }
-            writer.endArray();
-        }
+        for (LootTable lootTable : phase.getLootTables())
+            new LootTableAdapter().write(writer, lootTable);
         writer.endArray();
 
         writer.name("specialActions").beginArray();
@@ -137,12 +126,5 @@ public class PhaseAdapter extends TypeAdapter<Phase> {
 
         writer.endArray();
         writer.endObject();
-    }
-
-    private ItemStack itemLoader(String[] item) {
-        ItemBuilder itemBuilder = ItemBuilder.from(Material.valueOf(item[0]));
-        if (item.length > 1) itemBuilder.damage(Integer.parseInt(item[1]));
-
-        return itemBuilder.build();
     }
 }

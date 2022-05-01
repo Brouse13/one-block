@@ -1,0 +1,24 @@
+{
+  "id": "red_desert",
+  "min": 2364,
+  "max": 3088,
+  "items": [],
+  "mobs": [{"entity": "VILLAGER"}],
+  "lootTable": [
+    {
+      "name": "one-block.messages.tootTable.special_chest",
+      "rolls": 3,
+      "items": [
+        {"item": "DEAD_BUSH", "weigh": 8},
+        {"item": "BONE","weigh": 7},
+        {"item": "COAL", "weigh": 5},
+        {"item": "REDSTONE", "weigh": 5},
+        {"item": "SAPLING:4", "weigh": 5},
+        {"item": "EMERALD", "weigh": 4},
+        {"item": "CACTUS", "weigh": 4},
+        {"item": "SLIME_BALL", "weigh": 2},
+        {"item": "EXP_BOTTLE", "weigh": 2}
+      ]
+    }],
+  "specialActions": [{"block": 3088,"action": "UPGRADE","value": "the_nether"}]
+}

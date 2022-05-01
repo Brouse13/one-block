@@ -2,6 +2,7 @@ package es.noobcraft.oneblock.loaders;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import es.noobcraft.core.api.Core;
 import es.noobcraft.oneblock.api.OneBlockAPI;
 import es.noobcraft.oneblock.api.loaders.PhaseLoader;
@@ -16,16 +17,17 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class JSONPhaseLoader implements PhaseLoader {
-    private final Map<String, Phase> phases = Maps.newHashMap();
+    private final Set<Phase> phases = Sets.newTreeSet(Comparator.comparing(Phase::getMinScore));
     private static final Map<String, PhaseBlocks> blocks = Maps.newHashMap();
 
     @Override
     public void loadPhases() {
+        /*
         final File directory = new File(Core.getServerConfigurationsDirectory() + "/phases");
+
         if (!directory.mkdirs()) {
             final File[] json = directory.listFiles(file -> file.getName().endsWith(".json") && !file.isDirectory());
 
@@ -36,26 +38,24 @@ public class JSONPhaseLoader implements PhaseLoader {
 
             for (File file : json) {
                 try (FileReader reader = new FileReader(file)) {
-                    final BasePhase phase = OneBlockAPI.getGson().fromJson(reader, BasePhase.class);
-                    this.phases.put(phase.getIdentifier(), phase);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    phases.add(OneBlockAPI.getGson().fromJson(reader, BasePhase.class));
+                } catch (IOException exception) {
+                    Logger.log(LoggerType.ERROR, exception.getMessage());
                 }
             }
         }
+         */
         Logger.log(LoggerType.CONSOLE, "Loaded "+ this.phases.size()+ " phases");
     }
 
     @Override
     public Set<Phase> getPhases() {
-        return ImmutableSet.copyOf(phases.values());
+        return ImmutableSet.copyOf(phases);
     }
 
     @Override
     public PhaseBlocks getPhaseBlocks(String world) {
-        if (!blocks.containsKey(world))
-            blocks.put(world, new BasePhaseBlocks(world));
-       return blocks.get(world);
+        return blocks.computeIfAbsent(world, str -> blocks.put(str, new BasePhaseBlocks(str)));
     }
 
     public static void scheduleUpdate(JavaPlugin plugin) {

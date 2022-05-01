@@ -1,0 +1,22 @@
+{
+  "id": "the_underground",
+  "min": 282,
+  "max": 680,
+  "items": [
+    {
+      "name": "one-block.messages.tootTable.special_chest",
+      "rolls": 3,
+      "items": [
+        {"item": "FEATHER", "weigh": 6},
+        {"item": "SAPLING:1","weigh": 4},
+        {"item": "LEATHER","weigh": 4},
+        {"item": "STRING","weigh": 4},
+        {"item": "COAL","weigh": 3},
+        {"item": "RED_MUSHROOM","weigh": 2},
+        {"item": "BROWN_MUSHROOM","weigh": 2}
+      ]
+    }],
+  "mobs": [{"entity": "MUSHROOM_COW"},{"entity": "ZOMBIE"},{"entity": "RABBIT"},{"entity": "SPIDER"},{"entity": "CREEPER"}],
+  "lootTable": [],
+  "specialActions": [{"block": 680,"action": "UPGRADE","value": "icy_tundra"}]
+}

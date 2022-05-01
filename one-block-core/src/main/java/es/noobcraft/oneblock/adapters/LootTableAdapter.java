@@ -11,41 +11,71 @@ import org.bukkit.Material;
 
 import java.io.IOException;
 
+/**
+ * LootTableAdapter V2
+ */
 public class LootTableAdapter extends TypeAdapter<LootTable> {
 
     @Override
     public LootTable read(JsonReader reader) throws IOException {
-        final BaseLootTable.BaseLootTableBuilder lootTableBuilder = BaseLootTable.builder();
+        final BaseLootTable.BaseLootTableBuilder builder = BaseLootTable.builder();
         reader.beginObject();
         String fieldName = null;
 
+        //Loop throw main json object
         while (reader.hasNext()) {
             if (reader.peek().equals(JsonToken.NAME)) fieldName = reader.nextName();
 
-            if ("item".equals(fieldName)) {
-                final String[] item = reader.nextString().split(":");
+            if("name".equals(fieldName)) builder.name(reader.nextString());
 
-                ItemBuilder itemBuilder = ItemBuilder.from(Material.valueOf(item[0]));
-                if (item.length > 1) itemBuilder.damage(Integer.parseInt(item[1]));
+            if ("rolls".equals(fieldName)) builder.rolls(reader.nextInt());
 
-                lootTableBuilder.item(itemBuilder.build());
+            if("items".equals(fieldName)) {
+                reader.beginArray();
+
+                //Loop throw all LootTableItems
+                while (reader.hasNext()) {
+                    BaseLootTable.BaseLootTableItem.BaseLootTableItemBuilder item = BaseLootTable.BaseLootTableItem.builder();
+                    reader.beginObject();
+                    if (reader.peek().equals(JsonToken.NAME)) fieldName = reader.nextName();
+
+                    //Loop throw each LootTableItems elements
+                    while (reader.hasNext()) {
+                        if (reader.peek().equals(JsonToken.NAME)) fieldName = reader.nextName();
+
+                        if ("item".equals(fieldName)) {
+                            final String[] itemStr = reader.nextString().split(":");
+
+                            ItemBuilder itemBuilder = ItemBuilder.from(Material.valueOf(itemStr[0]));
+                            if (itemStr.length > 1) itemBuilder.damage(Integer.parseInt(itemStr[1]));
+
+                            item.item(itemBuilder.build());
+                        }
+
+                        if("weigh".equals(fieldName)) item.weigh(reader.nextInt());
+                    }
+                    reader.endObject();
+                    builder.addItem(item.build());
+                }
+                reader.endArray();
             }
-
-            if("probability".equals(fieldName)) lootTableBuilder.probability(reader.nextDouble());
-
-            if("maxAmount".equals(fieldName)) lootTableBuilder.maxAmount(reader.nextInt());
-
         }
         reader.endObject();
-        return lootTableBuilder.build();
+        return builder.build();
     }
 
     @Override
     public void write(JsonWriter writer, LootTable lootTable) throws IOException {
         writer.beginObject();
-        writer.name("item").value(lootTable.getItem().getType().name()+ ":"+ lootTable.getItem().getDurability());
-        writer.name("probability").value(lootTable.getProbability());
-        writer.name("maxAmount").value(lootTable.getMaxAmount());
-        writer.endObject();
+        writer.name("name").value(lootTable.getName());
+        writer.name("rolls").value(lootTable.getRolls());
+        writer.name("items").beginArray();
+
+        for (LootTable.LootTableItem item : lootTable.getItems()) {
+            writer.beginObject();
+            writer.name("item").value(item.getItem().getType().name()+ ":"+ item.getItem().getDurability());
+            writer.name("weigh").value(item.getWeigh());
+            writer.endObject();
+        }
     }
 }

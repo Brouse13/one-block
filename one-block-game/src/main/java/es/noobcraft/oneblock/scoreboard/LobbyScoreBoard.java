@@ -31,6 +31,6 @@ public class LobbyScoreBoard implements OneBlockScoreBoard {
     public void update() {
         scoreBoard.setTitle(translator.getLegacyText(noobPlayer, "one-block.scoreboard.lobby.title"));
         scoreBoard.set(translator.getLegacyTextList(noobPlayer, "one-block.scoreboard.lobby.content",
-                oneBlockPlayer.getName(), oneBlockPlayer.getProfiles().size()));
+                oneBlockPlayer.getName(), oneBlockPlayer.getProfiles().size(), oneBlockPlayer.getMaxProfiles()));
     }
 }

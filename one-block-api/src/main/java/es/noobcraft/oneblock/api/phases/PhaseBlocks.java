@@ -14,6 +14,12 @@ public interface PhaseBlocks {
     Phase getPhase();
 
     /**
+     * Set the phase to a new value
+     * @param phase new Phase value
+     */
+    void setPhase(Phase phase);
+
+    /**
      * Get the amount of blocks broken on the server
      * @return the amount of broken blocks
      */

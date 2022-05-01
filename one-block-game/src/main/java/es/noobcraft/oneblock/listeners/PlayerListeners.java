@@ -83,6 +83,7 @@ public class PlayerListeners implements Listener {
             OneBlockAPI.getProfileCache().removeProfile(profile);
             OneBlockAPI.getWorldLoader().unloadWorld(profile.getWorldName());
         });
+        OneBlockAPI.getScoreboardManager().removeScoreBoard(player);
         OneBlockAPI.getPlayerCache().removePlayer(player);
     }
 

@@ -5,6 +5,7 @@ import es.noobcraft.core.api.SpigotCore;
 import es.noobcraft.core.api.lang.Translator;
 import es.noobcraft.core.api.player.NoobPlayer;
 import es.noobcraft.core.api.scoreboard.ScoreBoard;
+import es.noobcraft.oneblock.api.OneBlockAPI;
 import es.noobcraft.oneblock.api.profile.OneBlockProfile;
 import es.noobcraft.oneblock.api.scoreboard.OneBlockScoreBoard;
 
@@ -31,6 +32,7 @@ public class IslandScoreBoard implements OneBlockScoreBoard {
     public void update() {
         scoreBoard.setTitle(translator.getLegacyText(noobPlayer, "one-block.scoreboard.island.title"));
         scoreBoard.set(translator.getLegacyTextList(noobPlayer, "one-block.scoreboard.island.content",
-                profile.getIslandOwner(), profile.getProfileName()));
+                profile.getIslandOwner(), profile.getProfileName(),
+                OneBlockAPI.getPhaseLoader().getPhaseBlocks(profile.getWorldName()).getPhase().getIdentifier()));
     }
 }

@@ -2,11 +2,7 @@ package es.noobcraft.oneblock.listeners;
 
 import es.noobcraft.oneblock.api.OneBlockAPI;
 import es.noobcraft.oneblock.api.events.PhaseUpgradeEvent;
-import es.noobcraft.oneblock.api.phases.Phase;
-import es.noobcraft.oneblock.api.phases.generators.Generate;
-import es.noobcraft.oneblock.api.phases.generators.PhaseGenerators;
 import es.noobcraft.oneblock.schedulers.PhaseUpgradeScheduler;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
@@ -15,8 +11,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
 
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
+
 public class PhaseUpgradeListeners implements Listener {
     private final JavaPlugin plugin;
+    private final Function<List<?>, Integer> random = list -> ((int) (Math.random() * list.size()));
 
     public PhaseUpgradeListeners(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -35,11 +36,15 @@ public class PhaseUpgradeListeners implements Listener {
                 ArmorStand.class);
 
         //Call the Upgrade phase scheduler
-        Phase newPhase = OneBlockAPI.getPhaseLoader().getPhaseBlocks(event.getWorld().getName()).getPhase();
-        Generate generate = PhaseGenerators.generateBlock(event.getWorld().getBlockAt(
-                OneBlockAPI.getSettings().getIslandSpawn().toLocation(event.getWorld())), newPhase.getItems());
-        Bukkit.getServer().getScheduler().runTaskAsynchronously(plugin, new PhaseUpgradeScheduler(armorStand, generate).getScheduler(plugin));
+        CompletableFuture.runAsync(new PhaseUpgradeScheduler(armorStand, plugin, () -> {//Scheduler will run sync
+            //Kill ArmourStand
+            armorStand.remove();
 
+            //Spawn the block
+            event.getTo().getItems().get(random.apply(event.getTo().getItems())).spawn(event.getWorld());
 
+            //Upgrade the phase
+            OneBlockAPI.getPhaseLoader().getPhaseBlocks(event.getWorld().getName()).setPhase(event.getTo());
+        }));
     }
 }

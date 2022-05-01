@@ -51,6 +51,7 @@ public class ProfileGUI {
                             OneBlockAPI.getWorldLoader().loadWorld(profile.getWorldName(), false);
                             PlayerLoader.loadPlayer(player, profile);
                             player.setCurrentProfile(profile);
+                            OneBlockAPI.getPhaseLoader().getPhaseBlocks(profile.getWorldName());
                             OneBlockAPI.getScoreboardManager().createScoreboard(player, new IslandScoreBoard(profile));
                         });
                 i++;
@@ -104,7 +105,7 @@ public class ProfileGUI {
 
         Logger.player(player.getNoobPlayer(), "one-block.messages.profile-created");
 
-        Logger.player(player.getNoobPlayer(), "Bienvenido a OneBlock");
-        Logger.player(player.getNoobPlayer(), "Rompe el bloque de abajo tuyo");
+        Logger.player(player.getNoobPlayer(), "one-block.messages.welcome");
+        Logger.player(player.getNoobPlayer(), "one-block.messages.break-block-below");
     }
 }

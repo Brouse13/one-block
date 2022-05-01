@@ -49,6 +49,7 @@ public abstract class OneBlockPlugin extends JavaPlugin {
     public abstract Set<Listener> registerListeners();
 
     private void registerServer() {
+        /*
         Core.getServerRegistryManager().registryProperty(
                 PropertyConstants.GAME_MODE_PROPERTY_SPECIAL, new ConstantSupplier<>(Boolean.FALSE.toString()));
         Core.getServerRegistryManager().registryProperty(
@@ -65,6 +66,7 @@ public abstract class OneBlockPlugin extends JavaPlugin {
                 PropertyConstants.GAME_MODE_SERVER_PROPERTY_PLAYERS_ONLINE, () -> getServer().getOnlinePlayers().size());
         Core.getServerRegistryManager().registryProperty(
                 PropertyConstants.GAME_MODE_SERVER_PROPERTY_PLAYERS_LIMIT, () -> Bukkit.getServer().getMaxPlayers());
+         */
         Core.getServerRegistryManager().registryProperty(
                 PropertyConstants.SERVER_PROPERTY_RESTRICTED, new ConstantSupplier<>(Boolean.FALSE.toString()));
         Core.getServerRegistryManager().registryProperty(

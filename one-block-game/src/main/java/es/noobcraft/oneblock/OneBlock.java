@@ -11,7 +11,7 @@ import es.noobcraft.oneblock.commands.PermissionCommand;
 import es.noobcraft.oneblock.commands.ProfileCommand;
 import es.noobcraft.oneblock.listeners.*;
 import es.noobcraft.oneblock.loaders.PlayerLoader;
-import es.noobcraft.oneblock.world.OneBlockLoader;
+import es.noobcraft.oneblock.world.SQLOneBlockLoader;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
@@ -23,7 +23,7 @@ public class OneBlock extends OneBlockPlugin {
     @Override
     public void enable() {
         SlimePlugin slimePlugin = ((SlimePlugin) Bukkit.getPluginManager().getPlugin("SlimeWorldManager"));
-        slimePlugin.registerLoader("one-block", new OneBlockLoader());
+        slimePlugin.registerLoader("one-block", new SQLOneBlockLoader());
         updateScoreboards();
         Logger.log(LoggerType.CONSOLE, "OneBlock enabled successfully");
     }
@@ -54,12 +54,12 @@ public class OneBlock extends OneBlockPlugin {
     }
 
     private void updateScoreboards() {
-        this.getServer().getScheduler().scheduleSyncRepeatingTask(this, () -> OneBlockAPI.getScoreboardManager().update(),0L, 20L);
+        this.getServer().getScheduler().scheduleSyncRepeatingTask(this,
+                () -> OneBlockAPI.getScoreboardManager().update(),0L, 20L);
     }
 
     public boolean deleteFile(File path) {
-        File[] files = path.listFiles();
-        for (File file : files)
+        for (File file : path.listFiles())
             if (file.isDirectory()) deleteFile(file);
             else file.delete();
         return(path.delete());

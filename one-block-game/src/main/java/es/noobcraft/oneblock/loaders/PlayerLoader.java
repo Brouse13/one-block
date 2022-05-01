@@ -42,9 +42,9 @@ public final class PlayerLoader {
             inventory.setContents(Arrays.copyOfRange(deserialize, 4, deserialize.length));
         }
 
-        bukkitPlayer.teleport(OneBlockAPI.getSettings().getIslandSpawn().toLocation(Bukkit.getWorld(profile.getWorldName())));
-
         Logger.player(noobPlayer, "one-block.island.teleport-island");
+
+        bukkitPlayer.teleport(OneBlockAPI.getSettings().getIslandSpawn().toLocation(Bukkit.getWorld(profile.getWorldName())));
     }
 
     public static void unloadPlayer(OneBlockPlayer oneBlockPlayer, OneBlockProfile profile) {

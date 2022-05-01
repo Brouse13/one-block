@@ -1,0 +1,24 @@
+{
+  "id": "the_nether",
+  "min": 3088,
+  "max": 3925,
+  "items": [],
+  "mobs": [{"entity": "BLAZE"},{"entity": "PIG_ZOMBIE"},{"entity": "MAGMA_CUBE"}, {"entity": "WITHER_SKELETON"},{"entity": "GHAST"}],
+  "lootTable": [
+    {
+      "name": "one-block.messages.tootTable.special_chest",
+      "rolls": 3,
+      "items": [
+        {"item": "QUARTZ", "weigh": 5},
+        {"item": "GOLD_INGOT","weigh": 4},
+        {"item": "LAVA_BUCKET", "weigh": 3},
+        {"item": "GHAST_TEAR", "weigh": 2},
+        {"item": "BLAZE_ROD", "weigh": 2},
+        {"item": "MAGMA_CREAM", "weigh": 2},
+        {"item": "BLAZE_POWDER", "weigh": 2},
+        {"item": "NETHER_WART", "weigh": 1},
+        {"item": "SKULL:1", "weigh": 1}
+      ]
+    }],
+  "specialActions": [{"block": 3925,"action": "UPGRADE","value": "idyll"}]
+}

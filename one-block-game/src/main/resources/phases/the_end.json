@@ -1,0 +1,19 @@
+{
+  "id": "the_end",
+  "min": 5445,
+  "max": 6301,
+  "items": [],
+  "mobs": [{"entity": "ENDERMAN"},{"entity": "ENDERMITE"}],
+  "lootTable": [
+    {
+      "name": "one-block.messages.tootTable.special_chest",
+      "rolls": 3,
+      "items": [
+        {"item": "BONE", "weigh": 5},
+        {"item": "ENDER_PEARL ","weigh": 3},
+        {"item": "ENDER_EYE", "weigh": 3},
+        {"item": "DIAMOND", "weigh": 1}
+      ]
+    }],
+  "specialActions": [{"block": 6301,"action": "UPGRADE","value": "afterphase"}]
+}

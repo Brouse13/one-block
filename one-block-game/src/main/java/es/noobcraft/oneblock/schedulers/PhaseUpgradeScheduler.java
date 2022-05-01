@@ -2,39 +2,37 @@ package es.noobcraft.oneblock.schedulers;
 
 import es.noobcraft.oneblock.api.logger.Logger;
 import es.noobcraft.oneblock.api.logger.LoggerType;
-import es.noobcraft.oneblock.api.phases.generators.Generate;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class PhaseUpgradeScheduler {
+public class PhaseUpgradeScheduler implements Runnable {
     private final ArmorStand armorStand;
-    private final Generate generate;
+    private final JavaPlugin plugin;
+    private final Runnable runnable;
 
-    public PhaseUpgradeScheduler(ArmorStand armorStand, Generate generate) {
+    public PhaseUpgradeScheduler(ArmorStand armorStand, JavaPlugin plugin, Runnable runnable) {
         this.armorStand = armorStand;
-        this.generate = generate;
+        this.plugin = plugin;
+        this.runnable = runnable;
     }
 
-    public Runnable getScheduler(JavaPlugin plugin) {
-        return () -> {
-            //Set the properties to the ArmourStand
-            armorStand.setGravity(false);
-            armorStand.setVisible(false);
-            armorStand.setCustomNameVisible(true);
+    @Override
+    public void run() {
+        //Set the properties to the ArmourStand
+        armorStand.setGravity(false);
+        armorStand.setVisible(false);
+        armorStand.setCustomNameVisible(true);
 
-            //Log the upgrade on the ArmourStand DisplayName
-            for (int i = 0; i < 10; i++) {
-                armorStand.setCustomName("§a" +(10- i));
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException exception) {
-                    Logger.log(LoggerType.ERROR, exception.getMessage());
-                }
+        //Log the upgrade on the ArmourStand DisplayName
+        for (int i = 0; i < 10; i++) {
+            armorStand.setCustomName("§a" +(10- i));
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException exception) {
+                Logger.log(LoggerType.ERROR, exception.getMessage());
             }
-            plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-                armorStand.remove();
-                generate.generate();
-            }, 2L);
-        };
+        }
+        Bukkit.getServer().getScheduler().runTaskLater(plugin, runnable, 2L);
     }
 }

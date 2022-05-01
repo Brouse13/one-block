@@ -14,14 +14,16 @@ import java.util.Set;
 public class PhaseUpgradeEvent extends Event {
     public static final HandlerList handlers = new HandlerList();
 
-    @Getter private World world;
+    @Getter private final World world;
     @Getter private final Set<OneBlockProfile> profiles;
-    @Getter private final Phase from;
+    @Getter private final Phase to;
 
-    public PhaseUpgradeEvent(String world, Phase from) {
+    public PhaseUpgradeEvent(String world, String to) {
         this.world = Bukkit.getWorld(world);
         this.profiles = OneBlockAPI.getProfileCache().getProfiles(this.world);
-        this.from = from;
+        this.to = OneBlockAPI.getPhaseLoader().getPhases().stream()
+                .filter(phase -> phase.getIdentifier().equals(to)).findFirst()
+                .orElse(OneBlockAPI.getPhaseLoader().getPhaseBlocks(world).getPhase());
     }
 
     /**
