@@ -1,15 +1,25 @@
 package es.noobcraft.oneblock.api;
 
 import com.google.gson.Gson;
-import es.noobcraft.oneblock.api.flags.IslandPermissionManager;
+import es.noobcraft.oneblock.api.loaders.PhaseLoader;
+import es.noobcraft.oneblock.api.loaders.ProfileLoader;
+import es.noobcraft.oneblock.api.loaders.SettingsLoader;
+import es.noobcraft.oneblock.api.loaders.WorldLoader;
+import es.noobcraft.oneblock.api.permission.PermissionManager;
 import es.noobcraft.oneblock.api.player.PlayerCache;
+import es.noobcraft.oneblock.api.player.PlayerSupplier;
 import es.noobcraft.oneblock.api.profile.ProfileCache;
-import es.noobcraft.oneblock.api.profile.ProfileLoader;
-import es.noobcraft.oneblock.api.profile.ProfileManager;
 import es.noobcraft.oneblock.api.scoreboard.ScoreboardManager;
-import es.noobcraft.oneblock.api.world.WorldManager;
+import es.noobcraft.oneblock.api.settings.OneBlockSettings;
 
 public interface OneBlock {
+    /**
+     * Get the PhaseLoader instance that will load
+     * phases and
+     * @return OneBlock PhaseLoader
+     */
+    PhaseLoader getPhaseLoader();
+
     /**
      * Get the ProfileLoader instance that will load all
      * the player profiles from the correct database.
@@ -18,11 +28,11 @@ public interface OneBlock {
     ProfileLoader getProfileLoader();
 
     /**
-     * Get the IslandPermissionManager instance that will
+     * Get the PermissionManager instance that will
      * manage the perms cache and database update
      * @return OneBlock IslandPermissionsLoader
      */
-    IslandPermissionManager getIslandPermissionManager();
+    PermissionManager getPermissionManager();
 
     /**
      * Get the PlayerCache instance that will storage
@@ -32,6 +42,13 @@ public interface OneBlock {
     PlayerCache getPlayerCache();
 
     /**
+     * Get the PlayerSupplier instance that manages the creation
+     * of OneBlockPlayers
+     * @return the OneBlock PlayerSupplier
+     */
+    PlayerSupplier getPlayerSupplier();
+
+    /**
      * Get the ProfileCache instance that store all the
      * available profiles from players
      * @return OneBlock ProfileCache
@@ -39,18 +56,11 @@ public interface OneBlock {
     ProfileCache getProfileCache();
 
     /**
-     * Get the WorldManager instance that will manage
-     * the creation of SlimeWorlds.
+     * Get the WorldLoader instance that will manage
+     * the creation of worlds.
      * @return OneBlock WorldManager
      */
-    WorldManager getWorldManager();
-
-    /**
-     * Get the ProfileManager that will manage the creation
-     * of coops and other profile utils
-     * @return OneBlock ProfileManager
-     */
-    ProfileManager getProfileManager();
+    WorldLoader getWorldLoader();
 
     /**
      * Get the ScoreboardManager that will manage the creation
@@ -58,6 +68,19 @@ public interface OneBlock {
      * @return OneBlock ScoreboardManager
      */
     ScoreboardManager getScoreboardManager();
+
+    /**
+     * Get the SettingsLoader instance that will
+     * load the default settings for OneBlock
+     * @return OneBlock SettingsLoader
+     */
+    SettingsLoader getSettingsLoader();
+
+    /**
+     * Get the default settings for OneBlock
+     * @return OneBlock Settings
+     */
+    OneBlockSettings getSettings();
 
     /**
      * Get the default gson with all the TypeAdapters

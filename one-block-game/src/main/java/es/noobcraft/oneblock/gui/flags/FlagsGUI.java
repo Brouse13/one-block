@@ -6,7 +6,7 @@ import es.noobcraft.core.api.inventory.NoobInventory;
 import es.noobcraft.core.api.item.ItemBuilder;
 import es.noobcraft.core.api.lang.Translator;
 import es.noobcraft.core.api.player.NoobPlayer;
-import es.noobcraft.oneblock.api.flags.IslandFlag;
+import es.noobcraft.oneblock.api.permission.IslandFlag;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.api.profile.OneBlockProfile;
 import org.bukkit.Bukkit;

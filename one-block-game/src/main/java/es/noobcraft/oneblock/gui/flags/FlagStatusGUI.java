@@ -8,9 +8,9 @@ import es.noobcraft.core.api.item.ItemBuilder;
 import es.noobcraft.core.api.lang.Translator;
 import es.noobcraft.core.api.player.NoobPlayer;
 import es.noobcraft.oneblock.api.OneBlockAPI;
-import es.noobcraft.oneblock.api.flags.FlagEncoder;
-import es.noobcraft.oneblock.api.flags.IslandFlag;
 import es.noobcraft.oneblock.api.logger.Logger;
+import es.noobcraft.oneblock.api.permission.FlagEncoder;
+import es.noobcraft.oneblock.api.permission.IslandFlag;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -72,13 +72,12 @@ public class FlagStatusGUI {
 
     private ClickableItem getItemEvent(boolean status) {
         return (event) -> {
-            //Decode perms
-            BitSet bits = FlagEncoder.decode(OneBlockAPI.getIslandPermissionLoader().getPermission(world));
-            //Update char[] perms
-            bits.set(flag.getPos(), status);
+            //Get the permission from the island and update the position
+            BitSet permission = FlagEncoder.decode(OneBlockAPI.getPermissionManager().getPermission(world));
+            permission.set(flag.getIndex(), status);
 
             //Update perms and notify player
-            OneBlockAPI.getIslandPermissionLoader().updatePermission(world ,FlagEncoder.encode(bits));
+            OneBlockAPI.getPermissionManager().updatePermission(world, FlagEncoder.encode(permission));
             Bukkit.getPlayer(oneBlockPlayer.getName()).closeInventory();
             Logger.player(noobPlayer, "one-block.island.permissions-update");
         };

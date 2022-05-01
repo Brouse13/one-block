@@ -1,10 +1,10 @@
 package es.noobcraft.oneblock.player;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.api.player.PlayerCache;
 
-import java.util.Collections;
 import java.util.Set;
 
 public class SetPlayerCache implements PlayerCache {
@@ -12,7 +12,7 @@ public class SetPlayerCache implements PlayerCache {
 
     @Override
     public Set<OneBlockPlayer> getPlayers() {
-        return Collections.unmodifiableSet(players);
+        return ImmutableSet.copyOf(players);
     }
 
     @Override
@@ -21,12 +21,12 @@ public class SetPlayerCache implements PlayerCache {
     }
 
     @Override
-    public boolean addPlayer(String name) {
-        return players.add(new BaseOneBlockPlayer(name));
+    public boolean addPlayer(OneBlockPlayer player) {
+        return players.add(player);
     }
 
     @Override
-    public boolean removePlayer(String name) {
-        return players.remove(getPlayer(name));
+    public boolean removePlayer(OneBlockPlayer player) {
+        return players.remove(player);
     }
 }

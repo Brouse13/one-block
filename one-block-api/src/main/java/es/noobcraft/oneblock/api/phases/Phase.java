@@ -4,6 +4,8 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public interface Phase {
     /**
@@ -45,5 +47,11 @@ public interface Phase {
      * during that phase
      * @return the available LootTables
      */
-    List<LootTable> getLootTables();
+    List<List<LootTable>> getLootTables();
+
+    /**
+     * Get all the SpecialAction that will happen on the OneBlock
+     * @return the available SpecialActions
+     */
+    Map<Integer, Set<SpecialActions>> getSpecialActions();
 }

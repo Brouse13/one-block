@@ -1,7 +1,6 @@
 package es.noobcraft.oneblock.profile;
 
 import es.noobcraft.oneblock.api.OneBlockAPI;
-import es.noobcraft.oneblock.api.OneBlockConstants;
 import es.noobcraft.oneblock.api.inventory.InventorySerializer;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.api.profile.OneBlockProfile;
@@ -28,7 +27,7 @@ public class BaseOneBlockProfile implements OneBlockProfile {
         this.profileName = profileName;
         this.islandOwner = islandOwner;
         this.inventory = InventorySerializer.serialize(new ItemStack[0]);
-        this.profileItem = OneBlockConstants.DEF_PROFILE_MATERIAL;
+        this.profileItem = OneBlockAPI.getSettings().getDefaultMaterial();
     }
 
     public BaseOneBlockProfile(ResultSet resultSet) {

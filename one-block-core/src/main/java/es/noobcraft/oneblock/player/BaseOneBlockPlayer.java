@@ -1,26 +1,34 @@
 package es.noobcraft.oneblock.player;
 
+
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
-import es.noobcraft.oneblock.api.OneBlockConstants;
+import es.noobcraft.core.api.Core;
+import es.noobcraft.core.api.player.NoobPlayer;
+import es.noobcraft.oneblock.api.OneBlockAPI;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.api.profile.OneBlockProfile;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import java.util.Set;
 
-@AllArgsConstructor
-public class BaseOneBlockPlayer implements OneBlockPlayer {
-    @Getter private  final String name;
-    @Setter private Set<OneBlockProfile> profiles = Sets.newHashSet();
-    @Getter private final int maxProfiles;
-    @Getter @Setter private OneBlockProfile currentProfile = null;
 
-    public BaseOneBlockPlayer(String name) {
+public class BaseOneBlockPlayer implements OneBlockPlayer {
+    @Getter private String name;
+    @Getter private int maxProfiles;
+    @Getter @Setter private OneBlockProfile currentProfile;
+    private final Set<OneBlockProfile> profiles = Sets.newHashSet();
+
+    public BaseOneBlockPlayer(String name, int maxProfiles) {
         this.name = name;
-        this.maxProfiles = OneBlockConstants.DEF_PROFILES;
+        this.maxProfiles = maxProfiles;
     }
 
     @Override
@@ -29,12 +37,40 @@ public class BaseOneBlockPlayer implements OneBlockPlayer {
     }
 
     @Override
-    public boolean addProfile(OneBlockProfile profile) {
-        return profiles.add(profile);
+    public void addProfile(OneBlockProfile profile) {
+        if (profiles.size() < maxProfiles)
+            profiles.add(profile);
     }
 
     @Override
-    public boolean removeProfile(OneBlockProfile profile) {
-       return profiles.remove(profile);
+    public void removeProfile(OneBlockProfile profile) {
+        profiles.remove(profile);
+    }
+
+    @Override
+    public Player getBukkitPlayer() {
+        return Bukkit.getPlayer(name);
+    }
+
+    @Override
+    public NoobPlayer getNoobPlayer() {
+        return Core.getPlayerCache().getPlayer(name);
+    }
+
+    @Override
+    public void teleport(OneBlockProfile profile) {
+        //Load the world if it isn't loaded
+        OneBlockAPI.getWorldLoader().loadWorld(profile.getWorldName(), false);
+
+        //Get world and spawn location
+        World world = Bukkit.getWorld(profile.getWorldName());
+        Location location = new Location(world, 0, 50, 0);
+
+        //Set the spawn block to GRASS if is not set
+        if (world.getBlockAt(location).getType().equals(Material.AIR))
+            world.getBlockAt(location).setType(Material.GRASS);
+
+        //Teleport the player to the region
+        getBukkitPlayer().teleport(location.add(new Vector(0, 1, 0)));
     }
 }

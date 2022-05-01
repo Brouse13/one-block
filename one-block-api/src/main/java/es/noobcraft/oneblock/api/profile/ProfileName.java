@@ -12,14 +12,14 @@ public enum ProfileName {
     ANOTHER_NAME,
     MY_PROFILE;
 
-    public static ProfileName randomName(Set<OneBlockProfile> profiles) {
+    public static String randomName(Set<OneBlockProfile> profiles) {
         while (true) {
             int randValue = new Random().nextInt(ProfileName.values().length);
-            if (profiles.isEmpty()) return ProfileName.values()[randValue];
+            if (profiles.isEmpty()) return ProfileName.values()[randValue].toString();
 
             Set<String> names = profiles.stream().map(OneBlockProfile::getProfileName).collect(Collectors.toSet());
             if (!names.contains(ProfileName.values()[randValue]))
-                return ProfileName.values()[randValue];
+                return ProfileName.values()[randValue].toString();
         }
     }
 }

@@ -19,17 +19,17 @@ public interface PlayerCache {
     /**
      * Add a new OneBlockPlayer to the cache and
      * return the status of the operation.
-     * @param name OneBlockPlayer username
+     * @param player player to add
      * @return the operation status
      */
-    boolean addPlayer(String name);
+    boolean addPlayer(OneBlockPlayer player);
 
     /**
      * Remove a OneBlockPlayer from the cache and
      * return the status of the operation.
      * This method is called on NoobPlayerQuitEvent.
-     * @param name OneBlockPlayer username
+     * @param player player to remove
      * @return the operation status
      */
-    boolean removePlayer(String name);
+    boolean removePlayer(OneBlockPlayer player);
 }

@@ -1,0 +1,45 @@
+package es.noobcraft.oneblock.listeners;
+
+import es.noobcraft.oneblock.api.OneBlockAPI;
+import es.noobcraft.oneblock.api.events.PhaseUpgradeEvent;
+import es.noobcraft.oneblock.api.phases.Phase;
+import es.noobcraft.oneblock.api.phases.generators.Generate;
+import es.noobcraft.oneblock.api.phases.generators.PhaseGenerators;
+import es.noobcraft.oneblock.schedulers.PhaseUpgradeScheduler;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.util.Vector;
+
+public class PhaseUpgradeListeners implements Listener {
+    private final JavaPlugin plugin;
+
+    public PhaseUpgradeListeners(JavaPlugin plugin) {
+        this.plugin = plugin;
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPhaseUpgrade(PhaseUpgradeEvent event) {
+        //Get the infinite block and set it to Bedrock
+        Block block = event.getWorld().getBlockAt(OneBlockAPI.getSettings().getIslandSpawn().toLocation(event.getWorld()));
+        block.setType(Material.BEDROCK);
+        block.getState().update(true);
+
+        //Create an armour stand on the infinite block
+        ArmorStand armorStand = event.getWorld().spawn(
+                OneBlockAPI.getSettings().getIslandSpawn().clone().add(new Vector(.5, 0, .5)).toLocation(event.getWorld()),
+                ArmorStand.class);
+
+        //Call the Upgrade phase scheduler
+        Phase newPhase = OneBlockAPI.getPhaseLoader().getPhaseBlocks(event.getWorld().getName()).getPhase();
+        Generate generate = PhaseGenerators.generateBlock(event.getWorld().getBlockAt(
+                OneBlockAPI.getSettings().getIslandSpawn().toLocation(event.getWorld())), newPhase.getItems());
+        Bukkit.getServer().getScheduler().runTaskAsynchronously(plugin, new PhaseUpgradeScheduler(armorStand, generate).getScheduler(plugin));
+
+
+    }
+}

@@ -1,6 +1,8 @@
 package es.noobcraft.oneblock.adapters;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
@@ -8,6 +10,7 @@ import com.google.gson.stream.JsonWriter;
 import es.noobcraft.core.api.item.ItemBuilder;
 import es.noobcraft.oneblock.api.phases.LootTable;
 import es.noobcraft.oneblock.api.phases.Phase;
+import es.noobcraft.oneblock.api.phases.SpecialActions;
 import es.noobcraft.oneblock.phase.BasePhase;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -15,6 +18,8 @@ import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class PhaseAdapter extends TypeAdapter<Phase> {
 
@@ -31,7 +36,7 @@ public class PhaseAdapter extends TypeAdapter<Phase> {
 
             if ("min".equals(fieldName)) basePhaseBuilder.minScore(reader.nextInt());
 
-            if ("max".equals(fieldName)) basePhaseBuilder.minScore(reader.nextInt());
+            if ("max".equals(fieldName)) basePhaseBuilder.maxScore(reader.nextInt());
 
             if ("items".equals(fieldName)) {
                 reader.beginArray();
@@ -55,12 +60,39 @@ public class PhaseAdapter extends TypeAdapter<Phase> {
 
             if ("lootTable".equals(fieldName)) {
                 reader.beginArray();
-                List<LootTable> lootTables = Lists.newArrayList();
+                List<List<LootTable>> setLootTables = Lists.newArrayList();
 
-                while (reader.hasNext()) lootTables.add(new LootTableAdapter().read(reader));
+                while (reader.hasNext()) {//Loop throw all the possible lootTables array
+                    reader.beginArray();
+                    List<LootTable> lootTables = Lists.newArrayList();
 
+                    while (reader.hasNext()) //Loop throw lootTables array
+                        lootTables.add(new LootTableAdapter().read(reader));
+                    setLootTables.add(lootTables);
+                    reader.endArray();
+                }
                 reader.endArray();
-                basePhaseBuilder.lootTables(lootTables);
+                basePhaseBuilder.lootTables(setLootTables);
+            }
+
+            if ("specialActions".equals(fieldName)) {
+                reader.beginArray();
+                Map<Integer, Set<SpecialActions>> actions = Maps.newHashMap();
+
+                while (reader.hasNext()) {
+                    //Create a new SpecialAction
+                    SpecialActions action = new SpecialActionsAdapter().read(reader);
+
+                    //If the block isn't on the map add it
+                    if (!actions.containsKey(action.getBlock())) {
+                        actions.put(action.getBlock(), Sets.newHashSet(action));
+                        continue;
+                    }
+                    //If it's on it, add the block to the current Set
+                    actions.put(action.getBlock(), Sets.union(actions.get(action.getBlock()), Sets.newHashSet(action)));
+                }
+                basePhaseBuilder.specialActions(actions);
+                reader.endArray();
             }
         }
         reader.endObject();
@@ -85,14 +117,24 @@ public class PhaseAdapter extends TypeAdapter<Phase> {
         writer.endArray();
 
         writer.name("lootTable").beginArray();
-        for (LootTable lootTable : phase.getLootTables()) {
-            writer.beginObject();
-            writer.name("item").value(lootTable.getItem().getType().name()+
-                    ":"+ lootTable.getItem().getDurability());
-            writer.name("probability").value(lootTable.getProbability());
-            writer.name("maxAmount").value(lootTable.getMaxAmount());
-            writer.endObject();
+        for (List<LootTable> lootTables : phase.getLootTables()) {
+            writer.beginArray();
+            for (LootTable lootTable : lootTables) {
+                writer.beginObject();
+                writer.name("item").value(lootTable.getItem().getType().name()+ ":"+ lootTable.getItem().getDurability());
+                writer.name("probability").value(lootTable.getProbability());
+                writer.name("maxAmount").value(lootTable.getMaxAmount());
+                writer.endObject();
+            }
+            writer.endArray();
         }
+        writer.endArray();
+
+        writer.name("specialActions").beginArray();
+        for (Set<SpecialActions> actions : phase.getSpecialActions().values())
+            for (SpecialActions action : actions)
+                new SpecialActionsAdapter().write(writer, action);
+
         writer.endArray();
         writer.endObject();
     }

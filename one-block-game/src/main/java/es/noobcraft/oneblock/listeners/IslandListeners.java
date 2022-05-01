@@ -3,12 +3,10 @@ package es.noobcraft.oneblock.listeners;
 import es.noobcraft.core.api.Core;
 import es.noobcraft.core.api.player.NoobPlayer;
 import es.noobcraft.oneblock.api.OneBlockAPI;
-import es.noobcraft.oneblock.api.OneBlockConstants;
-import es.noobcraft.oneblock.api.flags.FlagEncoder;
-import es.noobcraft.oneblock.api.flags.IslandFlag;
 import es.noobcraft.oneblock.api.logger.Logger;
+import es.noobcraft.oneblock.api.permission.FlagEncoder;
+import es.noobcraft.oneblock.api.permission.IslandFlag;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
-import es.noobcraft.oneblock.api.profile.OneBlockProfile;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -113,34 +111,26 @@ public class IslandListeners implements Listener {
     private static boolean calculatePerm(OneBlockPlayer player, World world, IslandFlag islandFlag, boolean announce) {
         NoobPlayer noobPlayer = Core.getPlayerCache().getPlayer(player.getName());
 
-        //Cancel any listener action into the lobby
-        if (world.getName().equals(OneBlockConstants.SPAWN.getWorld().getName())) {
+        //Cancel any action in the lobby
+        if (world.getName().equals(OneBlockAPI.getSettings().getLobbySpawn().getWorld().getName())) {
             Logger.player(noobPlayer, "one-block.island.no-perms."+ islandFlag.name().toLowerCase());
             return true;
         }
 
-        //Used to get if the player is in a coop/owner island
-        OneBlockProfile playerProfile = OneBlockAPI.getProfileManager().getProfile(
-                OneBlockAPI.getProfileCache().getProfiles(world), player);
-        //Get perms of the island
-        BitSet perms = FlagEncoder.decode(OneBlockAPI.getIslandPermissionLoader().getPermission(world.getName()));
+        //Get island permission on a BitSet
+        BitSet permission = FlagEncoder.decode(OneBlockAPI.getPermissionManager().getPermission(world.getName()));
 
-        if (playerProfile == null) {
-            if (perms.get(islandFlag.getPos())) {
+        //If player is on a profile
+        if (player.getCurrentProfile() != null) {
+            //If the player is not the owner, and it hasn't permissions
+            if (!player.getCurrentProfile().getIslandOwner().equals(player.getName()) && permission.get(islandFlag.getIndex())) {
                 if (announce) Logger.player(noobPlayer, "one-block.island.no-perms."+ islandFlag.name().toLowerCase());
                 return true;
             }
-        }else {
-            //Get if the player is not the owner of the profile
-            if (!playerProfile.getIslandOwner().equals(player.getName())) {
-                //If the is not the owner and permission is set to true cancel the action
-                if (perms.get(islandFlag.getPos())) {
-                    if (announce) Logger.player(noobPlayer, "one-block.island.no-perms."+ islandFlag.name().toLowerCase());
-                    return true;
-                }
-            }
+            return false;
         }
-        return false;
+        if (announce) Logger.player(noobPlayer, "one-block.island.no-perms."+ islandFlag.name().toLowerCase());
+        return true;
     }
 
 }
