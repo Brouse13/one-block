@@ -16,7 +16,7 @@
         {"item": "BLAZE_ROD", "weigh": 2},
         {"item": "MAGMA_CREAM", "weigh": 2},
         {"item": "BLAZE_POWDER", "weigh": 2},
-        {"item": "NETHER_WART", "weigh": 1},
+        {"item": "NETHER_WARTS", "weigh": 1},
         {"item": "SKULL:1", "weigh": 1}
       ]
     }],

@@ -2,7 +2,7 @@
   "id": "tutorial",
   "min": 0,
   "max": 47,
-  "items": ["GRASS", "DIRT", "LOG", "PUMPKIN", "CLAY", "MELON_BLOCK"],
+  "items": [],
   "mobs": [],
   "lootTable": [{
     "name": "one-block.messages.tootTable.special_chest",

@@ -25,7 +25,6 @@ public class JSONPhaseLoader implements PhaseLoader {
 
     @Override
     public void loadPhases() {
-        /*
         final File directory = new File(Core.getServerConfigurationsDirectory() + "/phases");
 
         if (!directory.mkdirs()) {
@@ -44,7 +43,6 @@ public class JSONPhaseLoader implements PhaseLoader {
                 }
             }
         }
-         */
         Logger.log(LoggerType.CONSOLE, "Loaded "+ this.phases.size()+ " phases");
     }
 

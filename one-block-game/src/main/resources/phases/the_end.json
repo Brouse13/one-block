@@ -10,8 +10,8 @@
       "rolls": 3,
       "items": [
         {"item": "BONE", "weigh": 5},
-        {"item": "ENDER_PEARL ","weigh": 3},
-        {"item": "ENDER_EYE", "weigh": 3},
+        {"item": "ENDER_PEARL","weigh": 3},
+        {"item": "EYE_OF_ENDER", "weigh": 3},
         {"item": "DIAMOND", "weigh": 1}
       ]
     }],

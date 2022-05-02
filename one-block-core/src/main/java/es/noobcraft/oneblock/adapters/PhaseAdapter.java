@@ -37,7 +37,6 @@ public class PhaseAdapter extends TypeAdapter<Phase> {
             if ("max".equals(fieldName)) basePhaseBuilder.maxScore(reader.nextInt());
 
             if ("items".equals(fieldName)) {
-                /*
                 reader.beginArray();
                 List<BlockType> items = Lists.newArrayList();
 
@@ -45,11 +44,9 @@ public class PhaseAdapter extends TypeAdapter<Phase> {
 
                 reader.endArray();
                 basePhaseBuilder.items(items);
-                 */
             }
 
             if ("mobs".equals(fieldName)) {
-                /*
                 reader.beginArray();
                 List<MobType> entities = Lists.newArrayList();
 
@@ -58,11 +55,9 @@ public class PhaseAdapter extends TypeAdapter<Phase> {
 
                 reader.endArray();
                 basePhaseBuilder.entities(entities);
-                 */
             }
 
             if ("lootTable".equals(fieldName)) {
-                /*
                 List<LootTable> lootTables = Lists.newArrayList();
                 reader.beginArray();
 
@@ -72,7 +67,6 @@ public class PhaseAdapter extends TypeAdapter<Phase> {
 
                 reader.endArray();
                 basePhaseBuilder.lootTables(lootTables);
-                 */
             }
 
             if ("specialActions".equals(fieldName)) {

@@ -91,6 +91,8 @@ $RECYCLE.BIN/
 # since they will be recreated, and may cause churn.  Comment if not using
 # auto-import.
 .idea/compiler.xml
+.idea/workspace.xml
+.idea/dataSources.local.xml
 .idea/artifacts
 .idea/jarRepositories.xml
 .idea/modules.xml

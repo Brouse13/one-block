@@ -9,18 +9,18 @@
       "name": "one-block.messages.tootTable.special_chest",
       "rolls": 3,
       "items": [
-        {"item": "DYE:4", "weigh": 6},
+          {"item": "INK_SACK:4", "weigh": 6},
         {"item": "SAPLING:3","weigh": 5},
-        {"item": "DYE:3", "weigh": 5},
+        {"item": "INK_SACK:3", "weigh": 5},
         {"item": "COAL", "weigh": 5},
         {"item": "SUGAR_CANE", "weigh": 4},
         {"item": "VINE", "weigh": 3},
         {"item": "SUGAR", "weigh": 3},
-        {"item": "BONE_MEAL", "weigh": 3},
+        {"item": "INK_SACK:15", "weigh": 3},
         {"item": "BONE", "weigh": 3},
         {"item": "PAPER", "weigh": 3},
         {"item": "DIAMOND", "weigh": 4},
-        {"item": "LEAD", "weigh": 1}
+        {"item": "LEASH", "weigh": 1}
       ]
     }],
   "specialActions": [{"block": 2364,"action": "UPGRADE","value": "red_desert"}]

@@ -10,7 +10,7 @@
       "rolls": 3,
       "items": [
         {"item": "SLIME_BALL", "weigh": 3},
-        {"item": "SPECKLED_MELON ","weigh": 3},
+        {"item": "SPECKLED_MELON","weigh": 3},
         {"item": "GOLDEN_CARROT", "weigh": 5},
         {"item": "EXP_BOTTLE", "weigh": 3},
         {"item": "FIREBALL", "weigh": 3},

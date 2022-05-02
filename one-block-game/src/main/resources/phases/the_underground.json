@@ -2,7 +2,9 @@
   "id": "the_underground",
   "min": 282,
   "max": 680,
-  "items": [
+  "items": [],
+  "mobs": [{"entity": "MUSHROOM_COW"},{"entity": "ZOMBIE"},{"entity": "RABBIT"},{"entity": "SPIDER"},{"entity": "CREEPER"}],
+  "lootTable": [
     {
       "name": "one-block.messages.tootTable.special_chest",
       "rolls": 3,
@@ -16,7 +18,5 @@
         {"item": "BROWN_MUSHROOM","weigh": 2}
       ]
     }],
-  "mobs": [{"entity": "MUSHROOM_COW"},{"entity": "ZOMBIE"},{"entity": "RABBIT"},{"entity": "SPIDER"},{"entity": "CREEPER"}],
-  "lootTable": [],
   "specialActions": [{"block": 680,"action": "UPGRADE","value": "icy_tundra"}]
 }

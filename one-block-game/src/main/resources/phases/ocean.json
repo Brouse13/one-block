@@ -11,7 +11,7 @@
       "items": [
         {"item": "PRISMARINE_SHARD", "weigh": 5},
         {"item": "PRISMARINE_CRYSTALS","weigh": 4},
-        {"item": "INK_SAC", "weigh": 4},
+        {"item": "INK_SACK", "weigh": 4},
         {"item": "WATER_LILY", "weigh": 3},
         {"item": "WATER_BUCKET", "weigh": 1}
       ]

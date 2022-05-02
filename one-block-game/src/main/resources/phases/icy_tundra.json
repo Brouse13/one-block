@@ -2,24 +2,22 @@
   "id": "icy_tundra",
   "min": 680,
   "max": 1154,
-  "items": [
-    {
-      "name": "one-block.messages.tootTable.special_chest",
-      "rolls":3,
-      "items": [
-        {"item": "BONE_MEAL", "weigh": 6},
-        {"item": "BONE","weigh": 5},
-        {"item": "SNOWBALL", "weigh": 5},
-        {"item": "RABBIT_HIDE", "weigh": 3},
-        {"item": "SAPLING:5", "weigh": 5},
-        {"item": "IRON_INGOT", "weigh": 2},
-        {"item": "GOLD_INGOT", "weigh": 2},
-        {"item": "ICE", "weigh": 1},
-        {"item": "BLUE_ICE", "weigh": 1},
-        {"item": "RABBIT_FOOT", "weigh": 1}
-      ]
-    }],
+  "items": [],
   "mobs": [{"entity": "WOLF"},{"entity": "SKELETON"}],
-  "lootTable": [],
+  "lootTable": [{
+    "name": "one-block.messages.tootTable.special_chest",
+    "rolls": 3,
+    "items": [
+      {"item": "INK_SACK:15", "weigh": 6},
+      {"item": "BONE","weigh": 5},
+      {"item": "SNOW_BALL", "weigh": 5},
+      {"item": "RABBIT_HIDE", "weigh": 3},
+      {"item": "SAPLING:5", "weigh": 5},
+      {"item": "IRON_INGOT", "weigh": 2},
+      {"item": "GOLD_INGOT", "weigh": 2},
+      {"item": "ICE", "weigh": 1},
+      {"item": "RABBIT_FOOT", "weigh": 1}
+    ]
+  }],
   "specialActions": [{"block": 1154,"action": "UPGRADE","value": "ocean"}]
 }

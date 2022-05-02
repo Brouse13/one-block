@@ -2,7 +2,9 @@
   "id": "the_plains",
   "min": 47,
   "max": 282,
-  "items": [
+  "items": [],
+  "mobs": [{"entity": "PIG"}, {"entity": "COW"}, {"entity": "SHEEP"}, {"entity": "CHICKEN"}],
+  "lootTable": [
    {
      "name": "one-block.messages.tootTable.special_chest",
      "rolls": 2,
@@ -16,10 +18,8 @@
        {"item": "PUMPKIN_SEEDS", "weigh": 1},
        {"item": "MELON_SEEDS", "weigh": 1},
        {"item": "CARROT", "weigh": 1},
-       {"item": "POTATO", "weigh": 1},
+       {"item": "POTATO", "weigh": 1}
      ]
    }],
-  "mobs": [{"entity": "PIG"}, {"entity": "COW"}, {"entity": "SHEEP"}, {"entity": "CHICKEN"}],
-  "lootTable": [],
   "specialActions": [{"block": 282,"action": "UPGRADE","value": "the_underground"}]
 }
