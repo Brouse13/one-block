@@ -2,8 +2,28 @@
   "id": "the_underground",
   "min": 282,
   "max": 680,
-  "items": [],
-  "mobs": [{"entity": "MUSHROOM_COW"},{"entity": "ZOMBIE"},{"entity": "RABBIT"},{"entity": "SPIDER"},{"entity": "CREEPER"}],
+  "items": [
+    {"type": "GRASS"},
+    {"type": "CLAY"},
+    {"type": "LOG"},
+    {"type": "LOG:2"},
+    {"type": "DIRT:2"},
+    {"type": "MELON_BLOCK"},
+    {"type": "PUMPKIN"},
+    {"type": "GRAVEL"},
+    {"type": "DIRT"},
+    {"type": "STONE:1"},
+    {"type": "STONE:3"},
+    {"type": "STONE:5"},
+    {"type": "COAL_ORE"}
+  ],
+  "mobs": [
+    {"entity": "MUSHROOM_COW"},
+    {"entity": "ZOMBIE"},
+    {"entity": "RABBIT"},
+    {"entity": "SPIDER"},
+    {"entity": "CREEPER"}
+  ],
   "lootTable": [
     {
       "name": "one-block.messages.tootTable.special_chest",

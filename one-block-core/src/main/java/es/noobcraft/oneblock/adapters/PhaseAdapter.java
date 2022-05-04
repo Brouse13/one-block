@@ -7,11 +7,8 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
-import es.noobcraft.core.api.item.ItemBuilder;
 import es.noobcraft.oneblock.api.phases.*;
 import es.noobcraft.oneblock.phase.BasePhase;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;
 import java.util.List;
