@@ -13,6 +13,8 @@ import es.noobcraft.oneblock.api.player.PlayerCache;
 import es.noobcraft.oneblock.api.player.PlayerSupplier;
 import es.noobcraft.oneblock.api.profile.ProfileCache;
 import es.noobcraft.oneblock.api.scoreboard.ScoreboardManager;
+import es.noobcraft.oneblock.api.server.ServerCache;
+import es.noobcraft.oneblock.api.server.ServerLoader;
 import es.noobcraft.oneblock.api.settings.OneBlockConstants;
 import es.noobcraft.oneblock.api.settings.OneBlockSettings;
 import es.noobcraft.oneblock.loaders.JSONPhaseLoader;
@@ -24,6 +26,8 @@ import es.noobcraft.oneblock.player.BasePlayerSupplier;
 import es.noobcraft.oneblock.player.SetPlayerCache;
 import es.noobcraft.oneblock.profile.SetProfileCache;
 import es.noobcraft.oneblock.scoreboard.BaseScoreboardManager;
+import es.noobcraft.oneblock.server.MapServerCache;
+import es.noobcraft.oneblock.server.RedisServerLoader;
 import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.Location;
 
@@ -36,6 +40,8 @@ public class API implements OneBlock {
     private final WorldLoader worldLoader = new SlimeWorldLoader();
     private final ScoreboardManager scoreboardManager = new BaseScoreboardManager();
     private final PlayerSupplier playerSupplier = new BasePlayerSupplier();
+    private final ServerCache serverCache = new MapServerCache();
+    private final ServerLoader serverLoader= new RedisServerLoader();
     private final OneBlockSettings settings = new OneBlockConstants();
 
     @Override
@@ -86,6 +92,16 @@ public class API implements OneBlock {
     @Override
     public OneBlockSettings getSettings() {
         return settings;
+    }
+
+    @Override
+    public ServerCache getServerCache() {
+        return serverCache;
+    }
+
+    @Override
+    public ServerLoader getServerLoader() {
+        return serverLoader;
     }
 
     @Override

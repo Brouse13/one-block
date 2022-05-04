@@ -10,6 +10,8 @@ import es.noobcraft.oneblock.api.player.PlayerCache;
 import es.noobcraft.oneblock.api.player.PlayerSupplier;
 import es.noobcraft.oneblock.api.profile.ProfileCache;
 import es.noobcraft.oneblock.api.scoreboard.ScoreboardManager;
+import es.noobcraft.oneblock.api.server.ServerCache;
+import es.noobcraft.oneblock.api.server.ServerLoader;
 import es.noobcraft.oneblock.api.settings.OneBlockSettings;
 
 public interface OneBlock {
@@ -81,6 +83,20 @@ public interface OneBlock {
      * @return OneBlock Settings
      */
     OneBlockSettings getSettings();
+
+    /**
+     * Get the cache containing all the loaded
+     * worlds withs it's respective worlds
+     * @return OneBlock ServerCache
+     */
+    ServerCache getServerCache();
+
+    /**
+     * Get the loader of the severs from the
+     * Database
+     * @return OneBlock ServerLoader
+     */
+    ServerLoader getServerLoader();
 
     /**
      * Get the default gson with all the TypeAdapters

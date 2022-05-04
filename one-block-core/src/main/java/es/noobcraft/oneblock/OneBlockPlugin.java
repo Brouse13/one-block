@@ -10,6 +10,7 @@ import es.noobcraft.oneblock.api.OneBlockAPI;
 import es.noobcraft.oneblock.api.logger.Logger;
 import es.noobcraft.oneblock.api.logger.LoggerType;
 import es.noobcraft.oneblock.loaders.JSONPhaseLoader;
+import es.noobcraft.oneblock.server.RedisServerSubscriber;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.Listener;
@@ -38,6 +39,7 @@ public abstract class OneBlockPlugin extends JavaPlugin {
     @Override
     public void onLoad() {
         new Logger(this);
+        Core.getRedisClient().subscribe("one-block", new RedisServerSubscriber());
     }
 
     public abstract void enable();

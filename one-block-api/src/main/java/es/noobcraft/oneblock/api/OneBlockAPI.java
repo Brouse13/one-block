@@ -10,6 +10,8 @@ import es.noobcraft.oneblock.api.player.PlayerCache;
 import es.noobcraft.oneblock.api.player.PlayerSupplier;
 import es.noobcraft.oneblock.api.profile.ProfileCache;
 import es.noobcraft.oneblock.api.scoreboard.ScoreboardManager;
+import es.noobcraft.oneblock.api.server.ServerCache;
+import es.noobcraft.oneblock.api.server.ServerLoader;
 import es.noobcraft.oneblock.api.settings.OneBlockSettings;
 import lombok.NonNull;
 
@@ -60,6 +62,14 @@ public class OneBlockAPI {
 
     public static OneBlockSettings getSettings() {
         return oneblock.getSettings();
+    }
+
+    public static ServerLoader getServerLoader() {
+        return oneblock.getServerLoader();
+    }
+
+    public static ServerCache getServerCache() {
+        return oneblock.getServerCache();
     }
 
     public static Gson getGson() {

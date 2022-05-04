@@ -22,9 +22,14 @@ import java.util.Set;
 public class OneBlock extends OneBlockPlugin {
     @Override
     public void enable() {
-        SlimePlugin slimePlugin = ((SlimePlugin) Bukkit.getPluginManager().getPlugin("SlimeWorldManager"));
-        slimePlugin.registerLoader("one-block", new SQLOneBlockLoader());
-        updateScoreboards();
+        //Register one-block loader to SlimeWorld plugin
+        ((SlimePlugin) Bukkit.getPluginManager().getPlugin("SlimeWorldManager"))
+                .registerLoader("one-block", new SQLOneBlockLoader());
+        //Start the scoreboard updater
+        this.getServer().getScheduler().scheduleSyncRepeatingTask(this,
+                () -> OneBlockAPI.getScoreboardManager().update(),0L, 20L);
+        //Sync all the worlds from redis
+        OneBlockAPI.getServerCache().syncWorlds();
         Logger.log(LoggerType.CONSOLE, "OneBlock enabled successfully");
     }
 
@@ -53,15 +58,10 @@ public class OneBlock extends OneBlockPlugin {
                 new InfiniteBlockListener(), new PhaseUpgradeListeners(this)));
     }
 
-    private void updateScoreboards() {
-        this.getServer().getScheduler().scheduleSyncRepeatingTask(this,
-                () -> OneBlockAPI.getScoreboardManager().update(),0L, 20L);
-    }
-
-    public boolean deleteFile(File path) {
+    public void deleteFile(File path) {
         for (File file : path.listFiles())
             if (file.isDirectory()) deleteFile(file);
             else file.delete();
-        return(path.delete());
+        path.delete();
     }
 }
