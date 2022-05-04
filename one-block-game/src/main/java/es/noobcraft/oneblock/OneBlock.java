@@ -10,7 +10,7 @@ import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.commands.PermissionCommand;
 import es.noobcraft.oneblock.commands.ProfileCommand;
 import es.noobcraft.oneblock.listeners.*;
-import es.noobcraft.oneblock.loaders.PlayerLoader;
+import es.noobcraft.oneblock.utils.Loaders;
 import es.noobcraft.oneblock.world.SQLOneBlockLoader;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
@@ -40,7 +40,7 @@ public class OneBlock extends OneBlockPlugin {
             if (oneBlockPlayer.getCurrentProfile() == null) return;
 
             Logger.log(LoggerType.CONSOLE, "Forcing to unload player "+ oneBlockPlayer.getName());
-            PlayerLoader.unloadPlayer(oneBlockPlayer, oneBlockPlayer.getCurrentProfile());
+            Loaders.unloadPlayer(oneBlockPlayer, oneBlockPlayer.getCurrentProfile());
         }
         OneBlockAPI.getScoreboardManager().clearScoreBoards();
         //Remove all temp_ files from the dir
