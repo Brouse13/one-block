@@ -1,5 +1,6 @@
 package es.noobcraft.oneblock.utils;
 
+import es.noobcraft.core.api.Core;
 import es.noobcraft.core.api.SpigotCore;
 import es.noobcraft.oneblock.api.OneBlockAPI;
 import es.noobcraft.oneblock.api.inventory.InventorySerializer;
@@ -38,6 +39,7 @@ public final class Loaders {
         //Load player inv and teleport to default block
         Player bukkitPlayer = Bukkit.getPlayer(player.getName());
         PlayerInventory inventory = bukkitPlayer.getInventory();
+        OneBlockAPI.getServerLoader().addWorld(Core.getServerId(), profile.getWorldName());
 
         inventory.setItem(0, SpigotCore.getImmutableItemManager().makeMutable(inventory.getItem(0)));
         inventory.clear();
@@ -62,6 +64,7 @@ public final class Loaders {
 
         profile.setInventory(InventorySerializer.serialize(inventory.toArray(new ItemStack[0])));
 
+        OneBlockAPI.getServerLoader().removeWorld(Core.getServerId(), profile.getWorldName());
         OneBlockAPI.getProfileLoader().updateProfile(profile);
         bukkitPlayer.getInventory().clear();
     }

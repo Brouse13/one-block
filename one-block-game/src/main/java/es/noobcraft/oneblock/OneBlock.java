@@ -9,6 +9,7 @@ import es.noobcraft.oneblock.api.logger.LoggerType;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.commands.PermissionCommand;
 import es.noobcraft.oneblock.commands.ProfileCommand;
+import es.noobcraft.oneblock.commands.StatusCommand;
 import es.noobcraft.oneblock.listeners.*;
 import es.noobcraft.oneblock.utils.Loaders;
 import es.noobcraft.oneblock.world.SQLOneBlockLoader;
@@ -49,7 +50,7 @@ public class OneBlock extends OneBlockPlugin {
 
     @Override
     public Set<PlayerCommand> loadCommand() {
-        return Sets.newHashSet(Arrays.asList(new ProfileCommand(), new PermissionCommand()));
+        return Sets.newHashSet(Arrays.asList(new ProfileCommand(), new PermissionCommand(), new StatusCommand()));
     }
 
     @Override

@@ -53,9 +53,9 @@
             <dependency>
                 <groupId>redis.clients</groupId>
                 <artifactId>jedis</artifactId>
-                <version>4.2.2</version>
+                <version>3.5.1</version>
+                <scope>provided</scope>
             </dependency>
-
 
             <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
             <dependency>
