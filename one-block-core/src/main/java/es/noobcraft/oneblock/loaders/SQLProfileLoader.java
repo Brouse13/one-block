@@ -5,7 +5,7 @@ import es.noobcraft.core.api.Core;
 import es.noobcraft.oneblock.api.loaders.ProfileLoader;
 import es.noobcraft.oneblock.api.logger.Logger;
 import es.noobcraft.oneblock.api.logger.LoggerType;
-import es.noobcraft.oneblock.api.player.OneBlockPlayer;
+import es.noobcraft.oneblock.api.player.OfflineOneBlockPlayer;
 import es.noobcraft.oneblock.api.profile.OneBlockProfile;
 import es.noobcraft.oneblock.profile.BaseOneBlockProfile;
 
@@ -18,10 +18,10 @@ import java.util.Optional;
 import java.util.Set;
 
 public class SQLProfileLoader implements ProfileLoader {
-    private String CREATE_PROFILE = "INSERT INTO one_block_profiles (username, name, world, island_owner, inventory, itemstack) VALUES(?, ?, ?, ?, ? ,?)";
-    private String LOAD_PROFILES = "SELECT * FROM one_block_profiles WHERE username=?";
-    private String UPDATE_PROFILE = "UPDATE one_block_profiles SET inventory=?, itemstack=? WHERE username=? AND name=?";
-    private String DELETE_PROFILE = "DELETE FROM one_block_profiles WHERE username=? AND name=?";
+    private final static String CREATE_PROFILE = "INSERT INTO one_block_profiles (username, name, world, island_owner, inventory, itemstack) VALUES(?, ?, ?, ?, ? ,?)";
+    private final static String LOAD_PROFILES = "SELECT * FROM one_block_profiles WHERE username=?";
+    private final static String UPDATE_PROFILE = "UPDATE one_block_profiles SET inventory=?, itemstack=? WHERE username=? AND name=?";
+    private final static String DELETE_PROFILE = "DELETE FROM one_block_profiles WHERE username=? AND name=?";
 
     @Override
     public boolean createProfile(OneBlockProfile profile) {
@@ -44,7 +44,7 @@ public class SQLProfileLoader implements ProfileLoader {
     }
 
     @Override
-    public Optional<Set<OneBlockProfile>> loadProfiles(OneBlockPlayer player) {
+    public Optional<Set<OneBlockProfile>> loadProfiles(OfflineOneBlockPlayer player) {
         try(Connection connection = Core.getSQLClient().getConnection()) {
             try(PreparedStatement statement = connection.prepareStatement(LOAD_PROFILES)) {
                 //VALUES: username
@@ -65,7 +65,7 @@ public class SQLProfileLoader implements ProfileLoader {
     }
 
     @Override
-    public Optional<OneBlockProfile> loadProfile(OneBlockPlayer player, String profileName) {
+    public Optional<OneBlockProfile> loadProfile(OfflineOneBlockPlayer player, String profileName) {
         return loadProfiles(player).flatMap(profiles -> profiles.stream()
                 .filter(profile -> profile.getProfileName().equals(profileName)).findFirst());
     }

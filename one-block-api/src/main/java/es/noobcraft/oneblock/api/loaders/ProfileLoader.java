@@ -1,6 +1,6 @@
 package es.noobcraft.oneblock.api.loaders;
 
-import es.noobcraft.oneblock.api.player.OneBlockPlayer;
+import es.noobcraft.oneblock.api.player.OfflineOneBlockPlayer;
 import es.noobcraft.oneblock.api.profile.OneBlockProfile;
 
 import java.util.Optional;
@@ -19,7 +19,7 @@ public interface ProfileLoader {
      * @param player owner of the profiles
      * @return an Optional with all the loaded profiles
      */
-    Optional<Set<OneBlockProfile>> loadProfiles(OneBlockPlayer player);
+    Optional<Set<OneBlockProfile>> loadProfiles(OfflineOneBlockPlayer player);
 
     /**
      * Load a profile from the database, if it's not
@@ -28,7 +28,7 @@ public interface ProfileLoader {
      * @param profileName name of the profile
      * @return an Optional with the loaded profile
      */
-    Optional<OneBlockProfile> loadProfile(OneBlockPlayer player, String profileName);
+    Optional<OneBlockProfile> loadProfile(OfflineOneBlockPlayer player, String profileName);
 
     /**
      * Update a specific profile into the database
