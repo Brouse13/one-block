@@ -1,6 +1,7 @@
 package es.noobcraft.oneblock.server;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import es.noobcraft.oneblock.api.OneBlockAPI;
 import es.noobcraft.oneblock.api.logger.Logger;
@@ -32,10 +33,9 @@ public class MapServerCache implements ServerCache {
     public void addWorld(String server, String world) {
         try {
             lock.writeLock().lock();
-            serverMap.computeIfPresent(server, (key, worlds) -> {
-                worlds.add(world);
-                return worlds;
-            });
+            List<String> worlds = serverMap.getOrDefault(server, Lists.newArrayList());
+            worlds.add(world);
+            serverMap.put(server, worlds);
         }finally {
             lock.writeLock().unlock();
         }
@@ -45,10 +45,9 @@ public class MapServerCache implements ServerCache {
     public void removeWorld(String server, String world) {
         try {
             lock.writeLock().lock();
-            serverMap.computeIfPresent(server, (key, worlds) -> {
-                worlds.remove(world);
-                return worlds;
-            });
+            List<String> worlds = serverMap.getOrDefault(server, Lists.newArrayList());
+            worlds.remove(world);
+            serverMap.put(server, worlds);
         }finally {
             lock.writeLock().unlock();
         }
