@@ -7,10 +7,9 @@ import es.noobcraft.oneblock.api.OneBlockAPI;
 import es.noobcraft.oneblock.api.logger.Logger;
 import es.noobcraft.oneblock.api.logger.LoggerType;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
-import es.noobcraft.oneblock.commands.PermissionCommand;
-import es.noobcraft.oneblock.commands.ProfileCommand;
-import es.noobcraft.oneblock.commands.StatusCommand;
+import es.noobcraft.oneblock.commands.*;
 import es.noobcraft.oneblock.listeners.*;
+import es.noobcraft.oneblock.utils.InviteManager;
 import es.noobcraft.oneblock.utils.Loaders;
 import es.noobcraft.oneblock.world.SQLOneBlockLoader;
 import org.bukkit.Bukkit;
@@ -26,11 +25,16 @@ public class OneBlock extends OneBlockPlugin {
         //Register one-block loader to SlimeWorld plugin
         ((SlimePlugin) Bukkit.getPluginManager().getPlugin("SlimeWorldManager"))
                 .registerLoader("one-block", new SQLOneBlockLoader());
+
         //Start the scoreboard updater
         this.getServer().getScheduler().scheduleSyncRepeatingTask(this,
                 () -> OneBlockAPI.getScoreboardManager().update(),0L, 20L);
+
         //Sync all the worlds from redis
         OneBlockAPI.getServerCache().syncWorlds();
+
+        //Add the scheduler to the InviteManager
+        InviteManager.schedule(this, false);
         Logger.log(LoggerType.CONSOLE, "OneBlock enabled successfully");
     }
 
@@ -50,7 +54,8 @@ public class OneBlock extends OneBlockPlugin {
 
     @Override
     public Set<PlayerCommand> loadCommand() {
-        return Sets.newHashSet(Arrays.asList(new ProfileCommand(), new PermissionCommand(), new StatusCommand()));
+        return Sets.newHashSet(Arrays.asList(new ProfileCommand(), new PermissionCommand(), new StatusCommand(),
+                new GotoCommand(), new CoopAcceptCommand(), new CoopInviteCommand(), new CoopRemoveCommand()));
     }
 
     @Override

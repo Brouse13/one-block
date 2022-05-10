@@ -10,8 +10,6 @@ import es.noobcraft.oneblock.gui.ProfileGUI;
 import lombok.Getter;
 import lombok.NonNull;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 
 public class ProfileCommand implements PlayerCommand {
