@@ -8,9 +8,9 @@ import es.noobcraft.core.api.event.NoobPlayerQuitEvent;
 import es.noobcraft.core.api.item.ItemBuilder;
 import es.noobcraft.core.api.lang.Translator;
 import es.noobcraft.oneblock.api.OneBlockAPI;
-import es.noobcraft.oneblock.api.inventory.InventorySerializer;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.scoreboard.LobbyScoreBoard;
+import es.noobcraft.oneblock.utils.Loaders;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,12 +19,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class PlayerListeners implements Listener {
     private final Translator translator = Core.getTranslator();
@@ -68,14 +63,8 @@ public class PlayerListeners implements Listener {
         player.getBukkitPlayer().teleport(OneBlockAPI.getSettings().getLobbySpawn());
 
         //If player is on a profile encode its inventory
-        if (player.getCurrentProfile() != null) {
-            List<ItemStack> inventory = new ArrayList<>();
-            inventory.addAll(Arrays.asList(player.getBukkitPlayer().getInventory().getArmorContents()));
-            inventory.addAll(Arrays.asList(player.getBukkitPlayer().getInventory().getContents()));
-
-            player.getCurrentProfile().setInventory(InventorySerializer.serialize(inventory.toArray(new ItemStack[0])));
-            player.getBukkitPlayer().getInventory().clear();
-        }
+        if (player.getCurrentProfile() != null)
+            Loaders.unloadPlayer(player, player.getCurrentProfile());
 
         //Update profiles and remove them from the cache
         player.getProfiles().forEach(profile -> {

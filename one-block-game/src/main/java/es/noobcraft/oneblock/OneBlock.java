@@ -12,11 +12,13 @@ import es.noobcraft.oneblock.listeners.*;
 import es.noobcraft.oneblock.utils.InviteManager;
 import es.noobcraft.oneblock.utils.Loaders;
 import es.noobcraft.oneblock.world.SQLOneBlockLoader;
+import lombok.NonNull;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Set;
 
 public class OneBlock extends OneBlockPlugin {
@@ -39,6 +41,7 @@ public class OneBlock extends OneBlockPlugin {
     }
 
     @Override
+    @SuppressWarnings("all")
     public void disable() {
         //Force saving player if plugin is disabled
         for (OneBlockPlayer oneBlockPlayer : OneBlockAPI.getPlayerCache().getPlayers()) {
@@ -49,13 +52,15 @@ public class OneBlock extends OneBlockPlugin {
         }
         OneBlockAPI.getScoreboardManager().clearScoreBoards();
         //Remove all temp_ files from the dir
-        Arrays.stream(Bukkit.getWorldContainer().listFiles((dir, name) -> name.startsWith("temp_"))).forEach(this::deleteFile);
+        Arrays.stream(Bukkit.getWorldContainer().listFiles((dir, name) -> name.startsWith("temp_")))
+                .forEach(this::deleteFile);
     }
 
     @Override
     public Set<PlayerCommand> loadCommand() {
         return Sets.newHashSet(Arrays.asList(new ProfileCommand(), new PermissionCommand(), new StatusCommand(),
-                new GotoCommand(), new CoopAcceptCommand(), new CoopInviteCommand(), new CoopRemoveCommand()));
+                new GotoCommand(), new CoopAcceptCommand(), new CoopInviteCommand(), new CoopRemoveCommand(),
+                new LobbyCommand()));
     }
 
     @Override
@@ -64,8 +69,10 @@ public class OneBlock extends OneBlockPlugin {
                 new InfiniteBlockListener(), new PhaseUpgradeListeners(this)));
     }
 
-    public void deleteFile(File path) {
-        for (File file : path.listFiles())
+    @SuppressWarnings("all")
+    public void deleteFile(@NonNull File path) {
+        if (path.listFiles() != null)
+        for (File file : Objects.requireNonNull(path.listFiles()))
             if (file.isDirectory()) deleteFile(file);
             else file.delete();
         path.delete();

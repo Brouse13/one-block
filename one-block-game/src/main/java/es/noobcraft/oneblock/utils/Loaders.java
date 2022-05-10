@@ -11,6 +11,7 @@ import es.noobcraft.oneblock.api.profile.ProfileName;
 import es.noobcraft.oneblock.profile.BaseOneBlockProfile;
 import es.noobcraft.oneblock.scoreboard.IslandScoreBoard;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -41,7 +42,9 @@ public final class Loaders {
         PlayerInventory inventory = bukkitPlayer.getInventory();
         OneBlockAPI.getServerLoader().addWorld(Core.getServerId(), profile.getWorldName());
 
-        inventory.setItem(0, SpigotCore.getImmutableItemManager().makeMutable(inventory.getItem(0)));
+        ItemStack item = inventory.getItem(0);
+        if (item.getType() == Material.NETHER_STAR && item.hasItemMeta() && item.getItemMeta().hasDisplayName())
+            inventory.setItem(0, SpigotCore.getImmutableItemManager().makeMutable(item));
         inventory.clear();
 
         if (deserialize.length != 0) {
@@ -57,13 +60,16 @@ public final class Loaders {
     public static void unloadPlayer(OneBlockPlayer oneBlockPlayer, OneBlockProfile profile) {
         Player bukkitPlayer = Bukkit.getPlayer(oneBlockPlayer.getName());
 
-        //Encode current player inventory
+        //Encode current player inventory and add it to the profile
         List<ItemStack> inventory = new ArrayList<>();
         inventory.addAll(Arrays.asList(bukkitPlayer.getInventory().getArmorContents()));
         inventory.addAll(Arrays.asList(bukkitPlayer.getInventory().getContents()));
-
         profile.setInventory(InventorySerializer.serialize(inventory.toArray(new ItemStack[0])));
 
+        //Set to null the current profile to null
+        oneBlockPlayer.setCurrentProfile(null);
+
+        //More action to perform on to unload a profile
         OneBlockAPI.getServerLoader().removeWorld(Core.getServerId(), profile.getWorldName());
         OneBlockAPI.getProfileLoader().updateProfile(profile);
         bukkitPlayer.getInventory().clear();
