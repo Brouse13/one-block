@@ -9,6 +9,7 @@ import es.noobcraft.core.api.item.ItemBuilder;
 import es.noobcraft.core.api.lang.Translator;
 import es.noobcraft.oneblock.api.OneBlockAPI;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
+import es.noobcraft.oneblock.api.profile.OneBlockProfile;
 import es.noobcraft.oneblock.scoreboard.LobbyScoreBoard;
 import es.noobcraft.oneblock.utils.Loaders;
 import org.bukkit.Bukkit;
@@ -20,6 +21,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.util.Vector;
+
+import java.util.Optional;
 
 public class PlayerListeners implements Listener {
     private final Translator translator = Core.getTranslator();
@@ -43,6 +46,23 @@ public class PlayerListeners implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onNoobPlayerJoin(NoobPlayerJoinEvent event) {
         OneBlockPlayer player = OneBlockAPI.getPlayerCache().getPlayer(event.getNoobPlayer().getUsername());
+
+        //Check if the player has any teleportRequest
+        Optional<String> world = OneBlockAPI.getServerLoader().hasTeleportRequest(event.getNoobPlayer().getName(), Core.getServerId());
+        if (world.isPresent()) {
+            //Check if the player has a profile on the retrieved world or else ignore teleportRequest
+            OneBlockProfile worldProfile = player.getProfiles().stream()
+                    .filter(profile -> profile.getWorldName().equals(world.get()))
+                    .findFirst().orElse(null);
+
+            //Found profile on retrieved world and cancel the rest of the join methods
+            if (worldProfile != null) {
+                OneBlockAPI.getServerLoader().removeTeleportRequest(player.getName());
+                Loaders.loadProfile(worldProfile, player);
+                return;
+            }
+        }
+
         //Create the player scoreboard and teleport it to spawn
         OneBlockAPI.getScoreboardManager().createScoreboard(player, new LobbyScoreBoard(player));
         event.getNoobPlayer().teleport(OneBlockAPI.getSettings().getLobbySpawn());

@@ -20,14 +20,25 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public final class Loaders {
     public static void loadProfile(OneBlockProfile profile, OneBlockPlayer player) {
+        //Check if the ServerCache has load the world on another server
+        Optional<String> server = OneBlockAPI.getServerCache().getServer(profile.getWorldName());
+        if (server.isPresent()) {
+            Core.getServerConnectManager().connect(player.getNoobPlayer(), server.get());
+            OneBlockAPI.getServerLoader().teleportRequest(profile, server.get());
+            return;
+        }
+
+        //Load the world and world
         OneBlockAPI.getWorldLoader().loadWorld(profile.getWorldName(), false);
         player.setCurrentProfile(profile);
         OneBlockAPI.getPhaseLoader().getPhaseBlocks(profile.getWorldName());
         OneBlockAPI.getScoreboardManager().createScoreboard(player, new IslandScoreBoard(profile));
 
+        //Load the inventory to the player
         ItemStack[] deserialize;
         try {
             deserialize = InventorySerializer.deserialize(profile.getInventory());
