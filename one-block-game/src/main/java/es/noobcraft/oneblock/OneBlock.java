@@ -11,7 +11,7 @@ import es.noobcraft.oneblock.commands.*;
 import es.noobcraft.oneblock.listeners.*;
 import es.noobcraft.oneblock.utils.InviteManager;
 import es.noobcraft.oneblock.utils.Loaders;
-import es.noobcraft.oneblock.world.SQLOneBlockLoader;
+import es.noobcraft.oneblock.loaders.SQLSlimeLoader;
 import lombok.NonNull;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
@@ -26,7 +26,7 @@ public class OneBlock extends OneBlockPlugin {
     public void enable() {
         //Register one-block loader to SlimeWorld plugin
         ((SlimePlugin) Bukkit.getPluginManager().getPlugin("SlimeWorldManager"))
-                .registerLoader("one-block", new SQLOneBlockLoader());
+                .registerLoader("one-block", new SQLSlimeLoader());
 
         //Start the scoreboard updater
         this.getServer().getScheduler().scheduleSyncRepeatingTask(this,

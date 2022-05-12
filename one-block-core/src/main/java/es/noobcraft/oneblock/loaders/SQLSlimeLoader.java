@@ -1,4 +1,4 @@
-package es.noobcraft.oneblock.world;
+package es.noobcraft.oneblock.loaders;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.grinderwolf.swm.api.exceptions.UnknownWorldException;
@@ -22,7 +22,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-public class SQLOneBlockLoader implements SlimeLoader {
+public class SQLSlimeLoader implements SlimeLoader {
     //World look pool
     private static final ScheduledExecutorService LOCK_POOL = Executors.newScheduledThreadPool(2,
             new ThreadFactoryBuilder().setNameFormat("SWM MySQL Lock Pool Thread #%1$d").build());
