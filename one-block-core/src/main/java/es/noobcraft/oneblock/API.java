@@ -28,80 +28,26 @@ import es.noobcraft.oneblock.profile.SetProfileCache;
 import es.noobcraft.oneblock.scoreboard.BaseScoreboardManager;
 import es.noobcraft.oneblock.server.MapServerCache;
 import es.noobcraft.oneblock.server.RedisServerLoader;
+import lombok.Getter;
 import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.Location;
 
 public class API implements OneBlock {
-    private final PhaseLoader phaseLoader = new JSONPhaseLoader();
-    private final PlayerCache playerCache = new SetPlayerCache();
-    private final ProfileCache profileCache = new SetProfileCache();
-    private final ProfileLoader profileLoader = new SQLProfileLoader();
-    private final PermissionManager permissionsManager = new SetPermissionManager();
-    private final WorldLoader worldLoader = new SlimeWorldLoader();
-    private final ScoreboardManager scoreboardManager = new BaseScoreboardManager();
-    private final PlayerSupplier playerSupplier = new BasePlayerSupplier();
-    private final ServerCache serverCache = new MapServerCache();
-    private final ServerLoader serverLoader= new RedisServerLoader();
-    private final OneBlockSettings settings = new OneBlockConstants();
-
-    @Override
-    public PhaseLoader getPhaseLoader() {
-        return phaseLoader;
-    }
-
-    @Override
-    public ProfileLoader getProfileLoader() {
-        return profileLoader;
-    }
-
-    @Override
-    public PermissionManager getPermissionManager() {
-        return permissionsManager;
-    }
-
-    @Override
-    public PlayerCache getPlayerCache() {
-        return playerCache;
-    }
-
-    @Override
-    public PlayerSupplier getPlayerSupplier() {
-        return playerSupplier;
-    }
-
-    @Override
-    public ProfileCache getProfileCache() {
-        return profileCache;
-    }
-
-    @Override
-    public WorldLoader getWorldLoader() {
-        return worldLoader;
-    }
-
-    @Override
-    public ScoreboardManager getScoreboardManager() {
-        return scoreboardManager;
-    }
+    @Getter private final PhaseLoader phaseLoader = new JSONPhaseLoader();
+    @Getter private final PlayerCache playerCache = new SetPlayerCache();
+    @Getter private final ProfileCache profileCache = new SetProfileCache();
+    @Getter private final ProfileLoader profileLoader = new SQLProfileLoader();
+    @Getter private final PermissionManager permissionManager = new SetPermissionManager();
+    @Getter private final WorldLoader worldLoader = new SlimeWorldLoader();
+    @Getter private final ScoreboardManager scoreboardManager = new BaseScoreboardManager();
+    @Getter private final PlayerSupplier playerSupplier = new BasePlayerSupplier();
+    @Getter private final ServerCache serverCache = new MapServerCache();
+    @Getter private final ServerLoader serverLoader= new RedisServerLoader();
+    @Getter private final OneBlockSettings settings = new OneBlockConstants();
 
     @Override
     public SettingsLoader getSettingsLoader() {
         throw new NotImplementedException("This functionality is not implemented yet");
-    }
-
-    @Override
-    public OneBlockSettings getSettings() {
-        return settings;
-    }
-
-    @Override
-    public ServerCache getServerCache() {
-        return serverCache;
-    }
-
-    @Override
-    public ServerLoader getServerLoader() {
-        return serverLoader;
     }
 
     @Override
