@@ -9,7 +9,6 @@ import es.noobcraft.oneblock.api.logger.LoggerType;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.commands.*;
 import es.noobcraft.oneblock.listeners.*;
-import es.noobcraft.oneblock.utils.InviteManager;
 import es.noobcraft.oneblock.utils.Loaders;
 import es.noobcraft.oneblock.loaders.SQLSlimeLoader;
 import lombok.NonNull;
@@ -35,8 +34,6 @@ public class OneBlock extends OneBlockPlugin {
         //Sync all the worlds from redis
         OneBlockAPI.getServerCache().syncWorlds();
 
-        //Add the scheduler to the InviteManager
-        InviteManager.schedule(this, false);
         Logger.log(LoggerType.CONSOLE, "OneBlock enabled successfully");
     }
 
