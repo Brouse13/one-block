@@ -2,7 +2,6 @@ package es.noobcraft.oneblock.utils;
 
 import es.noobcraft.core.api.Core;
 import es.noobcraft.core.api.SpigotCore;
-import es.noobcraft.core.api.item.ItemBuilder;
 import es.noobcraft.core.api.lang.Translator;
 import es.noobcraft.oneblock.api.OneBlockAPI;
 import es.noobcraft.oneblock.api.inventory.InventorySerializer;
@@ -91,11 +90,8 @@ public final class Loaders {
 
         //Give the menu item and teleport to the lobby if player hasn't disconnect
         if (Core.getPlayerCache().getPlayer(oneBlockPlayer.getName()) != null) {
-            bukkitPlayer.getInventory().setItem(0, SpigotCore.getImmutableItemManager().makeImmutable(
-                    ItemBuilder.from(Material.NETHER_STAR)
-                            .displayName(translator.getLegacyText(oneBlockPlayer.getNoobPlayer(), "one-block.inventory.player.profile-list.name"))
-                            .lore(translator.getLegacyTextList(oneBlockPlayer.getNoobPlayer(), "one-block.inventory.player.profile-list.lore"))
-                            .metadata("event", "profile-list").build()));
+            bukkitPlayer.getInventory().setItem(0,
+                    SpigotCore.getImmutableItemManager().makeImmutable(Items.getLobbyItem(oneBlockPlayer)));
             bukkitPlayer.teleport(OneBlockAPI.getSettings().getLobbySpawn());
         }
     }

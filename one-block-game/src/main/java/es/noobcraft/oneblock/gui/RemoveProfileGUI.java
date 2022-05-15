@@ -5,57 +5,49 @@ import es.noobcraft.core.api.SpigotCore;
 import es.noobcraft.core.api.inventory.NoobInventory;
 import es.noobcraft.core.api.item.ItemBuilder;
 import es.noobcraft.core.api.lang.Translator;
-import es.noobcraft.core.api.player.NoobPlayer;
 import es.noobcraft.oneblock.api.OneBlockAPI;
 import es.noobcraft.oneblock.api.logger.Logger;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.api.profile.OneBlockProfile;
+import es.noobcraft.oneblock.utils.Items;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
 
 public class RemoveProfileGUI {
     private final Translator translator = Core.getTranslator();
-    private final NoobInventory inventory;
-    private final NoobPlayer noobPlayer;
-    private final OneBlockPlayer oneBlockPlayer;
 
-    public RemoveProfileGUI(NoobPlayer noobPlayer, OneBlockPlayer oneBlockPlayer) {
-        this.noobPlayer = noobPlayer;
-        this.oneBlockPlayer = oneBlockPlayer;
+    private final NoobInventory inventory;
+    private final OneBlockPlayer player;
+
+    public RemoveProfileGUI(OneBlockPlayer player) {
+        this.player = player;
         this.inventory = SpigotCore.getInventoryManager().createInventory(inventoryBuilder -> inventoryBuilder
-                .title(translator.getLegacyText(noobPlayer, "one-block.inventory.remove-profiles.title", noobPlayer.getUsername()))
+                .title(translator.getLegacyText(player.getNoobPlayer(), "one-block.inventory.remove-profiles.title", player.getName()))
                 .closeable(true)
-                .rows(oneBlockPlayer.getProfiles().size() > 9 ? 4 : 3)
+                .rows(player.getProfiles().size() > 9 ? 4 : 3)
                 .type(InventoryType.CHEST)
                 .initializer(this::initialize)
-                .updater(this::update));
+                .updater(update -> {}));
     }
 
     private void initialize(NoobInventory inventory) {
         for (int i = 0; i < inventory.getRows() * inventory.getColumns(); i++)
             inventory.set(i, ItemBuilder.from(Material.STAINED_GLASS_PANE).damage(8).build());
 
-        for (int i = 0; i < oneBlockPlayer.getProfiles().size(); i++) {
-            OneBlockProfile[] oneBlockProfiles = oneBlockPlayer.getProfiles().toArray(new OneBlockProfile[0]);
+        for (int i = 0; i < player.getProfiles().size(); i++) {
+            OneBlockProfile[] oneBlockProfiles = player.getProfiles().toArray(new OneBlockProfile[0]);
             OneBlockProfile profile = oneBlockProfiles[i];
 
-            inventory.set(10+ i*2, ItemBuilder.from(oneBlockProfiles[i].getProfileItem())
-                    .displayName(translator.getLegacyText(noobPlayer, "one-block.inventory.remove-profiles.profile.name", profile.getProfileName()))
-                    .lore(translator.getLegacyTextList(noobPlayer, "one-block.inventory.remove-profiles.profile.lore")).build(),
-                    event -> {
-                        event.getWhoClicked().closeInventory();
-                        OneBlockAPI.getProfileLoader().deleteProfile(profile);
-                        oneBlockPlayer.removeProfile(profile);
-                        Logger.player(noobPlayer, "one-block.messages.profile-remove");
-                    });
+            inventory.set(10 + (i * 2), Items.getRemoveProfileInfo(player, profile), event -> {
+                event.getWhoClicked().closeInventory();
+                OneBlockAPI.getProfileLoader().deleteProfile(profile);
+                player.removeProfile(profile);
+                Logger.player(player.getNoobPlayer(), "one-block.messages.profile-remove");
+            });
         }
     }
 
-    private void update(NoobInventory inventory) {
-
-    }
-
     public void openInventory() {
-        SpigotCore.getInventoryManager().openInventory(noobPlayer, inventory);
+        SpigotCore.getInventoryManager().openInventory(player.getNoobPlayer(), inventory);
     }
 }

@@ -5,13 +5,12 @@ import es.noobcraft.core.api.SpigotCore;
 import es.noobcraft.core.api.event.AsyncNoobPlayerPreLoginEvent;
 import es.noobcraft.core.api.event.NoobPlayerJoinEvent;
 import es.noobcraft.core.api.event.NoobPlayerQuitEvent;
-import es.noobcraft.core.api.item.ItemBuilder;
 import es.noobcraft.core.api.lang.Translator;
-import es.noobcraft.core.api.player.NoobPlayer;
 import es.noobcraft.oneblock.api.OneBlockAPI;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.api.profile.OneBlockProfile;
 import es.noobcraft.oneblock.scoreboard.LobbyScoreBoard;
+import es.noobcraft.oneblock.utils.Items;
 import es.noobcraft.oneblock.utils.Loaders;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -69,11 +68,8 @@ public class PlayerListeners implements Listener {
         event.getNoobPlayer().teleport(OneBlockAPI.getSettings().getLobbySpawn());
 
         //Add the profiles item
-        event.getNoobPlayer().getInventory().setItem(0, SpigotCore.getImmutableItemManager().makeImmutable(
-                ItemBuilder.from(Material.NETHER_STAR)
-                        .displayName(translator.getLegacyText(event.getNoobPlayer(), "one-block.inventory.player.profile-list.name"))
-                        .lore(translator.getLegacyTextList(event.getNoobPlayer(), "one-block.inventory.player.profile-list.lore"))
-                        .metadata("event", "profile-list").build()));
+        event.getNoobPlayer().getInventory().setItem(0,
+                SpigotCore.getImmutableItemManager().makeImmutable(Items.getLobbyItem(player)));
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -113,12 +109,7 @@ public class PlayerListeners implements Listener {
             event.setRespawnLocation(location.add(new Vector(0, 1, 0)));
         }else {
             //Give the player the menu item if is not on a profile
-            NoobPlayer noobPlayer = Core.getPlayerCache().getPlayer(event.getPlayer().getName());
-            event.getPlayer().getInventory().setItem(0, SpigotCore.getImmutableItemManager().makeImmutable(
-                    ItemBuilder.from(Material.NETHER_STAR)
-                            .displayName(translator.getLegacyText(noobPlayer, "one-block.inventory.player.profile-list.name"))
-                            .lore(translator.getLegacyTextList(noobPlayer, "one-block.inventory.player.profile-list.lore"))
-                            .metadata("event", "profile-list").build()));
+            event.getPlayer().getInventory().setItem(0, SpigotCore.getImmutableItemManager().makeImmutable(Items.getLobbyItem(player)));
         }
         event.getPlayer().teleport(OneBlockAPI.getSettings().getLobbySpawn());
     }

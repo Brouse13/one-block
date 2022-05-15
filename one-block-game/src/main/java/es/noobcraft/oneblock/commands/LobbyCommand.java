@@ -4,17 +4,16 @@ import com.google.common.collect.Sets;
 import es.noobcraft.core.api.Core;
 import es.noobcraft.core.api.SpigotCore;
 import es.noobcraft.core.api.command.PlayerCommand;
-import es.noobcraft.core.api.item.ItemBuilder;
 import es.noobcraft.core.api.lang.Translator;
 import es.noobcraft.core.api.permission.Group;
 import es.noobcraft.core.api.player.BukkitNoobPlayer;
 import es.noobcraft.oneblock.api.OneBlockAPI;
 import es.noobcraft.oneblock.api.logger.Logger;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
+import es.noobcraft.oneblock.utils.Items;
 import es.noobcraft.oneblock.utils.Loaders;
 import lombok.Getter;
 import lombok.NonNull;
-import org.bukkit.Material;
 
 import java.util.Set;
 
@@ -34,11 +33,7 @@ public class LobbyCommand implements PlayerCommand {
 
         oneBlockPlayer.getBukkitPlayer().teleport(OneBlockAPI.getSettings().getLobbySpawn());
 
-        player.getInventory().setItem(0, SpigotCore.getImmutableItemManager().makeImmutable(
-                ItemBuilder.from(Material.NETHER_STAR)
-                        .displayName(translator.getLegacyText(player, "one-block.inventory.player.profile-list.name"))
-                        .lore(translator.getLegacyTextList(player, "one-block.inventory.player.profile-list.lore"))
-                        .metadata("event", "profile-list").build()));
+        player.getInventory().setItem(0, SpigotCore.getImmutableItemManager().makeImmutable(Items.getLobbyItem(oneBlockPlayer)));
         Logger.player(player, "one-block-messages.lobby.return");
     }
 }
