@@ -7,6 +7,7 @@ import es.noobcraft.core.api.event.NoobPlayerJoinEvent;
 import es.noobcraft.core.api.event.NoobPlayerQuitEvent;
 import es.noobcraft.core.api.item.ItemBuilder;
 import es.noobcraft.core.api.lang.Translator;
+import es.noobcraft.core.api.player.NoobPlayer;
 import es.noobcraft.oneblock.api.OneBlockAPI;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.api.profile.OneBlockProfile;
@@ -110,6 +111,14 @@ public class PlayerListeners implements Listener {
                 world.getBlockAt(location).setType(Material.GRASS);
 
             event.setRespawnLocation(location.add(new Vector(0, 1, 0)));
+        }else {
+            //Give the player the menu item if is not on a profile
+            NoobPlayer noobPlayer = Core.getPlayerCache().getPlayer(event.getPlayer().getName());
+            event.getPlayer().getInventory().setItem(0, SpigotCore.getImmutableItemManager().makeImmutable(
+                    ItemBuilder.from(Material.NETHER_STAR)
+                            .displayName(translator.getLegacyText(noobPlayer, "one-block.inventory.player.profile-list.name"))
+                            .lore(translator.getLegacyTextList(noobPlayer, "one-block.inventory.player.profile-list.lore"))
+                            .metadata("event", "profile-list").build()));
         }
         event.getPlayer().teleport(OneBlockAPI.getSettings().getLobbySpawn());
     }

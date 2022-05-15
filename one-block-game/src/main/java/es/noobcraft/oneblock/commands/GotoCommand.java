@@ -9,7 +9,9 @@ import es.noobcraft.oneblock.api.logger.Logger;
 import es.noobcraft.oneblock.api.permission.OneBlockGroups;
 import lombok.Getter;
 import lombok.NonNull;
+import org.bukkit.Bukkit;
 
+import java.util.Optional;
 import java.util.Set;
 
 public class GotoCommand implements PlayerCommand {
@@ -24,19 +26,22 @@ public class GotoCommand implements PlayerCommand {
         }
 
         //Check if the Optional isn't empty and the server startsWith the Server type (one-block)
-        Core.getOnlineManager().getServerNameAsync(args[0], (server, throwable) -> {
-            if (server.isPresent()) {
-                if (!server.get().startsWith(Core.getServerType())) {
-                    System.out.println(server.get()+ " "+ Core.getServerType());
-                    Logger.player(player, "one-block.messages.isTp.no-one-block");
-                    return;
-                }
+        Optional<String> server = Core.getOnlineManager().getServerName(args[0]);
 
-                Logger.player(player, "one-block.messages.isTp.teleporting", player.getName());
-                player.connect(server.get());
-            }else {
-                Logger.player(player, "one-block.messages.isTp.not-found");
+        if (server.isPresent()) {
+            if (!server.get().startsWith(Core.getServerType())) {
+                Logger.player(player, "one-block.messages.isTp.no-one-block");
+                return;
             }
-        });
+
+            //If player is online tp, if not, teleport to the server
+            Logger.player(player, "one-block.messages.isTp.teleporting", player.getName());
+            if (server.get().equals(Core.getServerId()))
+                Bukkit.getPlayer(player.getName()).teleport(Bukkit.getPlayer(args[0]));
+            else
+                player.connect(server.get());
+        }else {
+            Logger.player(player, "one-block.messages.isTp.not-found");
+        }
     }
 }

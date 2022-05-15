@@ -9,6 +9,7 @@ public class CacheMap<K, V> extends ConcurrentHashMap<K, V> {
     private boolean active;
 
     public CacheMap(Long expireTime) {
+        this.active = true;
         this.expireTime = expireTime;
         new CacheScheduler().start();
     }

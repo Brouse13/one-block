@@ -6,12 +6,15 @@ import es.noobcraft.core.api.permission.Group;
 import es.noobcraft.core.api.player.BukkitNoobPlayer;
 import es.noobcraft.oneblock.api.OneBlockAPI;
 import es.noobcraft.oneblock.api.logger.Logger;
+import es.noobcraft.oneblock.api.player.OfflineOneBlockPlayer;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.api.profile.OneBlockProfile;
 import es.noobcraft.oneblock.utils.InviteManager;
+import es.noobcraft.oneblock.utils.Loaders;
 import lombok.Getter;
 import lombok.NonNull;
 
+import java.util.Optional;
 import java.util.Set;
 
 public class CoopRemoveCommand implements PlayerCommand {
@@ -39,11 +42,10 @@ public class CoopRemoveCommand implements PlayerCommand {
             return;
         }
 
-        OneBlockPlayer target = OneBlockAPI.getPlayerCache().getPlayer(args[0]);
-
+        OfflineOneBlockPlayer target = OneBlockAPI.getPlayerSupplier().createPlayer(args[0]);
+        Optional<OneBlockProfile> targetProfile = OneBlockAPI.getProfileLoader().loadProfile(target, player.getCurrentProfile().getProfileName());
         //Check if the player is on the profile
-        if (target.getProfiles().stream().map(OneBlockProfile::getProfileName)
-                .noneMatch(player.getCurrentProfile().getProfileName()::equals)) {
+        if (!targetProfile.isPresent()) {
             Logger.player(noobPlayer, "one-block.messages.remove.not-in-profile");
             return;
         }
@@ -52,10 +54,16 @@ public class CoopRemoveCommand implements PlayerCommand {
         InviteManager.removePlayer(target.getName());
 
         //Get the profile from the cache and remove it on the database
-        OneBlockProfile targetProfile = OneBlockAPI.getProfileCache().getProfile(target, player.getCurrentProfile().getProfileName());
-        OneBlockAPI.getProfileCache().removeProfile(targetProfile);
-        target.removeProfile(targetProfile);
-        OneBlockAPI.getProfileLoader().deleteProfile(targetProfile);
+        OneBlockPlayer onlineTarget = OneBlockAPI.getPlayerCache().getPlayer(target.getName());
+
+        if (onlineTarget != null) {
+            targetProfile = Optional.of(OneBlockAPI.getProfileCache().getProfile(onlineTarget, targetProfile.get().getWorldName()));
+            Loaders.unloadPlayer(onlineTarget, targetProfile.get());
+        }
+
+        OneBlockAPI.getProfileCache().removeProfile(targetProfile.get());
+        target.removeProfile(targetProfile.get());
+        OneBlockAPI.getProfileLoader().deleteProfile(targetProfile.get());
 
         Logger.player(noobPlayer, "one-block.messages.remove.removed");
     }

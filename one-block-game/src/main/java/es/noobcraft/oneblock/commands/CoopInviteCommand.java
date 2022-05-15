@@ -50,14 +50,15 @@ public class CoopInviteCommand implements PlayerCommand {
         OneBlockPlayer target = OneBlockAPI.getPlayerCache().getPlayer(args[0]);
 
         //Check if the player isn't on the profile and has available
-        if (target.getProfiles().stream().map(OneBlockProfile::getProfileName)
-                .anyMatch(currentProfile.getProfileName()::equals)) {
+        if (target.getProfiles().stream()
+                .filter(profile -> profile.getProfileName().equals(currentProfile.getProfileName()))
+                .anyMatch(profile -> profile.getIslandOwner().equals(currentProfile.getIslandOwner()))) {
             Logger.player(noobPlayer, "one-block.messages.invite.already-on-profile");
             return;
         }
 
         //Check if player has available profiles
-        if (target.getMaxProfiles() >= 3) {
+        if (target.getProfiles().size() >= 3) {
             Logger.player(noobPlayer, "one-block.messages.invite.max-profiles");
             return;
         }

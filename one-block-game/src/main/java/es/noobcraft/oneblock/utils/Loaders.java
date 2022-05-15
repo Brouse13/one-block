@@ -2,6 +2,8 @@ package es.noobcraft.oneblock.utils;
 
 import es.noobcraft.core.api.Core;
 import es.noobcraft.core.api.SpigotCore;
+import es.noobcraft.core.api.item.ItemBuilder;
+import es.noobcraft.core.api.lang.Translator;
 import es.noobcraft.oneblock.api.OneBlockAPI;
 import es.noobcraft.oneblock.api.inventory.InventorySerializer;
 import es.noobcraft.oneblock.api.logger.Logger;
@@ -23,10 +25,12 @@ import java.util.List;
 import java.util.Optional;
 
 public final class Loaders {
+    private static final Translator translator = Core.getTranslator();
+
     public static void loadProfile(OneBlockProfile profile, OneBlockPlayer player) {
         //Check if the ServerCache has load the world on another server
         Optional<String> server = OneBlockAPI.getServerCache().getServer(profile.getWorldName());
-        if (server.isPresent()) {
+        if (server.isPresent() && !server.get().equals(Core.getServerId())) {
             Core.getServerConnectManager().connect(player.getNoobPlayer(), server.get());
             OneBlockAPI.getServerLoader().teleportRequest(profile, server.get());
             return;
@@ -54,7 +58,7 @@ public final class Loaders {
         OneBlockAPI.getServerLoader().addWorld(Core.getServerId(), profile.getWorldName());
 
         ItemStack item = inventory.getItem(0);
-        if (item.getType() == Material.NETHER_STAR && item.hasItemMeta() && item.getItemMeta().hasDisplayName())
+        if (item != null && item.getType() == Material.NETHER_STAR && item.hasItemMeta() && item.getItemMeta().hasDisplayName())
             inventory.setItem(0, SpigotCore.getImmutableItemManager().makeMutable(item));
         inventory.clear();
 
@@ -84,6 +88,16 @@ public final class Loaders {
         OneBlockAPI.getServerLoader().removeWorld(Core.getServerId(), profile.getWorldName());
         OneBlockAPI.getProfileLoader().updateProfile(profile);
         bukkitPlayer.getInventory().clear();
+
+        //Give the menu item and teleport to the lobby if player hasn't disconnect
+        if (Core.getPlayerCache().getPlayer(oneBlockPlayer.getName()) != null) {
+            bukkitPlayer.getInventory().setItem(0, SpigotCore.getImmutableItemManager().makeImmutable(
+                    ItemBuilder.from(Material.NETHER_STAR)
+                            .displayName(translator.getLegacyText(oneBlockPlayer.getNoobPlayer(), "one-block.inventory.player.profile-list.name"))
+                            .lore(translator.getLegacyTextList(oneBlockPlayer.getNoobPlayer(), "one-block.inventory.player.profile-list.lore"))
+                            .metadata("event", "profile-list").build()));
+            bukkitPlayer.teleport(OneBlockAPI.getSettings().getLobbySpawn());
+        }
     }
 
     public static void createProfile(OneBlockPlayer player) {
