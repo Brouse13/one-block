@@ -41,7 +41,7 @@ public class InfiniteBlockListener implements Listener {
         //Spawn the block drops
         final Collection<ItemStack> drops = block.getDrops(event.getPlayer().getBukkitPlayer().getItemInHand());
         drops.forEach(itemStack -> block.getWorld().dropItemNaturally(
-                        block.getLocation().add(new Vector(0.5, 1, 0.5)), itemStack)
+                        OneBlockAPI.getSettings().getIslandSpawn().clone().add(new Vector(0.5, 1, 0.5)).toLocation(world), itemStack)
                 .setVelocity(new Vector(0, 0, 0)));
 
         //Get all the SpecialActions that will be done on that block

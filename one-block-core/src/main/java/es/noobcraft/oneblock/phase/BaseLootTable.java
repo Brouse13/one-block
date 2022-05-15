@@ -1,7 +1,6 @@
 package es.noobcraft.oneblock.phase;
 
 import com.google.common.collect.Lists;
-import es.noobcraft.core.api.item.ItemBuilder;
 import es.noobcraft.oneblock.api.OneBlockAPI;
 import es.noobcraft.oneblock.api.phases.LootTable;
 import lombok.AllArgsConstructor;
@@ -26,10 +25,7 @@ public class BaseLootTable implements LootTable {
     public void summon(World world) {
         //Spawn the chest with the custom name
         Block block = world.getBlockAt(OneBlockAPI.getSettings().getIslandSpawn().toLocation(world));
-        ItemStack itemStack = ItemBuilder.from(Material.CHEST).displayName(name).build();
-        block.getState().setType(itemStack.getType());
-        block.getState().setData(itemStack.getData());
-        block.getState().update();
+        new BaseBlockType(new ItemStack(Material.CHEST), 1).spawn(world);
 
         Chest chest = ((Chest) block.getState());
 
@@ -61,10 +57,9 @@ public class BaseLootTable implements LootTable {
             entries = Lists.newArrayList();
         }
 
-        public BaseLootTableBuilder addItem(LootTableItem item) {
+        public void addItem(LootTableItem item) {
             entries.add(item);
             totalWeigh += item.getWeigh();
-            return this;
         }
 
         public BaseLootTableBuilder name(String name) {

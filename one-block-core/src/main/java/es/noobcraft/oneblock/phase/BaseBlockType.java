@@ -16,10 +16,11 @@ public class BaseBlockType implements BlockType {
     @Getter private final double probability;
 
     @Override
+    @SuppressWarnings("deprecation")
     public void spawn(World world) {
-        Block block = OneBlockAPI.getSettings().getIslandSpawn().toLocation(world).getBlock();
-        block.getState().setType(type.getType());
-        block.getState().setData(type.getData());
+        Block block = world.getBlockAt(OneBlockAPI.getSettings().getIslandSpawn().toLocation(world));
+        block.setType(type.getType());
+        block.setData(((byte) type.getDurability()));
         block.getState().update();
     }
 }
