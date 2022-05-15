@@ -8,7 +8,7 @@ import org.bukkit.entity.Damageable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
 
@@ -36,11 +36,10 @@ public class PhaseListeners implements Listener {
                 event.getPlayer().teleport(location);
             }
 
-
-
             //If item is a tool damage it
-            ItemMeta itemMeta = event.getPlayer().getInventory().getItemInHand().getItemMeta();
-            if (itemMeta instanceof Damageable) ((Damageable) itemMeta).damage(1);
+            ItemStack item = event.getPlayer().getInventory().getItemInHand();
+            if (item.getItemMeta() instanceof Damageable)
+                item.setDurability(((short) (item.getDurability() + 1)));
 
             InfiniteBlockBreakEvent infiniteBlockEvent = new InfiniteBlockBreakEvent(
                     OneBlockAPI.getPlayerCache().getPlayer(event.getPlayer().getName()),
