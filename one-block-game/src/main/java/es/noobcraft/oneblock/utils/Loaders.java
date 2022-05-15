@@ -36,7 +36,11 @@ public final class Loaders {
         }
 
         //Load the world and world
-        OneBlockAPI.getWorldLoader().loadWorld(profile.getWorldName(), false);
+        if (!OneBlockAPI.getWorldLoader().loadWorld(profile.getWorldName(), false)) {
+            Logger.player(player.getNoobPlayer(), "one-block.messages.world-in-use");
+            return;
+        }
+
         player.setCurrentProfile(profile);
         OneBlockAPI.getPhaseLoader().getPhaseBlocks(profile.getWorldName());
         OneBlockAPI.getScoreboardManager().createScoreboard(player, new IslandScoreBoard(profile));
