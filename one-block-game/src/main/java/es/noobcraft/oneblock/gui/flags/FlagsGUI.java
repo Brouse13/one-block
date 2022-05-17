@@ -36,10 +36,12 @@ public class FlagsGUI {
         for (int i = 0; i < inventory.getRows() * inventory.getColumns(); i++)
             inventory.set(i, ItemBuilder.from(Material.STAINED_GLASS_PANE).damage(8).build());
 
+        int i = 0;
         for (IslandFlag flag : IslandFlag.values()) {
             String translatedFlag = translator.getLegacyText(player.getNoobPlayer(), "one-block.island.flags."+ flag.name().toLowerCase());
 
-            inventory.add(Items.getFlags(player, flag, translatedFlag), event -> new FlagStatusGUI(profile.getProfileName(), flag, player).openInventory());
+            inventory.set(i, Items.getFlags(player, flag, translatedFlag), event -> new FlagStatusGUI(profile.getWorldName(), flag, player).openInventory());
+            i++;
         }
 
         inventory.set(17, Items.getCloseInventory(player), event -> Bukkit.getPlayer(player.getName()).closeInventory());

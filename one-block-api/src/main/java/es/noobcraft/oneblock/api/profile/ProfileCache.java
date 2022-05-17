@@ -1,7 +1,6 @@
 package es.noobcraft.oneblock.api.profile;
 
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
-import org.bukkit.World;
 
 import java.util.Set;
 
@@ -16,10 +15,10 @@ public interface ProfileCache {
 
     /**
      * Get all the profile loaded on cache in a given world
-     * @param world world to search
+     * @param world world name
      * @return the found profile
      */
-    Set<OneBlockProfile> getProfiles(World world);
+    Set<OneBlockProfile> getProfiles(String world);
 
     /**
      * Add a new profile to the cache profiles

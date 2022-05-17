@@ -20,7 +20,7 @@ public class PhaseUpgradeEvent extends Event {
 
     public PhaseUpgradeEvent(String world, String to) {
         this.world = Bukkit.getWorld(world);
-        this.profiles = OneBlockAPI.getProfileCache().getProfiles(this.world);
+        this.profiles = OneBlockAPI.getProfileCache().getProfiles(this.world.getName());
         this.to = OneBlockAPI.getPhaseLoader().getPhases().stream()
                 .filter(phase -> phase.getIdentifier().equals(to)).findFirst()
                 .orElse(OneBlockAPI.getPhaseLoader().getPhaseBlocks(world).getPhase());

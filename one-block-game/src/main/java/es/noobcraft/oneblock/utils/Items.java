@@ -34,14 +34,14 @@ public final class Items {
                 .lore(translator.getLegacyTextList(player.getNoobPlayer(), "one-block.inventory.profiles.remove-profile.lore")).build();
     }
 
-    public static ItemStack getFlagStatusOwner(OneBlockPlayer player, String translatedFlag) {
-        return ItemBuilder.from(Material.STAINED_GLASS_PANE).damage(5)
+    public static ItemStack getFlagStatusInvites(OneBlockPlayer player, String translatedFlag) {
+        return ItemBuilder.from(Material.STAINED_GLASS_PANE).damage(4)
                 .displayName(translator.getLegacyText(player.getNoobPlayer(), "one-block.inventory.flag-status.owner.name"))
                 .lore(translator.getLegacyTextList(player.getNoobPlayer(), "one-block.inventory.flag-status.owner.lore", translatedFlag)).build();
     }
 
-    public static ItemStack getFlagStatusCoop(OneBlockPlayer player, String translatedFlag) {
-        return ItemBuilder.from(Material.STAINED_GLASS_PANE).damage(4)
+    public static ItemStack getFlagStatusMembers(OneBlockPlayer player, String translatedFlag) {
+        return ItemBuilder.from(Material.STAINED_GLASS_PANE).damage(5)
                 .displayName(translator.getLegacyText(player.getNoobPlayer(), "one-block.inventory.flag-status.coop.name"))
                 .lore(translator.getLegacyTextList(player.getNoobPlayer(), "one-block.inventory.flag-status.coop.lore", translatedFlag)).build();
     }

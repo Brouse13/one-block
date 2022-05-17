@@ -5,7 +5,6 @@ import es.noobcraft.core.api.SpigotCore;
 import es.noobcraft.core.api.event.AsyncNoobPlayerPreLoginEvent;
 import es.noobcraft.core.api.event.NoobPlayerJoinEvent;
 import es.noobcraft.core.api.event.NoobPlayerQuitEvent;
-import es.noobcraft.core.api.lang.Translator;
 import es.noobcraft.oneblock.api.OneBlockAPI;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.api.profile.OneBlockProfile;
@@ -25,7 +24,6 @@ import org.bukkit.util.Vector;
 import java.util.Optional;
 
 public class PlayerListeners implements Listener {
-    private final Translator translator = Core.getTranslator();
 
     @EventHandler(ignoreCancelled = true)
     public void onAsyncNoobPlayerPreLogin(AsyncNoobPlayerPreLoginEvent event) {
@@ -87,7 +85,8 @@ public class PlayerListeners implements Listener {
         player.getProfiles().forEach(profile -> {
             OneBlockAPI.getProfileLoader().updateProfile(profile);
             OneBlockAPI.getProfileCache().removeProfile(profile);
-            OneBlockAPI.getWorldLoader().unloadWorld(profile.getWorldName());
+            if (OneBlockAPI.getWorldLoader().unloadWorld(profile.getWorldName()))
+                OneBlockAPI.getPermissionManager().removeCache(profile.getWorldName());
         });
         OneBlockAPI.getScoreboardManager().removeScoreBoard(player);
         OneBlockAPI.getPlayerCache().removePlayer(player);

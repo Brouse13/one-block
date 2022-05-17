@@ -17,24 +17,28 @@ public class SetPermissionManager implements PermissionManager {
     private final Map<String, Integer> permissions = Maps.newHashMap();
 
     private static final String GET_PERMISSION = "SELECT permissions FROM one_block_worlds WHERE name=?";
-    private static final String UPDATE_PERMISSIONS = "UPDATE one_block_worlds SET permissions=? WHERE world=?";
+    private static final String UPDATE_PERMISSIONS = "UPDATE one_block_worlds SET permissions=? WHERE name=?";
 
     @Override
     public int getPermission(String worldName) {
-        if (permissions.containsKey(worldName)) return permissions.get(worldName);
+        if (permissions.containsKey(worldName)) {
+            return permissions.get(worldName);
+        }
 
         try(Connection connection = Core.getSQLClient().getConnection()) {
             try(PreparedStatement statement = connection.prepareStatement(GET_PERMISSION)) {
                 statement.setString(1, worldName);
                 try(ResultSet resultSet = statement.executeQuery()) {
-                    if (resultSet.next())
-                        return addCache(worldName, resultSet.getInt("permissions"));
+                    if (resultSet.next()) {
+                        int permissions = resultSet.getInt("permissions");
+                        return addCache(worldName, permissions);
+                    }
                 }
             }
         }catch (SQLException exception) {
             throw new NotFoundException("Not found perms for world: "+ worldName, exception);
         }
-        return 0;
+        return addCache(worldName, 0);
     }
 
     @Override
@@ -67,6 +71,10 @@ public class SetPermissionManager implements PermissionManager {
 
     @Override
     public void updatePermission(String worldName, int permission) {
+        //Update cache
+        permissions.put(worldName, permission);
+
+        //Update mysql
         try(Connection connection = Core.getSQLClient().getConnection()) {
             try(PreparedStatement statement = connection.prepareStatement(UPDATE_PERMISSIONS)) {
                 statement.setInt(1, permission);

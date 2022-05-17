@@ -47,8 +47,8 @@ public class FlagStatusGUI {
         for (int i = 0; i < inventory.getRows() * inventory.getColumns(); i++)
             inventory.set(i, ItemBuilder.from(Material.STAINED_GLASS_PANE).damage(8).build());
         
-        inventory.set(2, Items.getFlagStatusOwner(player, translatedFlag), getItemEvent(false));
-        inventory.set(4, Items.getFlagStatusCoop(player, translatedFlag), getItemEvent(true));
+        inventory.set(2, Items.getFlagStatusMembers(player, translatedFlag), getItemEvent(true));
+        inventory.set(5, Items.getFlagStatusInvites(player, translatedFlag), getItemEvent(false));
         inventory.set(8, Items.getCloseInventory(player), event -> event.getWhoClicked().closeInventory());
     }
 

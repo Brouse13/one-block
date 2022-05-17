@@ -4,7 +4,6 @@ import com.google.common.collect.Sets;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.api.profile.OneBlockProfile;
 import es.noobcraft.oneblock.api.profile.ProfileCache;
-import org.bukkit.World;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -21,9 +20,9 @@ public class SetProfileCache implements ProfileCache {
     }
 
     @Override
-    public Set<OneBlockProfile> getProfiles(World world) {
+    public Set<OneBlockProfile> getProfiles(String world) {
         return profiles.stream()
-                .filter(profile -> profile.getWorldName().equals(world.getName()))
+                .filter(profile -> profile.getWorldName().equals(world))
                 .collect(Collectors.toSet());
     }
 

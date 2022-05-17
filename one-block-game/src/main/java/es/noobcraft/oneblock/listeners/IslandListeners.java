@@ -1,7 +1,5 @@
 package es.noobcraft.oneblock.listeners;
 
-import es.noobcraft.core.api.Core;
-import es.noobcraft.core.api.player.NoobPlayer;
 import es.noobcraft.oneblock.api.OneBlockAPI;
 import es.noobcraft.oneblock.api.logger.Logger;
 import es.noobcraft.oneblock.api.permission.FlagEncoder;
@@ -109,28 +107,29 @@ public class IslandListeners implements Listener {
      * @return if the player can perform the action
      */
     private static boolean calculatePerm(OneBlockPlayer player, World world, IslandFlag islandFlag, boolean announce) {
-        NoobPlayer noobPlayer = Core.getPlayerCache().getPlayer(player.getName());
-
         //Cancel any action in the lobby
         if (world.getName().equals(OneBlockAPI.getSettings().getLobbySpawn().getWorld().getName())) {
-            Logger.player(noobPlayer, "one-block.island.no-perms."+ islandFlag.name().toLowerCase());
+            Logger.player(player.getNoobPlayer(), "one-block.island.no-perms.lobby");
             return true;
         }
 
         //Get island permission on a BitSet
         BitSet permission = FlagEncoder.decode(OneBlockAPI.getPermissionManager().getPermission(world.getName()));
+        boolean visitor = player.getCurrentProfile() == null;
 
-        //If player is on a profile
-        if (player.getCurrentProfile() != null) {
-            //If the player is not the owner, and it hasn't permissions
-            if (!player.getCurrentProfile().getIslandOwner().equals(player.getName()) && permission.get(islandFlag.getIndex())) {
-                if (announce) Logger.player(noobPlayer, "one-block.island.no-perms."+ islandFlag.name().toLowerCase());
+        /*-------------------*
+         | TYPE     | 1  | 0 |
+         | MEMBERS  | Y  | Y |
+         | VISITORS | N  | Y |
+         *-------------------*/
+        //If BitSet == true only members can perform, otherwise, all players can
+        if (visitor && permission.get(islandFlag.getIndex())) {
+            if (announce) {
+                Logger.player(player.getNoobPlayer(), "one-block.island.no-perms."+ islandFlag.name().toLowerCase());
                 return true;
             }
-            return false;
         }
-        if (announce) Logger.player(noobPlayer, "one-block.island.no-perms."+ islandFlag.name().toLowerCase());
-        return true;
+        return false;
     }
 
 }
