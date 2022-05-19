@@ -5,6 +5,8 @@ import es.noobcraft.oneblock.api.loaders.PhaseLoader;
 import es.noobcraft.oneblock.api.loaders.ProfileLoader;
 import es.noobcraft.oneblock.api.loaders.SettingsLoader;
 import es.noobcraft.oneblock.api.loaders.WorldLoader;
+import es.noobcraft.oneblock.api.module.ModuleLoader;
+import es.noobcraft.oneblock.api.module.ModuleManager;
 import es.noobcraft.oneblock.api.permission.PermissionManager;
 import es.noobcraft.oneblock.api.player.PlayerCache;
 import es.noobcraft.oneblock.api.player.PlayerSupplier;
@@ -70,6 +72,14 @@ public class OneBlockAPI {
 
     public static ServerCache getServerCache() {
         return oneblock.getServerCache();
+    }
+
+    public static ModuleLoader getModuleLoader() {
+        return oneblock.getModuleLoader();
+    }
+
+    public static ModuleManager getModuleManager() {
+        return oneblock.getModuleManager();
     }
 
     public static Gson getGson() {

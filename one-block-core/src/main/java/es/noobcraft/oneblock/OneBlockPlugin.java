@@ -3,16 +3,14 @@ package es.noobcraft.oneblock;
 import es.noobcraft.core.api.Core;
 import es.noobcraft.core.api.SpigotCore;
 import es.noobcraft.core.api.command.PlayerCommand;
-import es.noobcraft.core.api.register.ConnectMode;
 import es.noobcraft.core.api.register.ConstantSupplier;
 import es.noobcraft.core.api.register.PropertyConstants;
 import es.noobcraft.oneblock.api.OneBlockAPI;
 import es.noobcraft.oneblock.api.logger.Logger;
 import es.noobcraft.oneblock.api.logger.LoggerType;
 import es.noobcraft.oneblock.loaders.JSONPhaseLoader;
+import es.noobcraft.oneblock.module.BaseModuleLoader;
 import es.noobcraft.oneblock.server.RedisServerSubscriber;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -29,6 +27,7 @@ public abstract class OneBlockPlugin extends JavaPlugin {
         registerListeners().forEach(listener -> this.getServer().getPluginManager().registerEvents(listener, this));
         loadCommand().forEach(command -> SpigotCore.getCommandManager().add(command));
         registerServer();
+        new BaseModuleLoader().getModule(new BaseModuleLoader().getFile("test")).load();
     }
 
     @Override

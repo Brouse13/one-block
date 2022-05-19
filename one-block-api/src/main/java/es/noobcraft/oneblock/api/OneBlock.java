@@ -5,6 +5,8 @@ import es.noobcraft.oneblock.api.loaders.PhaseLoader;
 import es.noobcraft.oneblock.api.loaders.ProfileLoader;
 import es.noobcraft.oneblock.api.loaders.SettingsLoader;
 import es.noobcraft.oneblock.api.loaders.WorldLoader;
+import es.noobcraft.oneblock.api.module.ModuleLoader;
+import es.noobcraft.oneblock.api.module.ModuleManager;
 import es.noobcraft.oneblock.api.permission.PermissionManager;
 import es.noobcraft.oneblock.api.player.PlayerCache;
 import es.noobcraft.oneblock.api.player.PlayerSupplier;
@@ -97,6 +99,20 @@ public interface OneBlock {
      * @return OneBlock ServerLoader
      */
     ServerLoader getServerLoader();
+
+    /**
+     * Get the loader of the Modules on /modules
+     * dir
+     * @return OneBlock moduleLoader
+     */
+    ModuleLoader getModuleLoader();
+
+    /**
+     * Get the manager of the modules. It will load
+     * unload... the modules from the plugin
+     * @return OneBlock moduleManager
+     */
+    ModuleManager getModuleManager();
 
     /**
      * Get the default gson with all the TypeAdapters

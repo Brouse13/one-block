@@ -8,6 +8,8 @@ import es.noobcraft.oneblock.api.loaders.PhaseLoader;
 import es.noobcraft.oneblock.api.loaders.ProfileLoader;
 import es.noobcraft.oneblock.api.loaders.SettingsLoader;
 import es.noobcraft.oneblock.api.loaders.WorldLoader;
+import es.noobcraft.oneblock.api.module.ModuleLoader;
+import es.noobcraft.oneblock.api.module.ModuleManager;
 import es.noobcraft.oneblock.api.permission.PermissionManager;
 import es.noobcraft.oneblock.api.player.PlayerCache;
 import es.noobcraft.oneblock.api.player.PlayerSupplier;
@@ -20,6 +22,8 @@ import es.noobcraft.oneblock.api.settings.OneBlockSettings;
 import es.noobcraft.oneblock.loaders.JSONPhaseLoader;
 import es.noobcraft.oneblock.loaders.SQLProfileLoader;
 import es.noobcraft.oneblock.loaders.SlimeWorldLoader;
+import es.noobcraft.oneblock.module.BaseModuleLoader;
+import es.noobcraft.oneblock.module.MapModuleManager;
 import es.noobcraft.oneblock.permission.SetPermissionManager;
 import es.noobcraft.oneblock.phase.*;
 import es.noobcraft.oneblock.player.BasePlayerSupplier;
@@ -33,17 +37,34 @@ import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.Location;
 
 public class API implements OneBlock {
-    @Getter private final PhaseLoader phaseLoader = new JSONPhaseLoader();
+    //Player methods
     @Getter private final PlayerCache playerCache = new SetPlayerCache();
-    @Getter private final ProfileCache profileCache = new SetProfileCache();
-    @Getter private final ProfileLoader profileLoader = new SQLProfileLoader();
-    @Getter private final PermissionManager permissionManager = new SetPermissionManager();
-    @Getter private final WorldLoader worldLoader = new SlimeWorldLoader();
-    @Getter private final ScoreboardManager scoreboardManager = new BaseScoreboardManager();
     @Getter private final PlayerSupplier playerSupplier = new BasePlayerSupplier();
+
+    //Loaders
+    @Getter private final WorldLoader worldLoader = new SlimeWorldLoader();
+    @Getter private final PhaseLoader phaseLoader = new JSONPhaseLoader();
+    @Getter private final ProfileLoader profileLoader = new SQLProfileLoader();
+
+    //Profile methods
+    @Getter private final ProfileCache profileCache = new SetProfileCache();
+
+    //Permissions methods
+    @Getter private final PermissionManager permissionManager = new SetPermissionManager();
+
+    //Scoreboard methods
+    @Getter private final ScoreboardManager scoreboardManager = new BaseScoreboardManager();
+
+    //Server registry methods
     @Getter private final ServerCache serverCache = new MapServerCache();
     @Getter private final ServerLoader serverLoader= new RedisServerLoader();
+
+    //Settings methods
     @Getter private final OneBlockSettings settings = new OneBlockConstants();
+
+    //Module registry/loading methods
+    @Getter private final ModuleLoader moduleLoader = new BaseModuleLoader();
+    @Getter private final ModuleManager moduleManager = new MapModuleManager();
 
     @Override
     public SettingsLoader getSettingsLoader() {
