@@ -67,5 +67,6 @@ public class CoopInviteCommand implements PlayerCommand {
         InviteManager.addPlayer(target.getName(), new BaseOneBlockProfile(target, currentProfile.getIslandOwner(),
                 currentProfile.getWorldName(), currentProfile.getProfileName()));
         Logger.player(noobPlayer, "one-block.messages.invite.invited");
+        Logger.player(target.getNoobPlayer(), "one-block.messages.invite.target-invited", noobPlayer.getName());
     }
 }

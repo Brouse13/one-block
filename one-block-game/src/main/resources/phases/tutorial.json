@@ -6,8 +6,7 @@
     {"type": "GRASS"},
     {"type": "CLAY"},
     {"type": "LOG:0"},
-    {"type": "LOG:2"},
-    {"type": "DIRT:2"},
+    {"type": "DIRT"},
     {"type": "MELON_BLOCK"},
     {"type": "PUMPKIN"}
   ],

@@ -7,7 +7,7 @@
     {"type": "CLAY"},
     {"type": "LOG"},
     {"type": "LOG:2"},
-    {"type": "DIRT:2"},
+    {"type": "DIRT"},
     {"type": "MELON_BLOCK"},
     {"type": "PUMPKIN"}
   ],

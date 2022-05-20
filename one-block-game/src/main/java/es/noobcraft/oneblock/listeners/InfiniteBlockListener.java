@@ -20,6 +20,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
 
 import java.util.Collection;
@@ -31,6 +32,12 @@ public class InfiniteBlockListener implements Listener {
     private final Set<SpecialActions.Actions> locked = Sets.newHashSet(SpecialActions.Actions.BLOCK, SpecialActions.Actions.LOOT_TABLE, SpecialActions.Actions.UPGRADE);
     private final Function<List<?>, Integer> random = list -> ((int) (Math.random() * list.size()));
 
+    private final JavaPlugin plugin;
+
+    public InfiniteBlockListener(JavaPlugin plugin) {
+        this.plugin = plugin;
+    }
+
     @EventHandler(ignoreCancelled = true)
     public void onInfiniteBlockBreak(InfiniteBlockBreakEvent event) {
         Block block = event.getBlock();
@@ -40,9 +47,8 @@ public class InfiniteBlockListener implements Listener {
 
         //Spawn the block drops
         final Collection<ItemStack> drops = block.getDrops(event.getPlayer().getBukkitPlayer().getItemInHand());
-        drops.forEach(itemStack -> block.getWorld().dropItemNaturally(
-                        OneBlockAPI.getSettings().getIslandSpawn().clone().add(new Vector(0.5, 1, 0.5)).toLocation(world), itemStack)
-                .setVelocity(new Vector(0, 0, 0)));
+
+        new BaseBlockType(new ItemStack(Material.BARRIER), 1).spawn(world);
 
         //Get all the SpecialActions that will be done on that block
         if (phaseblocks.getPhase().getSpecialActions().containsKey(phaseblocks.getBlocks())) {
@@ -92,10 +98,15 @@ public class InfiniteBlockListener implements Listener {
                 }else {
                     phase.getItems().get(random.apply(phase.getItems())).spawn(world);
                 }
+                phase.getItems().get(random.apply(phase.getItems())).spawn(world);
             }else {//Generate a random block
                 phase.getItems().get(random.apply(phase.getItems())).spawn(world);
             }
         }
+
+        drops.forEach(itemStack -> block.getWorld().dropItemNaturally(
+                        OneBlockAPI.getSettings().getIslandSpawn().clone().add(new Vector(0.5, 1, 0.5)).toLocation(world), itemStack)
+                .setVelocity(new Vector(0, 0, 0)));
 
         //Add one block to the phase and set the block to grass
         phaseblocks.addBlock(1);
@@ -108,10 +119,8 @@ public class InfiniteBlockListener implements Listener {
         if(!event.getBlock().getLocation().toVector().equals(OneBlockAPI.getSettings().getIslandSpawn())) return;
         if (!(event.getEntity() instanceof FallingBlock) || event.getTo() != Material.AIR) return;
 
-        //Generate a new block
         event.setCancelled(true);
 
-        Phase phase = OneBlockAPI.getPhaseLoader().getPhaseBlocks(event.getBlock().getWorld().getName()).getPhase();
-        phase.getItems().get(random.apply(phase.getItems())).spawn(event.getBlock().getWorld());
+        Bukkit.getScheduler().runTaskLater(plugin, () -> event.getBlock().getState().update(true, true), 2L);
     }
 }

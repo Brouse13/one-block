@@ -9,8 +9,8 @@ import es.noobcraft.oneblock.api.logger.LoggerType;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.commands.*;
 import es.noobcraft.oneblock.listeners.*;
-import es.noobcraft.oneblock.utils.Loaders;
 import es.noobcraft.oneblock.loaders.SQLSlimeLoader;
+import es.noobcraft.oneblock.utils.Loaders;
 import lombok.NonNull;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
@@ -63,7 +63,7 @@ public class OneBlock extends OneBlockPlugin {
     @Override
     public Set<Listener> registerListeners() {
         return Sets.newHashSet(Arrays.asList(new PlayerListeners(), new IslandListeners(), new ItemListeners(), new PhaseListeners(this),
-                new InfiniteBlockListener(), new PhaseUpgradeListeners(this)));
+                new InfiniteBlockListener(this), new PhaseUpgradeListeners(this)));
     }
 
     @SuppressWarnings("all")

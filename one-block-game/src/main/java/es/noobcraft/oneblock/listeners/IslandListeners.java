@@ -14,8 +14,10 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
+import org.bukkit.inventory.InventoryHolder;
 
 import java.util.BitSet;
 
@@ -74,7 +76,7 @@ public class IslandListeners implements Listener {
      * Listener to check when a player damages another entity that's not a player
      * @param event Spigot event
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public static void entityDamage(EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Player)) return;
         if (event.getEntity() instanceof Player) return;
@@ -87,7 +89,7 @@ public class IslandListeners implements Listener {
      * Listener to check when a player hits another player
      * @param event Spigot event
      */
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public static void playerPVP(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player) return;
         if (event.getEntity() instanceof Player) return;
@@ -95,6 +97,19 @@ public class IslandListeners implements Listener {
 
         OneBlockPlayer player = OneBlockAPI.getPlayerCache().getPlayer(event.getDamager().getName());
         event.setCancelled(calculatePerm(player, event.getEntity().getWorld(), IslandFlag.PVP, true));
+    }
+
+    /**
+     * Listener to check if player interacted with a container
+     * @param event Spigot event
+     */
+    @EventHandler(ignoreCancelled = true)
+    public void chestInteract(PlayerInteractEvent event) {
+        if (event.getClickedBlock() == null) return;
+        if (!(event.getClickedBlock().getState() instanceof InventoryHolder)) return;
+
+        OneBlockPlayer player = OneBlockAPI.getPlayerCache().getPlayer(event.getPlayer().getName());
+        event.setCancelled(calculatePerm(player, event.getPlayer().getWorld(), IslandFlag.INVENTORIES, true));
     }
 
     /**

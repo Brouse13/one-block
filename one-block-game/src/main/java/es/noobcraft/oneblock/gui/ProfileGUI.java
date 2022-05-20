@@ -53,7 +53,7 @@ public class ProfileGUI {
 
         inventory.set(8, Items.getRemoveProfile(player), event -> new RemoveProfileGUI(player).openInventory());
 
-        inventory.set(35, Items.getCloseInventory(player), event -> event.getWhoClicked().getOpenInventory().close());
+        inventory.set(26, Items.getCloseInventory(player), event -> event.getWhoClicked().getOpenInventory().close());
     }
 
     public void openInventory() {

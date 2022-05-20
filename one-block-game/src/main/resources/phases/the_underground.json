@@ -12,9 +12,7 @@
     {"type": "PUMPKIN"},
     {"type": "GRAVEL"},
     {"type": "DIRT"},
-    {"type": "STONE:1"},
-    {"type": "STONE:3"},
-    {"type": "STONE:5"},
+    {"type": "STONE"},
     {"type": "COAL_ORE"}
   ],
   "mobs": [

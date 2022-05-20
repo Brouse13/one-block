@@ -10,7 +10,8 @@ public enum IslandFlag {
     BREAK(Material.DIAMOND_PICKAXE, 3),
     BREAD(Material.WHEAT, 4),
     DAMAGE(Material.ARROW, 5),
-    LAND_ITEMS(Material.CARPET, 6);
+    LAND_ITEMS(Material.CARPET, 6),
+    INVENTORIES(Material.CHEST, 7);
 
     @Getter private final Material material;
     @Getter private final int index;
