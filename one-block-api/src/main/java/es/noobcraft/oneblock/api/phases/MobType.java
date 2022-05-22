@@ -64,8 +64,8 @@ public interface MobType extends Probability {
         WOLF(Wolf.class),
         ZOMBIE(Zombie.class);
 
-        @Getter private final Class<?> aClass;
-        @Getter private final BiConsumer<?, OneBlockPlayer> consumer;
+        @Getter private final Class aClass;
+        @Getter private final BiConsumer consumer;
 
         <T> Type(Class<T> aClass, BiConsumer<T, OneBlockPlayer> consumer) {
             this.aClass = aClass;
