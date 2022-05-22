@@ -62,7 +62,7 @@ public class PlayerListeners implements Listener {
         }
 
         //Create the player scoreboard and teleport it to spawn
-        OneBlockAPI.getScoreboardManager().createScoreboard(player, new LobbyScoreBoard(player));
+        player.setScoreBoard(new LobbyScoreBoard(player));
         event.getNoobPlayer().teleport(OneBlockAPI.getSettings().getLobbySpawn());
 
         //Add the profiles item
@@ -88,7 +88,7 @@ public class PlayerListeners implements Listener {
             if (OneBlockAPI.getWorldLoader().unloadWorld(profile.getWorldName()))
                 OneBlockAPI.getPermissionManager().removeCache(profile.getWorldName());
         });
-        OneBlockAPI.getScoreboardManager().removeScoreBoard(player);
+        player.setScoreBoard(null);
         OneBlockAPI.getPlayerCache().removePlayer(player);
     }
 

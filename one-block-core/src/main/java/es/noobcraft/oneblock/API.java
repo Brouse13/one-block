@@ -14,7 +14,6 @@ import es.noobcraft.oneblock.api.permission.PermissionManager;
 import es.noobcraft.oneblock.api.player.PlayerCache;
 import es.noobcraft.oneblock.api.player.PlayerSupplier;
 import es.noobcraft.oneblock.api.profile.ProfileCache;
-import es.noobcraft.oneblock.api.scoreboard.ScoreboardManager;
 import es.noobcraft.oneblock.api.server.ServerCache;
 import es.noobcraft.oneblock.api.server.ServerLoader;
 import es.noobcraft.oneblock.api.settings.OneBlockConstants;
@@ -29,7 +28,6 @@ import es.noobcraft.oneblock.phase.*;
 import es.noobcraft.oneblock.player.BasePlayerSupplier;
 import es.noobcraft.oneblock.player.SetPlayerCache;
 import es.noobcraft.oneblock.profile.SetProfileCache;
-import es.noobcraft.oneblock.scoreboard.BaseScoreboardManager;
 import es.noobcraft.oneblock.server.MapServerCache;
 import es.noobcraft.oneblock.server.RedisServerLoader;
 import lombok.Getter;
@@ -51,9 +49,6 @@ public class API implements OneBlock {
 
     //Permissions methods
     @Getter private final PermissionManager permissionManager = new SetPermissionManager();
-
-    //Scoreboard methods
-    @Getter private final ScoreboardManager scoreboardManager = new BaseScoreboardManager();
 
     //Server registry methods
     @Getter private final ServerCache serverCache = new MapServerCache();

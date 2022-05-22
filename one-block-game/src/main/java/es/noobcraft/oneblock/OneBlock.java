@@ -10,6 +10,7 @@ import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.commands.*;
 import es.noobcraft.oneblock.listeners.*;
 import es.noobcraft.oneblock.loaders.SQLSlimeLoader;
+import es.noobcraft.oneblock.scoreboard.BaseScoreboardManager;
 import es.noobcraft.oneblock.utils.Loaders;
 import lombok.NonNull;
 import org.bukkit.Bukkit;
@@ -28,8 +29,7 @@ public class OneBlock extends OneBlockPlugin {
                 .registerLoader("one-block", new SQLSlimeLoader());
 
         //Start the scoreboard updater
-        this.getServer().getScheduler().scheduleSyncRepeatingTask(this,
-                () -> OneBlockAPI.getScoreboardManager().update(),0L, 20L);
+        this.getServer().getScheduler().scheduleSyncRepeatingTask(this, BaseScoreboardManager::update,0L, 20L);
 
         //Sync all the worlds from redis
         OneBlockAPI.getServerCache().syncWorlds();
@@ -47,7 +47,7 @@ public class OneBlock extends OneBlockPlugin {
             Logger.log(LoggerType.CONSOLE, "Forcing to unload player "+ oneBlockPlayer.getName());
             Loaders.unloadPlayer(oneBlockPlayer, oneBlockPlayer.getCurrentProfile());
         }
-        OneBlockAPI.getScoreboardManager().clearScoreBoards();
+        BaseScoreboardManager.clearScoreBoards();
         //Remove all temp_ files from the dir
         Arrays.stream(Bukkit.getWorldContainer().listFiles((dir, name) -> name.startsWith("temp_")))
                 .forEach(this::deleteFile);

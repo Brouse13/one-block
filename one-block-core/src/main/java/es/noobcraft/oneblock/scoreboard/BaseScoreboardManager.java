@@ -5,36 +5,26 @@ import es.noobcraft.oneblock.api.logger.Logger;
 import es.noobcraft.oneblock.api.logger.LoggerType;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.api.scoreboard.OneBlockScoreBoard;
-import es.noobcraft.oneblock.api.scoreboard.ScoreboardManager;
 
 import java.util.Map;
 
-public class BaseScoreboardManager implements ScoreboardManager {
-    Map<OneBlockPlayer, OneBlockScoreBoard> scoreboards = Maps.newHashMap();
+public class BaseScoreboardManager {
+    private static final Map<OneBlockPlayer, OneBlockScoreBoard> scoreboards = Maps.newHashMap();
 
-    @Override
-    public OneBlockScoreBoard getScoreBoard(OneBlockPlayer player) {
-        return scoreboards.get(player);
+    public static void addScoreboard(OneBlockPlayer player, OneBlockScoreBoard scoreBoard) {
+        scoreboards.put(player, scoreBoard);
     }
 
-    @Override
-    public OneBlockScoreBoard createScoreboard(OneBlockPlayer player, OneBlockScoreBoard scoreBoard) {
-        return scoreboards.put(player, scoreBoard);
+    public static void removeScoreBoard(OneBlockPlayer player) {
+        scoreboards.remove(player);
     }
 
-    @Override
-    public boolean removeScoreBoard(OneBlockPlayer player) {
-        return scoreboards.remove(player) == null;
-    }
-
-    @Override
-    public void clearScoreBoards() {
+    public static void clearScoreBoards() {
         scoreboards.clear();
         Logger.log(LoggerType.CONSOLE, "Scoreboards cleared");
     }
 
-    @Override
-    public void update() {
+    public static void update() {
         scoreboards.values().forEach(OneBlockScoreBoard::update);
     }
 }

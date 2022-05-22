@@ -11,7 +11,6 @@ import es.noobcraft.oneblock.api.permission.PermissionManager;
 import es.noobcraft.oneblock.api.player.PlayerCache;
 import es.noobcraft.oneblock.api.player.PlayerSupplier;
 import es.noobcraft.oneblock.api.profile.ProfileCache;
-import es.noobcraft.oneblock.api.scoreboard.ScoreboardManager;
 import es.noobcraft.oneblock.api.server.ServerCache;
 import es.noobcraft.oneblock.api.server.ServerLoader;
 import es.noobcraft.oneblock.api.settings.OneBlockSettings;
@@ -65,13 +64,6 @@ public interface OneBlock {
      * @return OneBlock WorldManager
      */
     WorldLoader getWorldLoader();
-
-    /**
-     * Get the ScoreboardManager that will manage the creation
-     * and deletion of player scoreboards
-     * @return OneBlock ScoreboardManager
-     */
-    ScoreboardManager getScoreboardManager();
 
     /**
      * Get the SettingsLoader instance that will

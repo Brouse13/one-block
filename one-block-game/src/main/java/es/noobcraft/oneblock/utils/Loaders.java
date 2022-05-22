@@ -43,7 +43,7 @@ public final class Loaders {
 
         player.setCurrentProfile(profile);
         OneBlockAPI.getPhaseLoader().getPhaseBlocks(profile.getWorldName());
-        OneBlockAPI.getScoreboardManager().createScoreboard(player, new IslandScoreBoard(profile));
+        player.setScoreBoard(new IslandScoreBoard(profile));
 
         //Load the inventory to the player
         ItemStack[] deserialize;

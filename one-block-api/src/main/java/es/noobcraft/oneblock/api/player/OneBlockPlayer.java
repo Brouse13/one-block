@@ -2,6 +2,7 @@ package es.noobcraft.oneblock.api.player;
 
 import es.noobcraft.core.api.player.NoobPlayer;
 import es.noobcraft.oneblock.api.profile.OneBlockProfile;
+import es.noobcraft.oneblock.api.scoreboard.OneBlockScoreBoard;
 import org.bukkit.entity.Player;
 
 public interface OneBlockPlayer extends OfflineOneBlockPlayer {
@@ -30,6 +31,20 @@ public interface OneBlockPlayer extends OfflineOneBlockPlayer {
      * @return the NoobPlayer instance
      */
     NoobPlayer getNoobPlayer();
+
+    /**
+     * Get the active player scoreboard, if it hasn't any,
+     * it will return null
+     * @return player active scoreboard
+     */
+    OneBlockScoreBoard getScoreBoard();
+
+    /**
+     * Set the player active scoreboard, if
+     * you want to remove it, set it null
+     * @param scoreBoard new scoreboard
+     */
+    void setScoreBoard(OneBlockScoreBoard scoreBoard);
 
     /**
      * Teleport the player to the specific island

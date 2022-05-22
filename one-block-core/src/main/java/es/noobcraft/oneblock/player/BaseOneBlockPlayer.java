@@ -8,6 +8,8 @@ import es.noobcraft.core.api.player.NoobPlayer;
 import es.noobcraft.oneblock.api.OneBlockAPI;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import es.noobcraft.oneblock.api.profile.OneBlockProfile;
+import es.noobcraft.oneblock.api.scoreboard.OneBlockScoreBoard;
+import es.noobcraft.oneblock.scoreboard.BaseScoreboardManager;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -21,9 +23,11 @@ import java.util.Set;
 
 
 public class BaseOneBlockPlayer implements OneBlockPlayer {
-    @Getter private String name;
-    @Getter private int maxProfiles;
+    @Getter private final String name;
+    @Getter private final int maxProfiles;
     @Getter @Setter private OneBlockProfile currentProfile;
+    @Getter private OneBlockScoreBoard scoreBoard;
+
     private final Set<OneBlockProfile> profiles = Sets.newHashSet();
 
     public BaseOneBlockPlayer(String name, int maxProfiles) {
@@ -55,6 +59,18 @@ public class BaseOneBlockPlayer implements OneBlockPlayer {
     @Override
     public NoobPlayer getNoobPlayer() {
         return Core.getPlayerCache().getPlayer(name);
+    }
+
+    @Override
+    public void setScoreBoard(OneBlockScoreBoard scoreBoard) {
+        if (scoreBoard == null) {
+            BaseScoreboardManager.removeScoreBoard(this);
+            this.scoreBoard = null;
+        }
+        else  {
+            BaseScoreboardManager.addScoreboard(this, scoreBoard);
+            this.scoreBoard = scoreBoard;
+        }
     }
 
     @Override

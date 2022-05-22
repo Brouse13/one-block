@@ -11,7 +11,6 @@ import es.noobcraft.oneblock.api.permission.PermissionManager;
 import es.noobcraft.oneblock.api.player.PlayerCache;
 import es.noobcraft.oneblock.api.player.PlayerSupplier;
 import es.noobcraft.oneblock.api.profile.ProfileCache;
-import es.noobcraft.oneblock.api.scoreboard.ScoreboardManager;
 import es.noobcraft.oneblock.api.server.ServerCache;
 import es.noobcraft.oneblock.api.server.ServerLoader;
 import es.noobcraft.oneblock.api.settings.OneBlockSettings;
@@ -52,10 +51,6 @@ public class OneBlockAPI {
 
     public static WorldLoader getWorldLoader() {
         return oneblock.getWorldLoader();
-    }
-
-    public static ScoreboardManager getScoreboardManager() {
-        return oneblock.getScoreboardManager();
     }
 
     public static SettingsLoader getSettingsLoader() {
