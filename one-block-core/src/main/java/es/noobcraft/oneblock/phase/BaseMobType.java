@@ -14,7 +14,7 @@ import org.bukkit.util.Vector;
 @AllArgsConstructor
 public class BaseMobType implements MobType {
     @Getter private final Type entity;
-    @Getter private final double probability;
+    @Getter private final int weigh;
 
     @Override
     public void summon(OneBlockPlayer player) {

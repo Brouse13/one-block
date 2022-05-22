@@ -90,17 +90,13 @@ public class InfiniteBlockListener implements Listener {
                 if (phase.getLootTables().size() != 0) {
                     phase.getLootTables().get(random.apply(phase.getLootTables())).summon(world);
                 }else {
-                    phase.getItems().get(random.apply(phase.getItems())).spawn(world);
+                    phase.getItems().getRandom().spawn(world);
                 }
             }else if (type < .15) {//Entities generation
-                if (phase.getEntities().size() != 0) {
-                    phase.getEntities().get(random.apply(phase.getEntities())).summon(event.getPlayer());
-                }else {
-                    phase.getItems().get(random.apply(phase.getItems())).spawn(world);
-                }
-                phase.getItems().get(random.apply(phase.getItems())).spawn(world);
+                phase.getEntities().getRandom().summon(event.getPlayer());
+                phase.getItems().getRandom().spawn(world);
             }else {//Generate a random block
-                phase.getItems().get(random.apply(phase.getItems())).spawn(world);
+                phase.getItems().getRandom().spawn(world);
             }
         }
 

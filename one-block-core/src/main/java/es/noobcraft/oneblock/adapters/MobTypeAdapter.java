@@ -12,18 +12,9 @@ import java.io.IOException;
 public class MobTypeAdapter extends TypeAdapter<MobType> {
 
     @Override
-    public void write(JsonWriter writer, MobType mobType) throws IOException {
-        writer.beginObject();
-        writer.name("entity").value(mobType.getEntity().name());
-        if (mobType.getProbability() != -1)
-            writer.name("probability").value(mobType.getProbability());
-        writer.endObject();
-    }
-
-    @Override
     public MobType read(JsonReader reader) throws IOException {
         BaseMobType.BaseMobTypeBuilder builder = BaseMobType.builder();
-        builder.probability(-1);
+        builder.weigh(1);
         reader.beginObject();
         String fieldName = null;
 
@@ -31,9 +22,18 @@ public class MobTypeAdapter extends TypeAdapter<MobType> {
             if (reader.peek().equals(JsonToken.NAME)) fieldName = reader.nextName();
 
             if ("entity".equals(fieldName)) builder.entity(MobType.Type.valueOf(reader.nextString()));
-            if ("probability".equals(fieldName)) builder.probability(reader.nextDouble());
+            if ("probability".equals(fieldName)) builder.weigh(reader.nextInt());
         }
         reader.endObject();
         return builder.build();
+    }
+
+    @Override
+    public void write(JsonWriter writer, MobType mobType) throws IOException {
+        writer.beginObject();
+        writer.name("entity").value(mobType.getEntity().name());
+        if (mobType.getWeigh() != 1)
+            writer.name("probability").value(mobType.getWeigh());
+        writer.endObject();
     }
 }

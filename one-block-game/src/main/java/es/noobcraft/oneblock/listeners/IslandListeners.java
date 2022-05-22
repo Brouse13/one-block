@@ -140,10 +140,9 @@ public class IslandListeners implements Listener {
          *-------------------*/
         //If BitSet == true only members can perform, otherwise, all players can
         if (visitor && permission.get(islandFlag.getIndex())) {
-            if (announce) {
+            if (announce)
                 Logger.player(player.getNoobPlayer(), "one-block.island.no-perms."+ islandFlag.name().toLowerCase());
-                return true;
-            }
+            return true;
         }
         return false;
     }

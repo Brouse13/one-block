@@ -1,16 +1,12 @@
 package es.noobcraft.oneblock.api.phases;
 
+import es.noobcraft.oneblock.api.utils.WeighList;
 import org.bukkit.World;
-import org.bukkit.inventory.ItemStack;
 
-import java.util.List;
 
-/**
- * LootTables interface V2
- */
 public interface LootTable {
     /**
-     * Get the name of the lootTable tat will apear
+     * Get the name of the lootTable that will appear
      * on the chest
      * @return lootTable name
      */
@@ -20,7 +16,7 @@ public interface LootTable {
      * Get all the items from the lootTable
      * @return lootTable items
      */
-    List<LootTableItem> getItems();
+    WeighList<LootTableItem> getItems();
 
     /**
      * Get the amount of items will be rolled on this lootTable
@@ -33,30 +29,4 @@ public interface LootTable {
      * @param world world to spawn
      */
     void summon(World world);
-
-    interface LootTableItem {
-        /**
-         * Get the ItemStack ofh this lootTable
-         * @return lootTable item
-         */
-        ItemStack getItem();
-
-        /**
-         * Get weigh of the item
-         * @return items weigh
-         */
-        int getWeigh();
-
-        /**
-         * Get the chance of getting this LootTableItem
-         * @return LootTableItem chance
-         */
-        double getChance();
-
-        /**
-         * Set the chance to get this LootTableItem
-         * @param chance new chance
-         */
-        void setChance(double chance);
-    }
 }

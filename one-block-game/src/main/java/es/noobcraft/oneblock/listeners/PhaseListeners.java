@@ -4,10 +4,12 @@ import es.noobcraft.oneblock.api.OneBlockAPI;
 import es.noobcraft.oneblock.api.events.InfiniteBlockBreakEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Damageable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
@@ -50,6 +52,16 @@ public class PhaseListeners implements Listener {
                     event.getBlock());
             Bukkit.getServer().getScheduler().runTaskLater(plugin, ()-> Bukkit.getPluginManager().callEvent(infiniteBlockEvent), 2L);
             event.getBlock().getState().update(true, true);
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onBlockExplode(EntityExplodeEvent event) {
+        for (Block block : event.blockList()) {
+            if (block.getLocation().toVector().equals(OneBlockAPI.getSettings().getIslandSpawn())) {
+                event.blockList().remove(block);
+                return;
+            }
         }
     }
 }

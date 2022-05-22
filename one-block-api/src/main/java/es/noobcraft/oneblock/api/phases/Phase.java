@@ -1,5 +1,7 @@
 package es.noobcraft.oneblock.api.phases;
 
+import es.noobcraft.oneblock.api.utils.WeighList;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -30,14 +32,14 @@ public interface Phase {
      * during that phase
      * @return the available materials
      */
-    List<BlockType> getItems();
+    WeighList<BlockType> getItems();
 
     /**
      * Get all the available entities that can spawn
      * during that phase
      * @return the available entities
      */
-    List<MobType> getEntities();
+    WeighList<MobType> getEntities();
 
     /**
      * Get all the available LooTables that can spawn

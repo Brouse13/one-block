@@ -49,7 +49,10 @@
     {"type": "STAINED_CLAY:14"}
   ],
   "mobs": [
-    {"entity": "VILLAGER"}
+    {"entity": "VILLAGER"},
+    {"entity": "ZOMBIE"},
+    {"entity": "SKELETON"},
+    {"entity": "CREEPER"}
   ],
   "lootTable": [
     {

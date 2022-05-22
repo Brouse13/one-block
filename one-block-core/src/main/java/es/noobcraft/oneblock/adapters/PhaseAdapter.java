@@ -8,6 +8,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import es.noobcraft.oneblock.api.phases.*;
+import es.noobcraft.oneblock.api.utils.WeighList;
 import es.noobcraft.oneblock.phase.BasePhase;
 
 import java.io.IOException;
@@ -35,9 +36,10 @@ public class PhaseAdapter extends TypeAdapter<Phase> {
 
             if ("items".equals(fieldName)) {
                 reader.beginArray();
-                List<BlockType> items = Lists.newArrayList();
+                WeighList<BlockType> items = new WeighList<>();
 
-                while (reader.hasNext()) items.add(new BlockTypeAdapter().read(reader));
+                while (reader.hasNext())
+                    items.add(new BlockTypeAdapter().read(reader));
 
                 reader.endArray();
                 basePhaseBuilder.items(items);
@@ -45,7 +47,7 @@ public class PhaseAdapter extends TypeAdapter<Phase> {
 
             if ("mobs".equals(fieldName)) {
                 reader.beginArray();
-                List<MobType> entities = Lists.newArrayList();
+                WeighList<MobType> entities = new WeighList<>();
 
                 while (reader.hasNext())
                     entities.add(new MobTypeAdapter().read(reader));
@@ -97,12 +99,14 @@ public class PhaseAdapter extends TypeAdapter<Phase> {
         writer.name("max").value(phase.getMaxScore());
 
         writer.name("items").beginArray();
-        for (BlockType blockType : phase.getItems()) new BlockTypeAdapter().write(writer, blockType);
+        for (BlockType entry : phase.getItems().getEntries())
+            new BlockTypeAdapter().write(writer, entry);
+
         writer.endArray();
 
         writer.name("mobs").beginArray();
-        for (MobType entity : phase.getEntities())
-            new MobTypeAdapter().write(writer, entity);
+        for (MobType entry : phase.getEntities().getEntries())
+            new MobTypeAdapter().write(writer, entry);
         writer.endArray();
 
         writer.name("lootTable").beginArray();

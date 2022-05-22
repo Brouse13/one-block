@@ -1,12 +1,13 @@
 package es.noobcraft.oneblock.api.phases;
 
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
+import es.noobcraft.oneblock.api.utils.Weigh;
 import lombok.Getter;
 import org.bukkit.entity.*;
 
 import java.util.function.BiConsumer;
 
-public interface MobType extends Probability {
+public interface MobType extends Weigh {
     /**
      * Get the OneBlockEntityType
      * @return the EntityType
@@ -64,8 +65,8 @@ public interface MobType extends Probability {
         WOLF(Wolf.class),
         ZOMBIE(Zombie.class);
 
-        @Getter private final Class<?> aClass;
-        @Getter private final BiConsumer<?, OneBlockPlayer> consumer;
+        @Getter private final Class aClass;
+        @Getter private final BiConsumer consumer;
 
         <T> Type(Class<T> aClass, BiConsumer<T, OneBlockPlayer> consumer) {
             this.aClass = aClass;

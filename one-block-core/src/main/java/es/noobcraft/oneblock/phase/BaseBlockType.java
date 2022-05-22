@@ -13,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 @AllArgsConstructor
 public class BaseBlockType implements BlockType {
     @Getter private final ItemStack type;
-    @Getter private final double probability;
+    @Getter private final int weigh;
 
     @Override
     @SuppressWarnings("deprecation")

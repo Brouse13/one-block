@@ -6,7 +6,10 @@ import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import es.noobcraft.core.api.item.ItemBuilder;
 import es.noobcraft.oneblock.api.phases.LootTable;
+import es.noobcraft.oneblock.api.phases.LootTableItem;
+import es.noobcraft.oneblock.api.utils.WeighList;
 import es.noobcraft.oneblock.phase.BaseLootTable;
+import es.noobcraft.oneblock.phase.BaseLootTableItem;
 import org.bukkit.Material;
 
 import java.io.IOException;
@@ -32,10 +35,11 @@ public class LootTableAdapter extends TypeAdapter<LootTable> {
 
             if("items".equals(fieldName)) {
                 reader.beginArray();
+                WeighList<LootTableItem> items = new WeighList<>();
 
                 //Loop throw all LootTableItems
                 while (reader.hasNext()) {
-                    BaseLootTable.BaseLootTableItem.BaseLootTableItemBuilder item = BaseLootTable.BaseLootTableItem.builder();
+                    BaseLootTableItem.BaseLootTableItemBuilder item = BaseLootTableItem.builder();
                     reader.beginObject();
                     if (reader.peek().equals(JsonToken.NAME)) fieldName = reader.nextName();
 
@@ -55,8 +59,9 @@ public class LootTableAdapter extends TypeAdapter<LootTable> {
                         if("weigh".equals(fieldName)) item.weigh(reader.nextInt());
                     }
                     reader.endObject();
-                    builder.addItem(item.build());
+                    items.add(item.build());
                 }
+                builder.items(items);
                 reader.endArray();
             }
         }
@@ -71,10 +76,10 @@ public class LootTableAdapter extends TypeAdapter<LootTable> {
         writer.name("rolls").value(lootTable.getRolls());
         writer.name("items").beginArray();
 
-        for (LootTable.LootTableItem item : lootTable.getItems()) {
+        for (LootTableItem entry : lootTable.getItems().getEntries()) {
             writer.beginObject();
-            writer.name("item").value(item.getItem().getType().name()+ ":"+ item.getItem().getDurability());
-            writer.name("weigh").value(item.getWeigh());
+            writer.name("item").value(entry.getItem().getType()+ ":"+ entry.getItem().getDurability());
+            writer.name("weigh").value(entry.getWeigh());
             writer.endObject();
         }
     }

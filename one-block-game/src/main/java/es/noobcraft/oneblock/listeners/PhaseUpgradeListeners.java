@@ -11,13 +11,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
 
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Function;
 
 public class PhaseUpgradeListeners implements Listener {
     private final JavaPlugin plugin;
-    private final Function<List<?>, Integer> random = list -> ((int) (Math.random() * list.size()));
 
     public PhaseUpgradeListeners(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -41,7 +38,7 @@ public class PhaseUpgradeListeners implements Listener {
             armorStand.remove();
 
             //Spawn the block
-            event.getTo().getItems().get(random.apply(event.getTo().getItems())).spawn(event.getWorld());
+            event.getTo().getItems().getRandom().spawn(event.getWorld());
 
             //Upgrade the phase
             OneBlockAPI.getPhaseLoader().getPhaseBlocks(event.getWorld().getName()).setPhase(event.getTo());

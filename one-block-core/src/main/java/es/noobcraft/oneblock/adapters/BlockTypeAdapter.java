@@ -16,7 +16,7 @@ public class BlockTypeAdapter extends TypeAdapter<BlockType> {
     @Override
     public BlockType read(JsonReader reader) throws IOException {
         BaseBlockType.BaseBlockTypeBuilder builder = BaseBlockType.builder();
-        builder.probability(-1);
+        builder.weigh(1);
         reader.beginObject();
         String fieldName = null;
 
@@ -25,7 +25,7 @@ public class BlockTypeAdapter extends TypeAdapter<BlockType> {
 
             if ("type".equals(fieldName)) builder.type(itemLoader(reader.nextString().split(":")));
 
-            if ("probability".equals(fieldName)) builder.probability(reader.nextDouble());
+            if ("probability".equals(fieldName)) builder.weigh(reader.nextInt());
         }
         reader.endObject();
         return builder.build();
@@ -35,8 +35,8 @@ public class BlockTypeAdapter extends TypeAdapter<BlockType> {
     public void write(JsonWriter writer, BlockType blockType) throws IOException {
         writer.beginObject();
         writer.name("type").value(blockType.getType().getType().name()+ ":"+ blockType.getType().getDurability());
-        if (blockType.getProbability() != -1)
-            writer.name("probability").value(blockType.getProbability());
+        if (blockType.getWeigh() != 1)
+            writer.name("probability").value(blockType.getWeigh());
         writer.endObject();
     }
 
