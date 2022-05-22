@@ -8,6 +8,7 @@ import es.noobcraft.oneblock.api.player.OneBlockPlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -26,7 +27,7 @@ public class IslandListeners implements Listener {
      * Listener to check when a player breaks a block
      * @param event Spigot event
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public static void breakBlock(BlockBreakEvent event) {
         OneBlockPlayer player = OneBlockAPI.getPlayerCache().getPlayer(event.getPlayer().getName());
         event.setCancelled(calculatePerm(player, event.getPlayer().getWorld(), IslandFlag.BREAK, true));
@@ -36,7 +37,7 @@ public class IslandListeners implements Listener {
      * Listener to check on when a player places a block
      * @param event Spigot event
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public static void placeBlock(BlockPlaceEvent event) {
         OneBlockPlayer player = OneBlockAPI.getPlayerCache().getPlayer(event.getPlayer().getName());
         event.setCancelled(calculatePerm(player, event.getPlayer().getWorld(), IslandFlag.BUILD, true));
@@ -46,7 +47,7 @@ public class IslandListeners implements Listener {
      * Listener to check when a player shears a sheep
      * @param event Spigot event
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public static void entitySheared(PlayerShearEntityEvent event) {
         OneBlockPlayer player = OneBlockAPI.getPlayerCache().getPlayer(event.getPlayer().getName());
         event.setCancelled(calculatePerm(player, event.getPlayer().getWorld(), IslandFlag.SHEAR, true));
@@ -56,7 +57,7 @@ public class IslandListeners implements Listener {
      * Listener to check when player picks up a block
      * @param event Spigot event
      */
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerPickupItem(PlayerPickupItemEvent event) {
         OneBlockPlayer player = OneBlockAPI.getPlayerCache().getPlayer(event.getPlayer().getName());
         event.setCancelled(calculatePerm(player, event.getPlayer().getWorld(), IslandFlag.LAND_ITEMS, false));
@@ -66,7 +67,7 @@ public class IslandListeners implements Listener {
      * Listener to check when a player drops an item
      * @param event Spigot event
      */
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerDropItem(PlayerDropItemEvent event) {
         OneBlockPlayer player = OneBlockAPI.getPlayerCache().getPlayer(event.getPlayer().getName());
         event.setCancelled(calculatePerm(player, event.getPlayer().getWorld(), IslandFlag.LAND_ITEMS, true));
@@ -76,7 +77,7 @@ public class IslandListeners implements Listener {
      * Listener to check when a player damages another entity that's not a player
      * @param event Spigot event
      */
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST)
     public static void entityDamage(EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Player)) return;
         if (event.getEntity() instanceof Player) return;
@@ -89,21 +90,21 @@ public class IslandListeners implements Listener {
      * Listener to check when a player hits another player
      * @param event Spigot event
      */
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST)
     public static void playerPVP(EntityDamageByEntityEvent event) {
-        if (event.getDamager() instanceof Player) return;
-        if (event.getEntity() instanceof Player) return;
+        if (!(event.getDamager() instanceof Player)) return;
+        if (!(event.getEntity() instanceof Player)) return;
         if (event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK) return;
 
-        OneBlockPlayer player = OneBlockAPI.getPlayerCache().getPlayer(event.getDamager().getName());
-        event.setCancelled(calculatePerm(player, event.getEntity().getWorld(), IslandFlag.PVP, true));
+        BitSet permission = FlagEncoder.decode(OneBlockAPI.getPermissionManager().getPermission(event.getDamager().getWorld().getName()));
+        event.setCancelled(permission.get(IslandFlag.PVP.getIndex()));
     }
 
     /**
      * Listener to check if player interacted with a container
      * @param event Spigot event
      */
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void chestInteract(PlayerInteractEvent event) {
         if (event.getClickedBlock() == null) return;
         if (!(event.getClickedBlock().getState() instanceof InventoryHolder)) return;

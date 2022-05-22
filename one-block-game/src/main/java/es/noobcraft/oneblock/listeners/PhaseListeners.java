@@ -21,6 +21,8 @@ public class PhaseListeners implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
+        if (event.isCancelled()) return;
+
         if (event.getBlock().getWorld().getName().equals("lobby")) {
             event.setCancelled(true);
             return;

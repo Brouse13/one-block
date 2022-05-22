@@ -58,14 +58,14 @@ public interface MobType extends Probability {
         SKELETON(Skeleton.class),
         SLIME(Slime.class),
         SQUID(Squid.class),
-        WITCH(Wither.class),
+        WITCH(Witch.class),
         VILLAGER(Villager.class),
         WITHER_SKELETON(Skeleton.class, (skeleton, player) -> skeleton.setSkeletonType(Skeleton.SkeletonType.WITHER)),
         WOLF(Wolf.class),
         ZOMBIE(Zombie.class);
 
-        @Getter private final Class aClass;
-        @Getter private final BiConsumer consumer;
+        @Getter private final Class<?> aClass;
+        @Getter private final BiConsumer<?, OneBlockPlayer> consumer;
 
         <T> Type(Class<T> aClass, BiConsumer<T, OneBlockPlayer> consumer) {
             this.aClass = aClass;
