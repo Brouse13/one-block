@@ -105,7 +105,7 @@ public class PlayerListeners implements Listener {
             if (world.getBlockAt(location).getType() == Material.AIR)
                 world.getBlockAt(location).setType(Material.GRASS);
 
-            event.setRespawnLocation(location.add(new Vector(0, 1, 0)));
+            event.setRespawnLocation(location.clone().add(new Vector(0, 1, 0)));
         }else {
             //Give the player the menu item if is not on a profile
             event.getPlayer().getInventory().setItem(0, SpigotCore.getImmutableItemManager().makeImmutable(Items.getLobbyItem(player)));
