@@ -63,7 +63,7 @@ public class OneBlock extends OneBlockPlugin {
     @Override
     public Set<Listener> registerListeners() {
         return Sets.newHashSet(Arrays.asList(new PlayerListeners(), new IslandListeners(), new ItemListeners(), new PhaseListeners(this),
-                new InfiniteBlockListener(this), new PhaseUpgradeListeners(this)));
+                new InfiniteBlockListener(this), new PhaseUpgradeListeners(this), new LobbyListeners()));
     }
 
     @SuppressWarnings("all")
