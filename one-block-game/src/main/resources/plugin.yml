@@ -1,0 +1,9 @@
+main: es.noobcraft.oneblock.OneBlock
+name: one-block
+version: 1.0
+api-version: 1.8
+description: Noobcraft one-block plugin
+author: Brouse_13
+depend:
+  - Core
+  - SlimeWorldManager
