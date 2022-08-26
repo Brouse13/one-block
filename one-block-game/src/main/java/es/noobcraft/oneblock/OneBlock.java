@@ -2,6 +2,7 @@ package es.noobcraft.oneblock;
 
 import com.google.common.collect.Sets;
 import com.grinderwolf.swm.api.SlimePlugin;
+import es.noobcraft.core.api.Core;
 import es.noobcraft.core.api.command.PlayerCommand;
 import es.noobcraft.oneblock.api.OneBlockAPI;
 import es.noobcraft.oneblock.api.logger.Logger;
@@ -33,6 +34,10 @@ public class OneBlock extends OneBlockPlugin {
 
         //Sync all the worlds from redis
         OneBlockAPI.getServerCache().syncWorlds();
+
+        //Load all the modules on /modules dir
+        OneBlockAPI.getModuleLoader().getModules(new File(Core.getServerConfigurationsDirectory().getAbsolutePath()+ "/modules"))
+                .forEach(OneBlockAPI.getModuleManager()::loadModule);
 
         Logger.log(LoggerType.CONSOLE, "OneBlock enabled successfully");
     }

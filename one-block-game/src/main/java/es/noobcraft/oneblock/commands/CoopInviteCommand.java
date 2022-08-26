@@ -35,7 +35,6 @@ public class CoopInviteCommand implements PlayerCommand {
             return;
         }
 
-        System.out.println(player.getCurrentProfile().getOwner().getName()+ " "+ player.getCurrentProfile().getIslandOwner());
         if (!player.getCurrentProfile().getOwner().getName()
                 .equals(player.getCurrentProfile().getIslandOwner())) {
             Logger.player(noobPlayer, "one-block.messages.invite.not-owner");

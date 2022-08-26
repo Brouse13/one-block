@@ -19,7 +19,7 @@ import java.util.Set;
 public abstract class OneBlockPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
-        OneBlockAPI.setOneBlock(new API());
+        OneBlockAPI.setOneBlock(new API(this));
         OneBlockAPI.getPhaseLoader().loadPhases();
         Logger.log(LoggerType.CONSOLE, "Api loaded successfully");
         JSONPhaseLoader.scheduleUpdate(this);
@@ -27,7 +27,6 @@ public abstract class OneBlockPlugin extends JavaPlugin {
         registerListeners().forEach(listener -> this.getServer().getPluginManager().registerEvents(listener, this));
         loadCommand().forEach(command -> SpigotCore.getCommandManager().add(command));
         registerServer();
-        new BaseModuleLoader().getModule(new BaseModuleLoader().getFile("test")).load();
     }
 
     @Override

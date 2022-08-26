@@ -4,6 +4,7 @@ package es.noobcraft.oneblock.player;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import es.noobcraft.core.api.Core;
+import es.noobcraft.core.api.permission.Group;
 import es.noobcraft.core.api.player.NoobPlayer;
 import es.noobcraft.oneblock.api.OneBlockAPI;
 import es.noobcraft.oneblock.api.player.OneBlockPlayer;
@@ -59,6 +60,11 @@ public class BaseOneBlockPlayer implements OneBlockPlayer {
     @Override
     public NoobPlayer getNoobPlayer() {
         return Core.getPlayerCache().getPlayer(name);
+    }
+
+    @Override
+    public boolean isVip() {
+        return getNoobPlayer().getSetGroups().contains(Group.SUPPORTER);
     }
 
     @Override

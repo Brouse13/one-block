@@ -40,6 +40,12 @@ public interface OneBlockPlayer extends OfflineOneBlockPlayer {
     OneBlockScoreBoard getScoreBoard();
 
     /**
+     * Get if the player has vip benefits
+     * @return if player is vip
+     */
+    boolean isVip();
+
+    /**
      * Set the player active scoreboard, if
      * you want to remove it, set it null
      * @param scoreBoard new scoreboard

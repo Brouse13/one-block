@@ -33,8 +33,14 @@ import es.noobcraft.oneblock.server.RedisServerLoader;
 import lombok.Getter;
 import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.Location;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public class API implements OneBlock {
+
+    public API(JavaPlugin plugin) {
+        moduleLoader = new BaseModuleLoader(plugin);
+    }
+
     //Player methods
     @Getter private final PlayerCache playerCache = new SetPlayerCache();
     @Getter private final PlayerSupplier playerSupplier = new BasePlayerSupplier();
@@ -58,7 +64,7 @@ public class API implements OneBlock {
     @Getter private final OneBlockSettings settings = new OneBlockConstants();
 
     //Module registry/loading methods
-    @Getter private final ModuleLoader moduleLoader = new BaseModuleLoader();
+    @Getter private final ModuleLoader moduleLoader;
     @Getter private final ModuleManager moduleManager = new MapModuleManager();
 
     @Override

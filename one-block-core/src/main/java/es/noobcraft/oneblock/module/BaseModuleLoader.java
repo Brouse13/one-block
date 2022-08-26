@@ -1,20 +1,31 @@
 package es.noobcraft.oneblock.module;
 
+import com.google.common.collect.Sets;
 import es.noobcraft.core.api.Core;
 import es.noobcraft.oneblock.api.logger.Logger;
 import es.noobcraft.oneblock.api.logger.LoggerType;
 import es.noobcraft.oneblock.api.module.ModuleLoader;
 import es.noobcraft.oneblock.api.module.OneBlockModule;
 import es.noobcraft.oneblock.api.module.OneBlockModuleSettings;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Arrays;
+import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.stream.Collectors;
 
 public class BaseModuleLoader implements ModuleLoader {
+    private final JavaPlugin plugin;
+
+    public BaseModuleLoader(JavaPlugin plugin) {
+        this.plugin = plugin;
+    }
+
     @Override
     public OneBlockModule getModule(File file) {
         //Load settings from the module `module.yml if there are null, return null`
@@ -30,7 +41,9 @@ public class BaseModuleLoader implements ModuleLoader {
                 final Class<?> loaded = loader.loadClass(settings.getMainClass());
 
                 if (OneBlockModule.class.isAssignableFrom(loaded)) {
-                    return loaded.asSubclass(OneBlockModule.class).newInstance();
+                    final OneBlockModule oneBlockModule = loaded.asSubclass(OneBlockModule.class).newInstance();
+                    oneBlockModule.init(plugin, file.getName().split(".jar")[0], settings);
+                    return oneBlockModule;
                 }else {
                     Logger.log(LoggerType.ERROR, "Class "+ loaded.getName()+ " doesn't extend from OneBlockModule");
                 }
@@ -41,6 +54,13 @@ public class BaseModuleLoader implements ModuleLoader {
             exception.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public Set<OneBlockModule> getModules(File directory) {
+        final File[] files = directory.listFiles((dir, name) -> name.endsWith(".jar"));
+        if (files == null) return Sets.newHashSet();
+        return Arrays.stream(files).map(this::getModule).collect(Collectors.toSet());
     }
 
     @Override
